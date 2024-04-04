@@ -18,7 +18,8 @@ const Navbar: FC<NavbarProps> = () => {
 
   const handleClick = (e: any, offset: number) => {
     e.preventDefault();
-    window.scrollTo({ top: document.getElementById(e.target?.name)?.getBoundingClientRect().top! + window.scrollY + offset, behavior: "smooth" });
+    if (e.target.name?.toLowerCase() !== "whitepaper")
+      window.scrollTo({ top: document.getElementById(e.target?.name)?.getBoundingClientRect().top! + window.scrollY + offset, behavior: "smooth" });
   };
 
   return (
