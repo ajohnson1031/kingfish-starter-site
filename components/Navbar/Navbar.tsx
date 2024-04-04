@@ -12,19 +12,17 @@ const Navbar: FC<NavbarProps> = () => {
     { val: "Ecosystem", offset: -40 },
     { val: "Tokenomics", offset: -150 },
     { val: "Roadmap", offset: -150 },
-    { val: "Community", offset: 0 },
+    { val: "Community", offset: -80 },
     { val: "Whitepaper", offset: 0 },
   ];
 
   const handleClick = (e: any, offset: number) => {
     e.preventDefault();
-    console.log(e.target);
-    // document.getElementById(e.target?.name)?.scrollIntoView({ behavior: "smooth", block: "start" });
     window.scrollTo({ top: document.getElementById(e.target?.name)?.getBoundingClientRect().top! + window.scrollY + offset, behavior: "smooth" });
   };
 
   return (
-    <div className="bg-vulcan-400 text-white font-bold grid grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-20 px-5 lg:px-10 py-4 items-center fixed top-0 left-0 z-50 w-full">
+    <div className="bg-vulcan-500 text-white font-bold grid grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-20 px-5 lg:px-10 py-4 items-center fixed top-0 left-0 z-50 w-full">
       <div className="col-span-1 lg:col-span-3">
         <a href="/" target="_blank" rel="noopener noreferrer">
           <Img src={brandingIcon} width={250} />
