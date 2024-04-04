@@ -1,10 +1,8 @@
-import { ReactNode } from "react";
-
 export interface RoadmapCardProps {
   roadmapItem: {
     title: string;
     items: {
-      description: string | ReactNode;
+      description: string | JSX.Element;
       completed: boolean;
     }[];
   };

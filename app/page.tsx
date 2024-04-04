@@ -1,6 +1,6 @@
 "use client";
 import { Community, Ecosystem, Footer, HeroCard, Navbar, Roadmap, Socials, Tokenomics } from "@/components";
-import { COMMUNITY_CARDS, ROADMAP } from "./constants";
+import { COMMUNITY_CARDS, ECO_CARDS, ROADMAP } from "./constants";
 export default function Home() {
   return (
     <>
@@ -8,7 +8,7 @@ export default function Home() {
         <Navbar />
         <HeroCard />
         <Socials />
-        <Ecosystem />
+        <Ecosystem ecocards={ECO_CARDS} />
         <Tokenomics />
         <Roadmap roadmapItems={ROADMAP} />
         <Community communityItems={COMMUNITY_CARDS} />
