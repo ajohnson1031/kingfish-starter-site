@@ -18,12 +18,12 @@ const Ecosystem: FC<EcosystemProps> = ({ ecocards }) => {
               coins.
             </p>
             <p className="font-extralight pb-4">
-              As the shark, "KINGFISH" tirelessly patrolled the vast expanse, honing its skills in the art of coin collection, ultimately becoming the prominent collector in the
-              realm.
+              As the shark, "KINGFISH" tirelessly patrols the vast expanse, honing its skills in the art of coin collection, ultimately hoping to become the most prominent
+              collector in the realm.
             </p>
             <p className="font-bold">
-              But the journey didn't end there. Transformed into a whale, "KINGFISH" continued its relentless pursuit as others, <span className="text-orange-500">LIKE YOU</span>,
-              embarked on their own KF coin collecting odyssey.
+              But the journey doesn't end there. On his way to becoming a whale, "KINGFISH" continues its relentless pursuit as others,{" "}
+              <span className="text-orange-500">LIKE YOU</span>, embark on their own KF coin collecting odyssey.
             </p>
           </div>
         </div>

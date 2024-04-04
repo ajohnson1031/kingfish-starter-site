@@ -112,7 +112,7 @@ const COMMUNITY_CARDS = [
     description: (
       <p>
         The official home base of King<span className="text-orange-500">Fish</span>
-        <sup className="text-[6px] text-orange-500 relative -top-2">TM</sup>, the world's most popular fish-themed crypto token.
+        <sup className="text-[6px] text-orange-500 relative -top-2">TM</sup>, the world's most beloved fish-themed crypto token.
       </p>
     ),
     buttonText: "Join Discord",
@@ -154,9 +154,10 @@ const ECO_CARDS = [
         Early holders of{" "}
         <span className="font-bold">
           KING<span className="text-orange-500">FISH</span>
-        </span>
-        <sup className="text-[6px] text-orange-500 relative -top-2">TM</sup> tokens will be rewarded with an airdrop of our <span className="underline">utility token</span>,{" "}
-        <span className="font-bold">SOLANAOCEAN</span>, when it launches. The more KF tokens you are holding the more SOLANAOCEAN you will receive.
+          <sup className="text-[6px] text-orange-500 relative -top-2">TM</sup>
+        </span>{" "}
+        tokens will be rewarded with an airdrop of our <span className="underline">utility token</span>, <span className="font-bold">SOLANAOCEAN</span>, when it launches. The more
+        KF tokens you are holding the more SOLANAOCEAN you will receive.
       </>
     ),
     image: rewards,
