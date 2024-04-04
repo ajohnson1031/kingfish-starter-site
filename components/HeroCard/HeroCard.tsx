@@ -10,11 +10,11 @@ import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import { ImgVariant } from "../Img";
 import { HeroCardProps } from "./HeroCard.types";
 
-const handleClick = (url?: string) => {
-  window.open(url, "_blank");
-};
-
 const HeroCard: FC<HeroCardProps> = () => {
+  const handleClick = (url?: string) => {
+    window.open(url, "_blank");
+  };
+
   return (
     <div className="h-[75vh] md:h-screen mt-40 mb-20">
       <div className="px-0 lg:px-10 text-white text-center bg-vulcan-900">
