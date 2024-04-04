@@ -1,4 +1,6 @@
 import Button from "./Button";
+import Community from "./Community";
+import CommunityCard from "./CommunityCard";
 import EcoCard from "./EcoCard";
 import Ecosystem from "./Ecosystem";
 import HeroCard from "./HeroCard";
@@ -10,4 +12,4 @@ import Socials from "./Socials";
 import Tokenomics from "./Tokenomics";
 import TokenomicsCard from "./TokenomicsCard";
 
-export { Button, EcoCard, Ecosystem, HeroCard, Img, Navbar, Roadmap, RoadmapCard, Socials, Tokenomics, TokenomicsCard };
+export { Button, Community, CommunityCard, EcoCard, Ecosystem, HeroCard, Img, Navbar, Roadmap, RoadmapCard, Socials, Tokenomics, TokenomicsCard };

@@ -84,5 +84,31 @@ const ROADMAP = [
     ],
   },
 ];
+const COMMUNITY_CARDS = [
+  {
+    title: "Discord",
+    url: process.env.NEXT_PUBLIC_DISCORD_URL,
+    image: "discord",
+    description: "The official home base of KingFish, the world's most popular fish-themed crypto token.",
+    buttonText: "Join Discord",
+    bgcolor: "bg-chetwode",
+  },
+  {
+    title: "Telegram",
+    url: process.env.NEXT_PUBLIC_TELEGRAM_URL,
+    image: "telegram",
+    description: "All-in-one KingFish chat & support group. Memes abound.",
+    buttonText: "Join Telegram",
+    bgcolor: "bg-picton",
+  },
+  {
+    title: "X",
+    url: process.env.NEXT_PUBLIC_TWITTER_URL,
+    image: "twitter",
+    description: "Stay up-to-date on the latest news and KingFish memes.",
+    buttonText: "Follow",
+    bgcolor: "bg-black",
+  },
+];
 
-export { CYAN_GRADIENT, FUCHSIA_GRADIENT, OPACITY_FUCHSIA_GRADIENT, ROADMAP, TOKENOMICS_GRADIENT, VIOLET_GRADIENT };
+export { COMMUNITY_CARDS, CYAN_GRADIENT, FUCHSIA_GRADIENT, OPACITY_FUCHSIA_GRADIENT, ROADMAP, TOKENOMICS_GRADIENT, VIOLET_GRADIENT };

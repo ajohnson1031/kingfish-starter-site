@@ -54,7 +54,7 @@ const Ecosystem: FC<EcosystemProps> = () => {
             </p>
           </div>
         </div>
-        <div className="hidden md:block bg-smallfish bg-contain bg-no-repeat w-5/12" />
+        <div className="hidden md:block bg-smallfish bg-contain bg-no-repeat w-6/12" />
       </div>
       <div className="md:w-3/4 flex flex-col md:flex-row justify-center py-6 md:py-12 relative mx-auto text-white gap-6 -mt-10 md:-mt-20">
         {ecocards.map((card, i) => (

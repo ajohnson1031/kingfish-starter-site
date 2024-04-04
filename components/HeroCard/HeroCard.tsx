@@ -10,6 +10,10 @@ import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import { ImgVariant } from "../Img";
 import { HeroCardProps } from "./HeroCard.types";
 
+const handleClick = (url?: string) => {
+  window.open(url, "_blank");
+};
+
 const HeroCard: FC<HeroCardProps> = () => {
   return (
     <div className="h-[75vh] md:h-screen mt-40 mb-20">
@@ -21,8 +25,8 @@ const HeroCard: FC<HeroCardProps> = () => {
           Inspired by the Solana Ecosystem & every fish in the world's oceans. <br className="hidden lg:block" /> A community-driven, uniquely rewarding system.
         </p>
         <div className="flex justify-center gap-3 md:gap-5">
-          <Button className={FUCHSIA_GRADIENT} label="Buy on PinkSale" />
-          <Button className={VIOLET_GRADIENT} label="Whitepaper" />
+          <Button className={FUCHSIA_GRADIENT} label="Buy on PinkSale" onClick={() => handleClick(process.env.NEXT_PUBLIC_PINKSALE_URL)} />
+          <Button className={VIOLET_GRADIENT} label="Whitepaper" onClick={() => handleClick("https://example.com")} />
         </div>
       </div>
       <div className="bg-herocard bg-85% md:bg-100% bg-[center_top_-2rem] bg-no-repeat h-[52.5%] md:h-3/4 w-full flex justify-center items-end">

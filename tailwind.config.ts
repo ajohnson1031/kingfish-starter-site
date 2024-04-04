@@ -8,6 +8,7 @@ const config: Config = {
       backgroundImage: {
         herocard: "url(../assets/cute-fish.jpg)",
         smallfish: "url(../assets/small-fish.jpg)",
+        community: "url(../assets/community-2.jpg)",
       },
       backgroundSize: {
         "50%": "50%",
@@ -31,6 +32,8 @@ const config: Config = {
           800: "#10161d",
           900: "#0f151b",
         },
+        chetwode: "#7987d9",
+        picton: "#28a8eb",
       },
       fontFamily: {
         sans: ["Exo Soft", "Helvetica Neue", "sans-serif"],

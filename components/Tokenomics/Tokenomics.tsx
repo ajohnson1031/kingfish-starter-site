@@ -37,7 +37,9 @@ const Tokenomics: FC<TokenomicsProps> = () => {
       <h2 className="text-4xl font-bold">Tokenomics</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {tokenomics.map((token, i) => (
-          <TokenomicsCard key={`${token.label}_${i}`} label={token.label} value={token.value} />
+          <div key={`${token.label}_${i}`}>
+            <TokenomicsCard label={token.label} value={token.value} />
+          </div>
         ))}
       </div>
       <h3 className="text-3xl font-semibold mt-4">Token Distribution</h3>
