@@ -2,32 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer base {
+  @font-face {
+    font-family: Exo Soft;
+    font-weight: 100;
+    src: url(../fonts/exo/1-thin.woff) format("woff");
   }
-}
+  @font-face {
+    font-family: Exo Soft;
+    font-weight: 200;
+    src: url(../fonts/exo/2-extra_light.woff) format("woff");
+  }
+  @font-face {
+    font-family: Exo Soft;
+    font-weight: 300;
+    src: url(../fonts/exo/3-light.woff) format("woff");
+  }
+  @font-face {
+    font-family: Exo Soft;
+    font-weight: 400;
+    src: url(../fonts/exo/4-regular.woff) format("woff");
+  }
+  @font-face {
+    font-family: Exo Soft;
+    font-weight: 500;
+    src: url(../fonts/exo/5-medium.woff) format("woff");
+  }
+  @font-face {
+    font-family: Exo Soft;
+    font-weight: 600;
+    src: url(../fonts/exo/6-semibold.woff) format("woff");
+  }
+  @font-face {
+    font-family: Exo Soft;
+    font-weight: 700;
+    src: url(../fonts/exo/7-bold.woff) format("woff");
+  }
+  @font-face {
+    font-family: Exo Soft;
+    font-weight: 800;
+    src: url(../fonts/exo/8-extrabold.woff) format("woff");
+  }
+  @font-face {
+    font-family: Exo Soft;
+    font-weight: 900;
+    src: url(../fonts/exo/9-black.woff) format("woff");
+  }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  body {
+    background-color: #0f151b;
   }
 }
