@@ -1,3 +1,4 @@
+import AnimatedBG from "./AnimatedBG";
 import Button from "./Button";
 import Community from "./Community";
 import CommunityCard from "./CommunityCard";
@@ -13,4 +14,4 @@ import Socials from "./Socials";
 import Tokenomics from "./Tokenomics";
 import TokenomicsCard from "./TokenomicsCard";
 
-export { Button, Community, CommunityCard, EcoCard, Ecosystem, Footer, HeroCard, Img, Navbar, Roadmap, RoadmapCard, Socials, Tokenomics, TokenomicsCard };
+export { AnimatedBG, Button, Community, CommunityCard, EcoCard, Ecosystem, Footer, HeroCard, Img, Navbar, Roadmap, RoadmapCard, Socials, Tokenomics, TokenomicsCard };
