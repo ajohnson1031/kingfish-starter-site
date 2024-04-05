@@ -12,4 +12,5 @@ export interface ImgProps {
   size?: any;
   color?: string;
   className?: string;
+  style?: Record<string, string>;
 }

@@ -16,7 +16,7 @@ const HeroCard: FC<HeroCardProps> = () => {
   };
 
   return (
-    <div className="h-[75vh] md:h-screen mt-40 mb-20">
+    <div className="h-[75vh] md:h-screen mt-40 mb-20 relative z-10">
       <div className="px-0 lg:px-10 text-white text-center bg-vulcan-900">
         <h1 className="text-exo font-bold text-2xl md:text-4xl mb-4">
           The Happiest <span className="text-orange-500">Meme Coin</span> in the Seven Seas

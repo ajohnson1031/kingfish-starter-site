@@ -7,7 +7,7 @@ import { SocialsProps } from ".";
 
 const Socials: FC<SocialsProps> = () => {
   return (
-    <div className="flex flex-col gap-10 md:gap-12 text-white relative -mt-20 md:-mt-10">
+    <div className="flex flex-col gap-10 md:gap-12 text-white relative -mt-20 md:-mt-10 z-10">
       <div className="flex flex-col justify-center items-center">
         <p className="opacity-40 text-sm mb-3">CONTRACT AUDITED BY</p>
         <Img src={interfi} width={135} />

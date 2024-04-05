@@ -33,7 +33,7 @@ const Tokenomics: FC<TokenomicsProps> = () => {
   }, [isMobile]);
 
   return (
-    <div id="tokenomics" className="flex flex-col items-center gap-8 text-white relative mt-10">
+    <div id="tokenomics" className="flex flex-col items-center gap-8 text-white relative mt-10 z-10">
       <h2 className="text-4xl font-bold">Tokenomics</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {tokenomics.map((token, i) => (

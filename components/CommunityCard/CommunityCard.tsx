@@ -21,8 +21,7 @@ const CommunityCard: FC<CommunityCardProps> = ({ title, url, image, description,
   };
 
   return (
-    <div className={cn("w-full bg-gradient-to-b from-slate-600 to-orange-950 p-6 rounded flex flex-col gap-4", className)}>
-      {/* ICON, TITLE & URL */}
+    <div className={cn("w-full bg-gradient-to-b from-slate-600/50 to-orange-950/30 p-6 rounded flex flex-col gap-4", className)}>
       <div className="flex gap-3 justify-items-start" onClick={handleClick}>
         <div className={`${bgcolor} p-1.5 rounded-xl`}>
           <Img src={icons[image]} type={ImgVariant.ICON} size={30} />

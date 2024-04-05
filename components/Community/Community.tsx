@@ -6,7 +6,7 @@ import { CommunityProps } from "./Community.types";
 
 const Community: FC<CommunityProps> = ({ communityItems }) => {
   return (
-    <div id="community" className="w-full md:w-3/4 flex flex-col items-center py-6 md:py-12 relative mx-auto text-white mt-10 md:gap-10">
+    <div id="community" className="w-full md:w-3/4 flex flex-col items-center py-6 md:py-12 relative mx-auto text-white mt-10 md:gap-10 z-10">
       <div className="flex justify-end">
         <div className="py-6 px-4 md:px-0 md:pr-6">
           <h2 className="text-4xl font-bold">Community</h2>

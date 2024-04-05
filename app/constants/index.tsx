@@ -5,8 +5,8 @@ import rewards from "@/assets/rewards.jpg";
 const FUCHSIA_GRADIENT: string = "bg-gradient-to-r from-fuchsia-500 to-orange-400 hover:from-fuchsia-600 hover:to-orange-500";
 const OPACITY_FUCHSIA_GRADIENT: string = "bg-gradient-to-r from-fuchsia-500/50 to-orange-400/50";
 const VIOLET_GRADIENT: string = "bg-gradient-to-r from-violet-400 to-cyan-500 hover:from-violet-500 hover:to-cyan-600";
-const CYAN_GRADIENT: string = "bg-gradient-to-b from-cyan-500 to-sky-950";
-const TOKENOMICS_GRADIENT: string = "bg-gradient-to-b from-fuchsia-500 to-slate-950";
+const CYAN_GRADIENT: string = "bg-gradient-to-b from-cyan-500/80 to-sky-950/50";
+const TOKENOMICS_GRADIENT: string = "bg-gradient-to-b from-fuchsia-600/80 to-slate-950/30";
 
 const ROADMAP = [
   {
@@ -14,9 +14,9 @@ const ROADMAP = [
     items: [
       {
         description: (
-          <p>
+          <>
             Launch KINGFISH<sup className="text-[6px] relative -top-2">TM</sup> website
-          </p>
+          </>
         ),
         completed: false,
       },
@@ -61,9 +61,9 @@ const ROADMAP = [
     items: [
       {
         description: (
-          <p>
+          <>
             Airdrop Solana Ocean tokens to all existing KINGFISH<sup className="text-[6px] relative -top-2">TM</sup> token holders
-          </p>
+          </>
         ),
         completed: false,
       },
@@ -78,17 +78,17 @@ const ROADMAP = [
       },
       {
         description: (
-          <p>
+          <>
             KINGFISH<sup className="text-[6px] relative -top-2">TM</sup> holders can meet, chat and send tokens to each other in live interactive Web3 environment
-          </p>
+          </>
         ),
         completed: false,
       },
       {
         description: (
-          <p>
+          <>
             Fish grow/shrink in size depending on KINGFISH<sup className="text-[6px] relative -top-2">TM</sup> holdings
-          </p>
+          </>
         ),
         completed: false,
       },
@@ -110,10 +110,10 @@ const COMMUNITY_CARDS = [
     url: process.env.NEXT_PUBLIC_DISCORD_URL,
     image: "discord",
     description: (
-      <p>
+      <>
         The official home base of King<span className="text-orange-500">Fish</span>
         <sup className="text-[6px] text-orange-500 relative -top-2">TM</sup>, the world's most beloved fish-themed crypto token.
-      </p>
+      </>
     ),
     buttonText: "Join Discord",
     bgcolor: "bg-chetwode",
@@ -123,10 +123,10 @@ const COMMUNITY_CARDS = [
     url: process.env.NEXT_PUBLIC_TELEGRAM_URL,
     image: "telegram",
     description: (
-      <p>
+      <>
         All-in-one King<span className="text-orange-500">Fish</span>
         <sup className="text-[6px] text-orange-500 relative -top-2">TM</sup> chat & support group. Memes abound.
-      </p>
+      </>
     ),
     buttonText: "Join Telegram",
     bgcolor: "bg-picton",
@@ -136,10 +136,10 @@ const COMMUNITY_CARDS = [
     url: process.env.NEXT_PUBLIC_TWITTER_URL,
     image: "twitter",
     description: (
-      <p>
+      <>
         Stay up-to-date on the latest news and King<span className="text-orange-500">Fish</span>
         <sup className="text-[6px] text-orange-500 relative -top-2">TM</sup> memes.
-      </p>
+      </>
     ),
     buttonText: "Follow",
     bgcolor: "bg-black",
@@ -165,7 +165,7 @@ const ECO_CARDS = [
   {
     title: "Community",
     message: (
-      <p>
+      <>
         We're dedicated to empowering the Solana Ocean and{" "}
         <span className="font-bold">
           KING<span className="text-orange-500">FISH</span>
@@ -173,7 +173,7 @@ const ECO_CARDS = [
         </span>{" "}
         community, positioning it as a leading entity in the crypto landscape through a spectrum of rewards, including airdrops, exclusive early access to specialized updates, and
         spontaneous random drops, alongside a suite of utilities like in-app communications and peer-to-peer sharing, all strategically outlined within our product roadmap.
-      </p>
+      </>
     ),
     image: community,
   },

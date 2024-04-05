@@ -12,9 +12,9 @@ export default function Home() {
         <Tokenomics />
         <Roadmap roadmapItems={ROADMAP} />
         <Community communityItems={COMMUNITY_CARDS} />
-        <AnimatedBG />
-      </main>{" "}
+      </main>
       <Footer />
+      <AnimatedBG />
     </>
   );
 }

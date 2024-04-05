@@ -5,9 +5,9 @@ import { RoadmapProps } from ".";
 
 const Roadmap: FC<RoadmapProps> = ({ roadmapItems }) => {
   return (
-    <div id="roadmap" className="w-full md:w-3/4 h-fit flex flex-col items-center gap-8 text-white relative mt-20">
+    <div id="roadmap" className="w-full md:w-3/4 h-fit flex flex-col items-center gap-8 text-white relative mt-20 z-10">
       <h2 className="text-4xl font-bold">Roadmap</h2>
-      <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 rounded-t-lg bg-gradient-to-b from-fuchsia-800/20 pt-6 md:pt-12">
+      <div className="w-full h-full grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 rounded-t-lg bg-gradient-to-b from-fuchsia-800/20 pt-6 md:pt-12 relative z-10">
         {roadmapItems.map((item, i) => {
           const uuid = uuidv4();
           return <RoadmapCard key={uuid} roadmapItem={item} index={i} />;
