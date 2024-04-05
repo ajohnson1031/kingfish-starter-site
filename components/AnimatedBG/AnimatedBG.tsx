@@ -15,10 +15,7 @@ import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { AnimatedBGProps } from "./AnimatedBG.types";
 
 const AnimatedBG: FC<AnimatedBGProps> = () => {
-  // ? Related to fish graphics
-  // ? const [fg] = useState([fishone, fishtwo, fishthree, fishfour, fishfive]);
   const [bubg] = useState([bubone, bubtwo, bubthree, bubfour]);
-  const [fishes, setFishes] = useState<any[]>([]);
   const [bubbles, setBubbles] = useState<any[]>([]);
 
   let randomTop = 0,
@@ -49,14 +46,11 @@ const AnimatedBG: FC<AnimatedBGProps> = () => {
   };
 
   useEffect(() => {
-    // ? Related to fish graphics
-    // ? generateGraphics(fg, setFishes, 10, [20, 50]);
-    generateGraphics(bubg, setBubbles, 25, [5, 20]);
+    generateGraphics(bubg, setBubbles, 50, [5, 20]);
   }, []);
 
   return (
     <div className="animated-bg fixed top-0 left-0 h-full w-full -z-1">
-      <div className="absolute top-0 left-0 w-full h-full">{fishes.map((fish) => fish)}</div>
       <div className="absolute top-0 left-0 w-full h-full">{bubbles.map((bubble) => bubble)}</div>
     </div>
   );

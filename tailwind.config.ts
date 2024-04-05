@@ -6,7 +6,7 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        herocard: "url(../assets/cute-fish.jpg)",
+        herocard: "url(../assets/cute-fish.png)",
         smallfish: "url(../assets/small-fish.jpg)",
         community: "url(../assets/community-2.jpg)",
       },
