@@ -61,9 +61,9 @@ const Footer: FC<FooterProps> = () => {
           <Button className={`${VIOLET_GRADIENT} !text-sm`} label="BUY PRESALE" onClick={() => window.open(process.env.NEXT_PUBLIC_PINKSALE_URL, "_blank")} />
         </div>
         <div className={cn("email h-11/12 w-full rounded-lg px-5 py-3 hidden md:flex flex-col justify-center", OPACITY_SKY_GRADIENT)}>
-          <p className="font-light">
+          <p className="font-medium">
             Sign up to receive regular{" "}
-            <span className="font-bold">
+            <span className="font-extrabold">
               King
               <span className="text-orange-500">
                 Fish<sup className="text-[6px] relative -top-2">TM</sup>
