@@ -2,7 +2,7 @@ import { FUCHSIA_GRADIENT, OPACITY_SKY_GRADIENT, VIOLET_GRADIENT } from "@/app/c
 import branding from "@/assets/branding.png";
 import { Button, Img } from "@/components";
 import cn from "classnames";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { PiPaperPlaneTilt } from "react-icons/pi";
 import { FooterProps } from "./Footer.types";
 
@@ -37,11 +37,11 @@ const Footer: FC<FooterProps> = () => {
       setMessage(messages.error);
       console.error(error);
     }
-
-    return setTimeout(() => {
-      setMessage(null);
-    }, 3000);
   };
+
+  useEffect(() => {
+    if (!!message) setTimeout(() => setMessage(null), 4000);
+  }, [message]);
 
   return (
     <div className="h-44 w-full bg-vulcan-500 p-5 md:px-10 relative bottom-0 left-0 z-50 mt-10 text-white">
