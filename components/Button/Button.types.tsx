@@ -1,5 +1,3 @@
-import { ReactNode } from "react";
-
 export enum ButtonVariant {
   PRIMARY = "primary",
   SECONDARY = "secondary",
@@ -7,7 +5,7 @@ export enum ButtonVariant {
 
 export interface ButtonProps {
   variant?: ButtonVariant;
-  label: string | ReactNode;
+  label: string | JSX.Element;
   className?: string;
   onClick?: () => void;
 }

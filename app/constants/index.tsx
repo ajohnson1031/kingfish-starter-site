@@ -5,7 +5,10 @@ import rewards from "@/assets/rewards.jpg";
 const FUCHSIA_GRADIENT: string = "bg-gradient-to-r from-fuchsia-500 to-orange-400 hover:from-fuchsia-600 hover:to-orange-500";
 const OPACITY_FUCHSIA_GRADIENT: string = "bg-gradient-to-r from-fuchsia-500/50 to-orange-400/50";
 const VIOLET_GRADIENT: string = "bg-gradient-to-r from-violet-400 to-cyan-500 hover:from-violet-500 hover:to-cyan-600";
+const OPACITY_VIOLET_GRADIENT: string = "bg-gradient-to-r from-violet-400/50 to-cyan-500/50";
 const CYAN_GRADIENT: string = "bg-gradient-to-b from-cyan-500 to-sky-950";
+const OPACITY_CYAN_GRADIENT: string = "bg-gradient-to-r from-cyan-500/50 to-sky-950/50";
+const OPACITY_SKY_GRADIENT = "bg-gradient-to-r from-sky-500/50 to-violet-500/20";
 const TOKENOMICS_GRADIENT: string = "bg-gradient-to-b from-fuchsia-500 to-slate-950";
 
 const ROADMAP = [
@@ -185,4 +188,16 @@ const ECO_CARDS = [
   },
 ];
 
-export { COMMUNITY_CARDS, CYAN_GRADIENT, ECO_CARDS, FUCHSIA_GRADIENT, OPACITY_FUCHSIA_GRADIENT, ROADMAP, TOKENOMICS_GRADIENT, VIOLET_GRADIENT };
+export {
+  COMMUNITY_CARDS,
+  CYAN_GRADIENT,
+  ECO_CARDS,
+  FUCHSIA_GRADIENT,
+  OPACITY_CYAN_GRADIENT,
+  OPACITY_FUCHSIA_GRADIENT,
+  OPACITY_SKY_GRADIENT,
+  OPACITY_VIOLET_GRADIENT,
+  ROADMAP,
+  TOKENOMICS_GRADIENT,
+  VIOLET_GRADIENT,
+};
