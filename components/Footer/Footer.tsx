@@ -63,7 +63,7 @@ const Footer: FC<FooterProps> = () => {
         <div className={cn("email h-11/12 w-full rounded-lg px-5 py-3 hidden md:flex flex-col justify-center", OPACITY_SKY_GRADIENT)}>
           <p className="font-semibold">Sign up to receive regular updates.</p>
           <div className="flex items-center">
-            <input type="text" className="w-full rounded-l-sm h-10 px-2 bg-transparent border-2 box-border outline-none my-2" value={email} onChange={handleEmail} />
+            <input type="text" className="w-full rounded-l-sm h-10 px-2 text-cyan-800 border-2 box-border outline-none my-2" value={email} onChange={handleEmail} />
             <Button className={`!text-sm w-1/4 ml-auto py-2 h-10 flex items-center rounded-l-none rounded-r-sm ${FUCHSIA_GRADIENT}`} label={label} onClick={onClick} />
           </div>
           <p className={cn(`text-sm h-4`, { message: "h-0" })}>{message}</p>
