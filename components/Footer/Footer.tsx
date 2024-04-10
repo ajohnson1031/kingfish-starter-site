@@ -14,6 +14,7 @@ const Footer: FC<FooterProps> = () => {
     valid: <p className="text-green-300">Thanks for signing up! We'll be in touch.</p>,
     error: <p className="text-red-300">Sorry, there was an error. Please try again.</p>,
   });
+  const [btnEnabled, setBtnEnabled] = useState<boolean>(true);
 
   const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -29,18 +30,26 @@ const Footer: FC<FooterProps> = () => {
   };
 
   const onClick = () => {
-    if (!email.match(regex)) setMessage(messages.invalid);
+    if (btnEnabled) {
+      setBtnEnabled(false);
+      if (!email.match(regex)) setMessage(messages.invalid);
 
-    try {
-      // TODO: handle insertion of email into database.
-    } catch (error) {
-      setMessage(messages.error);
-      console.error(error);
+      try {
+        // TODO: handle insertion of email into database.
+      } catch (error) {
+        setMessage(messages.error);
+        console.error(error);
+      }
     }
   };
 
   useEffect(() => {
-    if (!!message) setTimeout(() => setMessage(null), 4000);
+    if (!btnEnabled) {
+      setTimeout(() => {
+        setMessage(null);
+        setBtnEnabled(true);
+      }, 4000);
+    }
   }, [message]);
 
   return (
