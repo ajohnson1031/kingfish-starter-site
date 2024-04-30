@@ -1,18 +1,30 @@
 "use client";
 
-import { FUCHSIA_GRADIENT, OPACITY_FUCHSIA_GRADIENT, VIOLET_GRADIENT } from "@/app/constants";
+import { FUCHSIA_GRADIENT, KINGFISH_TOKEN_ADDY, OPACITY_FUCHSIA_GRADIENT, VIOLET_GRADIENT } from "@/app/constants";
 import cuteIcon from "@/assets/cute-fish-icon.png";
 import { Button, Img } from "@/components";
 import { ButtonVariant } from "@/components/Button";
 import cn from "classnames";
-import { FC } from "react";
+import { FC, useState } from "react";
+import { FaCheck } from "react-icons/fa";
 import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import { ImgVariant } from "../Img";
 import { HeroCardProps } from "./HeroCard.types";
 
 const HeroCard: FC<HeroCardProps> = () => {
+  const [isCopied, setIsCopied] = useState<boolean>(false);
+
   const handleClick = (url?: string) => {
     window.open(url, "_blank");
+  };
+
+  const copyKF = () => {
+    navigator.clipboard.writeText(KINGFISH_TOKEN_ADDY);
+    setIsCopied(true);
+
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 3000);
   };
 
   return (
@@ -34,18 +46,20 @@ const HeroCard: FC<HeroCardProps> = () => {
           <Img src={cuteIcon} width={55} />
           <div className="hidden lg:block">
             <p>Solana Chain Address</p>
-            <p>0x000000000000000...</p>
+            <p>{KINGFISH_TOKEN_ADDY.slice(0, 17)}...</p>
           </div>
           <Button
             variant={ButtonVariant.SECONDARY}
             label={
-              <div className="flex gap-0.5 md:gap-1">
+              <div className="flex gap-0.5 md:gap-1 items-center">
                 <Img src={HiOutlineClipboardDocumentList} type={ImgVariant.ICON} />
                 <p className="hidden lg:block">Copy to Clipboard</p>
                 <p className="block lg:hidden">Copy Solana Address</p>
+                {isCopied && <Img src={FaCheck} type={ImgVariant.ICON} size={13} color="#4ADE80" className="ml-1" />}
               </div>
             }
             className="!text-sm"
+            onClick={copyKF}
           />
         </div>
       </div>

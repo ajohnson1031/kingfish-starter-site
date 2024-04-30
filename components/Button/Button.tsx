@@ -10,7 +10,7 @@ const Button: FC<ButtonProps> = ({ variant = "primary", label, className, onClic
       variantClass = "bg-blue-400";
       break;
     case "secondary":
-      variantClass = "border-2 box-border";
+      variantClass = "border-2 box-border hover:bg-cyan-500 hover:border-cyan-500 active:bg-cyan-600 active:border-cyan-600";
       break;
   }
 
