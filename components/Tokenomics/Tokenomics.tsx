@@ -9,6 +9,7 @@ import TokenomicsCard from "../TokenomicsCard";
 const Tokenomics: FC<TokenomicsProps> = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  // const isMobile = false;
   const [pieMargin, setPieMargin] = useState(100);
 
   const tokenomics: Record<string, string>[] = [
@@ -16,16 +17,16 @@ const Tokenomics: FC<TokenomicsProps> = () => {
     { label: "Token Symbol", value: "KFSH" },
     { label: "Decimals", value: "9" },
     { label: "Blockchain", value: "Solana Network" },
-    { label: "Total Supply", value: "50,000,000,000" },
-    { label: "Max Supply", value: "50,000,000,000" },
+    { label: "Total Supply", value: "18,440,323,100" },
+    { label: "Max Supply", value: "18,440,323,100" },
   ];
 
   const piedata: any = [
-    { id: 1, value: 35, label: "Presale", color: "#FB923C" },
+    { id: 1, value: 25, label: "Presale", color: "#FB923C" },
     { id: 2, value: 30, label: "Initial Liquidity", color: "#D946EF" },
-    ,
-    { id: 3, value: 10, label: "Rewards", color: "#22D3EE" },
-    { id: 4, value: 25, label: "Marketing & Dev", color: "#A78BFA" },
+    { id: 3, value: 15, label: "Rewards", color: "#22D3EE" },
+    { id: 4, value: 10, label: "Marketing", color: "#A78BFA" },
+    { id: 5, value: 20, label: "Team", color: "#34D399" },
   ];
 
   useEffect(() => {

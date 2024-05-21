@@ -12,5 +12,6 @@ import RoadmapCard from "./RoadmapCard";
 import Socials from "./Socials";
 import Tokenomics from "./Tokenomics";
 import TokenomicsCard from "./TokenomicsCard";
+import Wallets from "./Wallets";
 
-export { Button, Community, CommunityCard, EcoCard, Ecosystem, Footer, HeroCard, Img, Navbar, Roadmap, RoadmapCard, Socials, Tokenomics, TokenomicsCard };
+export { Button, Community, CommunityCard, EcoCard, Ecosystem, Footer, HeroCard, Img, Navbar, Roadmap, RoadmapCard, Socials, Tokenomics, TokenomicsCard, Wallets };

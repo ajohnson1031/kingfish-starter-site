@@ -188,7 +188,7 @@ const ECO_CARDS = [
   },
 ];
 
-const KINGFISH_TOKEN_ADDY = "KFNJbmfyaCxuYNq31FgQj6XeUEzChrKmHnD5g5SihQ3";
+const KINGFISH_TOKEN_ADDY = "BhzhiA6Bkv8q7BZS9QnZUQnFUMrqDSdNdKZAhs6bFtcF";
 
 export {
   COMMUNITY_CARDS,
