@@ -190,6 +190,29 @@ const ECO_CARDS = [
 
 const KINGFISH_TOKEN_ADDY = "BhzhiA6Bkv8q7BZS9QnZUQnFUMrqDSdNdKZAhs6bFtcF";
 
+const PRESALE_STAGES = {
+  stage_one: {
+    amt: Math.ceil(1375733411.2513287),
+    title: "Stage One",
+  },
+  state_two: {
+    amt: Math.ceil(1110192758.6113286),
+    title: "Stage Two",
+  },
+  stage_three: {
+    amt: Math.ceil(908381862.6049286),
+    title: "Stage Three",
+  },
+  stage_four: {
+    amt: Math.ceil(755005581.6400646),
+    title: "Stage Four",
+  },
+  stage_five: {
+    amt: Math.ceil(638439608.1067679),
+    title: "Stage Five",
+  },
+};
+
 export {
   COMMUNITY_CARDS,
   CYAN_GRADIENT,
@@ -200,6 +223,7 @@ export {
   OPACITY_FUCHSIA_GRADIENT,
   OPACITY_SKY_GRADIENT,
   OPACITY_VIOLET_GRADIENT,
+  PRESALE_STAGES,
   ROADMAP,
   TOKENOMICS_GRADIENT,
   VIOLET_GRADIENT,

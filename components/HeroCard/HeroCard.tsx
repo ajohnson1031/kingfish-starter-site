@@ -1,7 +1,7 @@
 "use client";
 
 import { FUCHSIA_GRADIENT, KINGFISH_TOKEN_ADDY, OPACITY_FUCHSIA_GRADIENT, VIOLET_GRADIENT } from "@/app/constants";
-import { useWalletViewerContext } from "@/app/context/ViewWallet";
+import { useViewerContext } from "@/app/context/ViewerContext";
 import cuteIcon from "@/assets/cute-fish-icon.png";
 import { Button, Img, Wallets } from "@/components";
 import { ButtonVariant } from "@/components/Button";
@@ -16,7 +16,7 @@ import { HeroCardProps } from "./HeroCard.types";
 
 const HeroCard: FC<HeroCardProps> = () => {
   const { select, wallets, publicKey, disconnect } = useWallet();
-  const { isViewing, setIsViewing } = useWalletViewerContext();
+  const { isViewingWallet, setIsViewingWallet, setIsViewingPresale } = useViewerContext();
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const handleClick = (url?: string) => {
@@ -34,11 +34,11 @@ const HeroCard: FC<HeroCardProps> = () => {
 
   return (
     <div className="h-[75vh] md:h-screen mt-40 mb-20">
-      {isViewing && (
+      {isViewingWallet && (
         <div className={`fixed right-10 top-28 z-50 p-4 bg-vulcan-200/30 rounded-sm flex  gap-4 ${!publicKey ? "flex-col" : "flex-row-reverse"}`}>
           <div className={`flex items-center text-white h-5 py-2 ${!publicKey ? "justify-between" : "justify-end"}`}>
             {!publicKey && <p>Available Wallets</p>}
-            <FaXmark className="hover:text-red-400 transform duration-200 cursor-pointer" onClick={() => setIsViewing(false)} />
+            <FaXmark className="hover:text-red-400 transition duration-200 cursor-pointer" onClick={() => setIsViewingWallet(false)} />
           </div>
           <Wallets select={select} wallets={wallets} publicKey={publicKey} disconnect={disconnect} />
         </div>
@@ -51,7 +51,7 @@ const HeroCard: FC<HeroCardProps> = () => {
           Inspired by the Solana Ecosystem & every fish in the world's oceans. <br className="hidden lg:block" /> A community-driven, uniquely rewarding system.
         </p>
         <div className="flex justify-center gap-3 md:gap-5">
-          <Button className={FUCHSIA_GRADIENT} label="Buy Presale" onClick={() => handleClick(process.env.NEXT_PUBLIC_PINKSALE_URL)} />
+          <Button className={FUCHSIA_GRADIENT} label="Buy Presale" onClick={() => setIsViewingPresale(true)} />
           <Button className={VIOLET_GRADIENT} label="Whitepaper" onClick={() => handleClick("https://example.com")} />
         </div>
       </div>

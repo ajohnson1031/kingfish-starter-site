@@ -1,4 +1,5 @@
 import { FUCHSIA_GRADIENT, OPACITY_SKY_GRADIENT, VIOLET_GRADIENT } from "@/app/constants";
+import { useViewerContext } from "@/app/context/ViewerContext";
 import branding from "@/assets/branding.png";
 import { Button, Img } from "@/components";
 import cn from "classnames";
@@ -7,6 +8,7 @@ import { PiPaperPlaneTilt } from "react-icons/pi";
 import { FooterProps } from "./Footer.types";
 
 const Footer: FC<FooterProps> = () => {
+  const { setIsViewingPresale } = useViewerContext();
   const [email, setEmail] = useState<string>("");
   const [message, setMessage] = useState<JSX.Element | null>(null);
   const [messages] = useState<Record<string, JSX.Element>>({
@@ -58,7 +60,7 @@ const Footer: FC<FooterProps> = () => {
         <div className="branding flex flex-col gap-3 h-11/12 w-fit justify-between items-center">
           <Img src={branding} width={200} />
           <h2 className="h-0.5 rounded-full bg-gradient-to-r from-vulcan-300 w-60" />
-          <Button className={`${VIOLET_GRADIENT} !text-sm`} label="BUY PRESALE" onClick={() => window.open(process.env.NEXT_PUBLIC_PINKSALE_URL, "_blank")} />
+          <Button className={`${VIOLET_GRADIENT} !text-sm`} label="BUY PRESALE" onClick={() => setIsViewingPresale(true)} />
         </div>
         <div className={cn("email h-11/12 w-full rounded-lg px-5 py-3 hidden md:flex flex-col justify-center", OPACITY_SKY_GRADIENT)}>
           <p className="font-medium">

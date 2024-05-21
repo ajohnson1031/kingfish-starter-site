@@ -1,6 +1,6 @@
 "use client";
 import { VIOLET_GRADIENT } from "@/app/constants";
-import { useWalletViewerContext } from "@/app/context/ViewWallet";
+import { useViewerContext } from "@/app/context/ViewerContext";
 import brandingIcon from "@/assets/branding.png";
 import { Button, Img } from "@/components";
 import { useWallet } from "@solana/wallet-adapter-react";
@@ -10,8 +10,8 @@ import { NavbarProps } from ".";
 import { ButtonVariant } from "../Button";
 
 const Navbar: FC<NavbarProps> = () => {
-  const { setIsViewing } = useWalletViewerContext();
-  const { wallets, publicKey, disconnect } = useWallet();
+  const { setIsViewingWallet } = useViewerContext();
+  const { publicKey } = useWallet();
 
   const navClass = "hover:text-orange-500";
   const navItems = [
@@ -49,7 +49,7 @@ const Navbar: FC<NavbarProps> = () => {
           className={cn("flex ml-auto items-center", { [VIOLET_GRADIENT]: !publicKey, "hover:bg-transparent": !!publicKey })}
           variant={!!publicKey ? ButtonVariant.SECONDARY : undefined}
           label={!!publicKey ? `${publicKey.toBase58().slice(0, 10)}...` : "Connect Wallet"}
-          onClick={() => setIsViewing(true)}
+          onClick={() => setIsViewingWallet(true)}
         />
       </div>
     </div>

@@ -1,9 +1,9 @@
-import { useWalletViewerContext } from "@/app/context/ViewWallet";
+import { useViewerContext } from "@/app/context/ViewerContext";
 import Img from "@/components/Img";
 import { WalletsProps } from "./Wallets.types";
 
 const Wallets = ({ select, wallets, publicKey, disconnect }: WalletsProps) => {
-  const { setIsViewing } = useWalletViewerContext();
+  const { setIsViewingWallet } = useViewerContext();
 
   return !publicKey ? (
     <div className="flex gap-4 flex-col w-72">
@@ -16,7 +16,7 @@ const Wallets = ({ select, wallets, publicKey, disconnect }: WalletsProps) => {
               key={wallet.adapter.name}
               onClick={() => {
                 select(wallet.adapter.name);
-                setIsViewing(false);
+                setIsViewingWallet(false);
               }}
             >
               <Img src={wallet.adapter.icon} alt={wallet.adapter.name} />

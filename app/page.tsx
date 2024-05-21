@@ -1,21 +1,41 @@
 "use client";
 import { Community, Ecosystem, Footer, HeroCard, Navbar, Roadmap, Socials, Tokenomics } from "@/components";
+import PresaleWindow from "@/components/PresaleWindow";
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
-import { MathWalletAdapter, PhantomWalletAdapter, SolflareWalletAdapter } from "@solana/wallet-adapter-wallets";
+import {
+  CoinbaseWalletAdapter,
+  LedgerWalletAdapter,
+  MathWalletAdapter,
+  PhantomWalletAdapter,
+  SolflareWalletAdapter,
+  TrezorWalletAdapter,
+  TrustWalletAdapter,
+} from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
 import Head from "next/head";
 import { useMemo } from "react";
 import { COMMUNITY_CARDS, ECO_CARDS, ROADMAP } from "./constants";
-import { WalletViewerProvider } from "./context/ViewWallet";
+import { ViewerProvider } from "./context/ViewerContext";
 
 export default function Home() {
-  const wallets = useMemo(() => [new PhantomWalletAdapter(), new SolflareWalletAdapter(), new MathWalletAdapter()], []);
+  const wallets = useMemo(
+    () => [
+      new PhantomWalletAdapter(),
+      new SolflareWalletAdapter(),
+      new MathWalletAdapter(),
+      new CoinbaseWalletAdapter(),
+      new TrustWalletAdapter(),
+      new TrezorWalletAdapter(),
+      new LedgerWalletAdapter(),
+    ],
+    []
+  );
   const endpoint = useMemo(() => clusterApiUrl("mainnet-beta"), []);
 
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
-        <WalletViewerProvider>
+        <ViewerProvider>
           <Head>
             <title>KingFish HQ</title>
             <meta name="description" content="KingFish: the Happiest Meme Coin in the Seven Seas" />
@@ -38,7 +58,8 @@ export default function Home() {
             <Community communityItems={COMMUNITY_CARDS} />
           </main>
           <Footer />
-        </WalletViewerProvider>
+          <PresaleWindow />
+        </ViewerProvider>
       </WalletProvider>
     </ConnectionProvider>
   );
