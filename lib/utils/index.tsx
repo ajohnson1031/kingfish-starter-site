@@ -8,7 +8,6 @@ const imgLoader = ({ src }: { src: string }) => {
 const getKFBalance = async (publicKey: PublicKey) => {
   try {
     const connStr = `https://stylish-capable-fire.solana-mainnet.quiknode.pro/${process.env.NEXT_PUBLIC_CUSTOM_RPC_HOST_KEY}`;
-    console.log(connStr);
     const connection = new Connection(connStr);
     if (publicKey) {
       const tokenAccounts = await connection.getParsedTokenAccountsByOwner(publicKey, {
@@ -18,6 +17,7 @@ const getKFBalance = async (publicKey: PublicKey) => {
       const tokenAccount = tokenAccounts.value.find((accountInfo) => accountInfo.account.data.parsed.info.mint === process.env.NEXT_PUBLIC_TOKEN_MINT_ADDRESS);
 
       const balance = tokenAccount ? tokenAccount.account.data.parsed.info.tokenAmount.uiAmount : 0;
+      console.log("KF Balance", balance);
       return balance;
     }
   } catch (error) {
