@@ -12,9 +12,10 @@ const Footer: FC<FooterProps> = () => {
   const [email, setEmail] = useState<string>("");
   const [message, setMessage] = useState<JSX.Element | null>(null);
   const [messages] = useState<Record<string, JSX.Element>>({
-    invalid: <p className="text-red-300">Please enter a valid email address.</p>,
-    valid: <p className="text-green-300">Thanks for signing up! We'll be in touch.</p>,
-    error: <p className="text-red-300">Sorry, there was an error. Please try again.</p>,
+    invalid: <span className="text-red-300">Please enter a valid email address.</span>,
+    valid: <span className="text-green-300">Thanks for signing up! We'll be in touch.</span>,
+    error: <span className="text-red-300">Sorry, there was an error. Please try again.</span>,
+    duplicate: <span className="text-yellow-500">You've already signed up. We'll keep you posted.</span>,
   });
   const [btnEnabled, setBtnEnabled] = useState<boolean>(true);
 
@@ -31,14 +32,34 @@ const Footer: FC<FooterProps> = () => {
     setMessage(null);
   };
 
-  const onClick = () => {
+  const onClick = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     if (btnEnabled) {
       setBtnEnabled(false);
-      if (!email.match(regex)) setMessage(messages.invalid);
+      if (!email.match(regex)) {
+        setMessage(messages.invalid);
+        return;
+      }
 
       try {
-        // TODO: handle insertion of email into database.
-      } catch (error) {
+        const response = await fetch("/api/newsletter", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        });
+
+        if (response.ok) {
+          setMessage(messages.valid);
+          setEmail("");
+        } else if (response.status === 409) {
+          setMessage(messages.duplicate);
+        } else {
+          setMessage(messages.error);
+        }
+      } catch (error: any) {
         setMessage(messages.error);
         console.error(error);
       }
@@ -73,10 +94,10 @@ const Footer: FC<FooterProps> = () => {
             </span>{" "}
             updates.
           </p>
-          <div className="flex items-center">
+          <form onSubmit={onClick} className="flex items-center">
             <input type="text" className="w-full rounded-l-sm h-10 px-2 text-cyan-800 border-2 box-border outline-none my-2" value={email} onChange={handleEmail} />
-            <Button className={`!text-sm w-1/4 ml-auto py-2 h-10 flex items-center rounded-l-none rounded-r-sm ${FUCHSIA_GRADIENT}`} label={label} onClick={onClick} />
-          </div>
+            <Button className={`!text-sm w-1/4 ml-auto py-2 h-10 flex items-center rounded-l-none rounded-r-sm ${FUCHSIA_GRADIENT}`} label={label} />
+          </form>
           <p className={cn(`text-sm h-4`, { message: "h-0" })}>{message}</p>
         </div>
       </div>

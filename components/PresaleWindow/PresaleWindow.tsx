@@ -1,7 +1,6 @@
 import { FUCHSIA_GRADIENT, PRESALE_STAGES } from "@/app/constants";
 import { useViewerContext } from "@/app/context/ViewerContext";
 import Button from "@/components/Button";
-
 import { getKFBalance } from "@/lib/utils";
 import { useWallet } from "@solana/wallet-adapter-react";
 import cn from "classnames";
