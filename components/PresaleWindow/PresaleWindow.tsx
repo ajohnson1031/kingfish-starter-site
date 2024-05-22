@@ -66,11 +66,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
         )}
 
         {publicKey && (
-          <Button
-            className={cn("flex mt-6 mx-auto items-center text-white", FUCHSIA_GRADIENT)}
-            label={"Buy $KingFish"}
-            onClick={!publicKey ? () => setIsViewingWallet(true) : () => disconnect()}
-          />
+          <Button className={cn("flex mt-6 mx-auto items-center text-white", FUCHSIA_GRADIENT)} label={"Buy $KingFish"} onClick={() => alert("TODO: Add Buy Functionality")} />
         )}
 
         <Button

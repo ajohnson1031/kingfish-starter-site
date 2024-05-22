@@ -7,7 +7,9 @@ const imgLoader = ({ src }: { src: string }) => {
 
 const getKFBalance = async (publicKey: PublicKey) => {
   try {
-    const connection = new Connection(`https://stylish-capable-fire.solana-mainnet.quiknode.pro/${process.env.NEXT_PUBLIC_CUSTOM_RPC_HOST_KEY}`);
+    const connStr = `https://stylish-capable-fire.solana-mainnet.quiknode.pro/${process.env.NEXT_PUBLIC_CUSTOM_RPC_HOST_KEY}`;
+    console.log(connStr);
+    const connection = new Connection(connStr);
     if (publicKey) {
       const tokenAccounts = await connection.getParsedTokenAccountsByOwner(publicKey, {
         programId: TOKEN_PROGRAM_ID,
