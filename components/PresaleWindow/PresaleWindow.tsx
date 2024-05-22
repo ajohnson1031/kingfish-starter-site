@@ -13,6 +13,8 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   const { isViewingPresale, setIsViewingPresale, setIsViewingWallet } = useViewerContext();
   const { publicKey, disconnect, wallet } = useWallet();
   const [opacity, setOpacity] = useState("opacity-0");
+  const [kfBalance, setkfBalance] = useState("0");
+
   const { stage_one } = PRESALE_STAGES;
   const tm = <sup className="text-xs relative -top-2.5">™</sup>;
 
@@ -22,11 +24,24 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   }, [isViewingPresale]);
 
   useEffect(() => {
-    if (publicKey)
-      (async () => {
-        console.log(await getKFBalance(publicKey!));
-      })();
+    if (publicKey) {
+      getKFBalance(publicKey!).then((r) => {
+        const strBal: string = r.toString() || "0";
+        let convertedBal: string = strBal;
+        if (strBal.length > 6 && strBal.length < 9) {
+          convertedBal = `${(r / 1000000).toFixed(2)}M`;
+        }
+
+        if (strBal.length > 9) {
+          convertedBal = `${(r / 1000000000).toFixed(2)}B`;
+        }
+
+        setkfBalance(convertedBal);
+      });
+    }
   }, [publicKey]);
+
+  console.log;
 
   const pane = (
     <div className="flex">
@@ -42,8 +57,9 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
           </div>
         ) : (
           <div className="flex flex-col gap-2 w-full">
-            {/* TODO: Add dynamic count of tokens here */}
-            <p className="text-2xl text-orange-600 font-semibold mb-3">You have 0 KingFish{tm} tokens</p>
+            <p className="text-2xl text-orange-600 font-semibold mb-3">
+              You have {kfBalance} KingFish{tm} tokens
+            </p>
             <p className="text-md font-bold">Connected Wallet</p>
             <p className="text-sm">{publicKey.toBase58()}</p>
           </div>
@@ -76,9 +92,9 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
     >
       {/* Container Div */}
       <div className="flex flex-1 flex-col w-full h-full rounded-3xl p-5 gap-5 bg-[#fffef5] shadow-lg">
-        <FaXmark className={"w-12 h-12 text-red-400 ml-auto cursor-pointer"} onClick={() => setIsViewingPresale(false)} />
+        <FaXmark className={"w-14 h-14 text-white p-4 rounded-full box-border bg-red-400 hover:bg-red-500 ml-auto cursor-pointer"} onClick={() => setIsViewingPresale(false)} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full h-full px-3">
+        <div className="grid grid-cols-1 gap-8 w-full h-full px-3">
           <div className="border-[3px] border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2">
             <p className="text-5xl font-black text-black">
               {stage_one.title}
@@ -90,8 +106,6 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
             </p>
             <div className="border-[3px] border-gray-300 rounded-3xl p-8 w-3/5 mx-auto mt-5">{pane}</div>
           </div>
-
-          <div className="border border-red-400"></div>
         </div>
       </div>
     </div>

@@ -6,21 +6,20 @@ const imgLoader = ({ src }: { src: string }) => {
 };
 
 const getKFBalance = async (publicKey: PublicKey) => {
-  const connection = new Connection("https://api.mainnet-beta.solana.com");
+  try {
+    const connection = new Connection(`https://stylish-capable-fire.solana-mainnet.quiknode.pro/${process.env.NEXT_PUBLIC_CUSTOM_RPC_HOST_KEY}`);
+    if (publicKey) {
+      const tokenAccounts = await connection.getParsedTokenAccountsByOwner(publicKey, {
+        programId: TOKEN_PROGRAM_ID,
+      });
 
-  if (publicKey) {
-    // Get token accounts by owner
-    const tokenAccounts = await connection.getParsedTokenAccountsByOwner(publicKey, {
-      programId: TOKEN_PROGRAM_ID,
-    });
+      const tokenAccount = tokenAccounts.value.find((accountInfo) => accountInfo.account.data.parsed.info.mint === process.env.NEXT_PUBLIC_TOKEN_MINT_ADDRESS);
 
-    // Find the token account for the specified mint address
-    const tokenAccount = tokenAccounts.value.find((accountInfo) => accountInfo.account.data.parsed.info.mint === process.env.NEXT_PUBLIC_TOKEN_MINT_ADDRESS);
-
-    // Get the balance for the token account
-    const balance = tokenAccount ? tokenAccount.account.data.parsed.info.tokenAmount.uiAmount : 0;
-
-    return balance;
+      const balance = tokenAccount ? tokenAccount.account.data.parsed.info.tokenAmount.uiAmount : 0;
+      return balance;
+    }
+  } catch (error) {
+    console.error("Could not get token accounts", error);
   }
 };
 
