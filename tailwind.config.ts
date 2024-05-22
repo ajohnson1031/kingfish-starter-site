@@ -9,6 +9,7 @@ const config: Config = {
         herocard: "url(../assets/cute-fish.png)",
         smallfish: "url(../assets/small-fish.jpg)",
         community: "url(../assets/community-2.jpg)",
+        presale: "url(../assets/presale-bg.jpg)",
       },
       backgroundSize: {
         "50%": "50%",

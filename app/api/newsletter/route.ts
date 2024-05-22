@@ -1,24 +1,28 @@
-import { connectDatabase, getDatabaseConnection } from "@/lib/utils/db";
-import { NextResponse } from "next/server";
+import * as fs from "fs";
+import { NextRequest, NextResponse } from "next/server";
+import * as path from "path";
 
-// Initialize the database connection
-export const POST = async (req: Request) => {
-  "use server";
-  await connectDatabase();
-  const { email } = await req.json();
-
+export const POST = async (req: NextRequest) => {
   try {
-    const connection = getDatabaseConnection();
-    await connection.execute("INSERT INTO newsletter_distro (email) VALUES (?)", [email]);
+    const { email } = await req.json();
 
-    return NextResponse.json({ message: "Email added to newsletter list." }, { status: 200 });
-  } catch (error: any) {
-    console.error("Error:", error);
-
-    if (error.code === "ER_DUP_ENTRY") {
-      return NextResponse.json({ message: "Duplicate entry" }, { status: 409 });
+    if (!email) {
+      return NextResponse.json({ message: "EMAIL_REQUIRED" }, { status: 400 });
     }
-    return NextResponse.json({ message: "Failed to add email to newsletter list." }, { status: 500 });
+
+    const emailFilePath = path.join(process.cwd(), "./app/capture.txt");
+
+    const data = fs.readFileSync(emailFilePath, "utf8");
+    const emailExists = data.split("\n").includes(email);
+
+    if (emailExists) {
+      return NextResponse.json({ message: "SUBSCRIBER_EXISTS" }, { status: 409 });
+    }
+
+    fs.appendFileSync(emailFilePath, `${email}\n`);
+    return NextResponse.json({ message: "EMAIL_ADDED" }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ message: `Error: ${error.message}` }, { status: 500 });
   }
 };
 

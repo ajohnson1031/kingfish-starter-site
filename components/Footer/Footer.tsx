@@ -51,17 +51,28 @@ const Footer: FC<FooterProps> = () => {
           body: JSON.stringify({ email }),
         });
 
-        if (response.ok) {
-          setMessage(messages.valid);
-          setEmail("");
-        } else if (response.status === 409) {
-          setMessage(messages.duplicate);
-        } else {
-          setMessage(messages.error);
+        const data = await response.json();
+        const { message } = data;
+        console.log(message);
+
+        switch (message) {
+          case "SUBSCRIBER_EXISTS":
+            setMessage(messages.duplicate);
+            break;
+          case "EMAIL_REQUIRED":
+            setMessage(messages.invalid);
+            break;
+          case "EMAIL_ADDED":
+            setMessage(messages.valid);
+            setEmail("");
+            break;
+          default:
+            setMessage(messages.error);
+            break;
         }
-      } catch (error: any) {
-        setMessage(messages.error);
+      } catch (error) {
         console.error(error);
+        setMessage(messages.error);
       }
     }
   };

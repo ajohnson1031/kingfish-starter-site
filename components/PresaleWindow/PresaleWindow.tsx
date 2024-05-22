@@ -1,6 +1,8 @@
 import { FUCHSIA_GRADIENT, PRESALE_STAGES } from "@/app/constants";
 import { useViewerContext } from "@/app/context/ViewerContext";
+import cuteIcon from "@/assets/cute-fish-icon-w-stroke.png";
 import Button from "@/components/Button";
+import Img from "@/components/Img";
 import { getKFBalance } from "@/lib/utils";
 import { useWallet } from "@solana/wallet-adapter-react";
 import cn from "classnames";
@@ -40,8 +42,6 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
     }
   }, [publicKey]);
 
-  console.log;
-
   const pane = (
     <div className="flex">
       <div className="flex flex-col w-full">
@@ -52,15 +52,15 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
             <p className="text-2xl text-orange-600 font-semibold">
               KingFish<sup className="text-xs relative -top-2.5">™</sup> remaining
             </p>
-            <p className="font-light">Until 1 USDC = 15000 $KingFish</p>
+            <p className="font-light text-gray-300">Until 1 USDC = 15000 $KingFish</p>
           </div>
         ) : (
-          <div className="flex flex-col gap-2 w-full">
-            <p className="text-2xl text-orange-600 font-semibold mb-3">
-              You have {kfBalance} KingFish{tm} tokens
+          <div className="flex flex-col gap-2 w-full text-center">
+            <p className="text-2xl text-white font-semibold mb-3">
+              You have <span className="text-orange-600">{kfBalance}</span> KingFish{tm}
             </p>
-            <p className="text-md font-bold">Connected Wallet</p>
-            <p className="text-sm">{publicKey.toBase58()}</p>
+            <p className="text-lg text-white font-bold">Connected Wallet</p>
+            <p className="text-lg text-orange-600 font-bold">{publicKey.toBase58()}</p>
           </div>
         )}
 
@@ -80,26 +80,25 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   return (
     <div
       className={cn(
-        "w-[100vw] h-[calc(100vh-97px)] fixed top-[97px] left-0 z-30 p-10 flex transition-opacity ease-in duration-300 bg-[#fedcaa]",
+        "w-[100vw] h-[calc(100vh-81px)] md:h-[calc(100vh-97px)] fixed top-[81px] md:top-[97px] left-0 z-30 p-10 flex transition-opacity ease-in duration-300 bg-presale bg-contain",
         { hidden: !isViewingPresale },
         opacity
       )}
     >
       {/* Container Div */}
-      <div className="flex flex-1 flex-col w-full h-full rounded-3xl p-5 gap-5 bg-[#fffef5] shadow-lg">
-        <FaXmark className={"w-14 h-14 text-white p-4 rounded-full box-border bg-red-400 hover:bg-red-500 ml-auto cursor-pointer"} onClick={() => setIsViewingPresale(false)} />
-
-        <div className="grid grid-cols-1 gap-8 w-full h-full px-3">
-          <div className="border-[3px] border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2">
-            <p className="text-5xl font-black text-black">
-              {stage_one.title}
-              <br />
-              has started!
-            </p>
-            <p className="text-2xl text-gray-500 font-semibold">
+      <div className="flex flex-col w-full md:w-1/2 h-full rounded-3xl mx-auto">
+        <div className="flex flex-col w-full h-full">
+          <FaXmark
+            className={"w-14 h-14 text-white p-4 rounded-full box-border bg-red-400 hover:bg-red-500 ml-auto cursor-pointer relative z-10 top-6 left-6"}
+            onClick={() => setIsViewingPresale(false)}
+          />
+          <div className="border-[3px] border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2 p-10 bg-vulcan-500/70 -mt-2">
+            <Img src={cuteIcon} alt="cute fish icon" size={120} className="w-fit mx-auto" />
+            <p className="text-3xl font-black text-white">{stage_one.title} has started!</p>
+            <p className="text-2xl text-gray-300 font-semibold">
               1 USDC = 20000 KingFish<sup className="text-xs relative -top-2.5">™</sup>
             </p>
-            <div className="border-[3px] border-gray-300 rounded-3xl p-8 w-3/5 mx-auto mt-5">{pane}</div>
+            <div className="rounded-3xl p-2 w-full mx-auto mt-5">{pane}</div>
           </div>
         </div>
       </div>
