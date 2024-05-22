@@ -10,12 +10,12 @@ const Ecosystem: FC<EcosystemProps> = ({ ecocards }) => {
           <div className="py-6 px-4 md:px-0 md:pr-6">
             <h2 className="text-4xl font-bold">Ecosystem</h2>
             <p className="text-lg">
-              King<span className="text-orange-500">Fish</span>
-              <sup className="text-[6px] text-orange-500 relative -top-2.5">TM</sup> <span className="text-cyan-400">Ecosystem</span>
+              Life as a King<span className="text-orange-500">Fish</span>
+              <sup className="text-[6px] text-orange-500 relative -top-2.5">TM</sup>
             </p>
             <p className="font-extralight py-4">
-              From humble goldfish to formidable shark, and finally, a majestic whale, "KINGFISH" dominates the waters of Solana Ocean, renowned for its insatiable appetite for KF
-              coins.
+              From humble goldfish to formidable shark, and finally, a majestic whale, "KINGFISH" dominates the waters of the Solana Ocean, renowned for its insatiable appetite for
+              KF coins.
             </p>
             <p className="font-extralight pb-4">
               As the shark, "KINGFISH" tirelessly patrols the vast expanse, honing its skills in the art of coin collection, ultimately hoping to become the most prominent

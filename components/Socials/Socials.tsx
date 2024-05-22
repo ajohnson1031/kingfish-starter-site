@@ -1,5 +1,4 @@
 "use client";
-import interfi from "@/assets/interfi-logo.png";
 import Img, { ImgVariant } from "@/components/Img";
 import { FC } from "react";
 import { FaDiscord, FaTelegramPlane, FaTwitter } from "react-icons/fa";
@@ -8,10 +7,10 @@ import { SocialsProps } from ".";
 const Socials: FC<SocialsProps> = () => {
   return (
     <div className="flex flex-col gap-10 md:gap-12 text-white relative -mt-20 md:-mt-10">
-      <div className="flex flex-col justify-center items-center">
+      {/* <div className="flex flex-col justify-center items-center">
         <p className="opacity-40 text-sm mb-3">CONTRACT AUDITED BY</p>
         <Img src={interfi} width={135} />
-      </div>
+      </div> */}
 
       <div className="flex flex-col justify-center items-center">
         <p className="opacity-40 text-sm mb-3">COMMUNITY</p>
