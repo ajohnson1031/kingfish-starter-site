@@ -89,7 +89,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
       <div className="flex flex-col w-full md:w-1/2 h-full rounded-3xl mx-auto">
         <div className="flex flex-col w-full h-full">
           <FaXmark
-            className={"w-14 h-14 text-white p-4 rounded-full box-border bg-red-400 hover:bg-red-500 ml-auto cursor-pointer relative z-10 top-6 left-6"}
+            className={"w-14 h-14 text-white p-3 rounded-full box-border bg-red-400 hover:bg-red-500 ml-auto cursor-pointer relative z-10 top-6 left-6"}
             onClick={() => setIsViewingPresale(false)}
           />
           <div className="border-[3px] border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2 p-10 bg-vulcan-500/70 -mt-2">
