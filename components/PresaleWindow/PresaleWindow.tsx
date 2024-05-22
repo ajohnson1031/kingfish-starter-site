@@ -28,7 +28,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
       getKFBalance(publicKey!).then((r) => {
         const strBal: string = r.toString() || "0";
         let convertedBal: string = strBal;
-        if (strBal.length > 6 && strBal.length < 9) {
+        if (strBal.length > 6 && strBal.length <= 9) {
           convertedBal = `${(r / 1000000).toFixed(2)}M`;
         }
 

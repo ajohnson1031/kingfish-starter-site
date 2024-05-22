@@ -17,7 +17,6 @@ const getKFBalance = async (publicKey: PublicKey) => {
       const tokenAccount = tokenAccounts.value.find((accountInfo) => accountInfo.account.data.parsed.info.mint === process.env.NEXT_PUBLIC_TOKEN_MINT_ADDRESS);
 
       const balance = tokenAccount ? tokenAccount.account.data.parsed.info.tokenAmount.uiAmount : 0;
-      console.log("KF Balance", balance);
       return balance;
     }
   } catch (error) {
