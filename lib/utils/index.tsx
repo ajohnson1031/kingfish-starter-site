@@ -77,7 +77,7 @@ const getUnprivilegedUserBalance = async (publicKey: string) => {
 
 const handleTxn = async (publicKey: string, usdcAmt: number) => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/break-fishbowl`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/presale/break-fishbowl`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
