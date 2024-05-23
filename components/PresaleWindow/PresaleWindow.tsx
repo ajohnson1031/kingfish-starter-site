@@ -27,14 +27,16 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
 
       if (publicKey) {
         // Get balance of privileged accounts
-        if (privilegedAddresses.indexOf(publicKey.toBase58()) >= 0) {
-          getKFBalance(publicKey!).then((r) => {
-            const convertedBal: string = toMbOrNone(r);
+        const publicKeyString = publicKey.toBase58();
+
+        if (privilegedAddresses.indexOf(publicKeyString) >= 0) {
+          getKFBalance(publicKey!).then((data) => {
+            const convertedBal: string = toMbOrNone(data);
             setkfBalance(convertedBal);
           });
         } else {
-          getUnprivilegedUserBalance(publicKey.toBase58()).then((bal) => {
-            const { totalKfBought } = bal;
+          getUnprivilegedUserBalance(publicKeyString).then((data) => {
+            const { totalKfBought } = data;
             const convertedBal: string = toMbOrNone(totalKfBought);
             setkfBalance(convertedBal);
           });
@@ -47,7 +49,9 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
     } else setOpacity("opacity-0");
   };
 
-  useEffect(() => {}, [isViewingPresale]);
+  useEffect(() => {
+    handleBalances();
+  }, [isViewingPresale]);
 
   const pane = (
     <div className="flex">
