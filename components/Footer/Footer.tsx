@@ -4,7 +4,7 @@ import branding from "@/assets/branding.png";
 import { Button, Img } from "@/components";
 import cn from "classnames";
 import { FC, useEffect, useState } from "react";
-import { PiPaperPlaneTilt } from "react-icons/pi";
+import { HiArrowLongRight } from "react-icons/hi2";
 import { FooterProps } from "./Footer.types";
 
 const Footer: FC<FooterProps> = () => {
@@ -22,8 +22,8 @@ const Footer: FC<FooterProps> = () => {
   const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   const label = (
-    <div className="flex gap-3 items-center justify-center">
-      <PiPaperPlaneTilt size={20} /> Subscribe
+    <div className="flex items-center justify-center">
+      <HiArrowLongRight size={32} />
     </div>
   );
 
@@ -106,7 +106,7 @@ const Footer: FC<FooterProps> = () => {
           </p>
           <form onSubmit={onClick} className="flex items-center">
             <input type="text" className="w-full rounded-l-sm h-10 px-2 text-cyan-800 border-2 box-border outline-none my-2" value={email} onChange={handleEmail} />
-            <Button className={`!text-sm w-1/4 ml-auto py-2 h-10 flex items-center rounded-l-none rounded-r-sm ${FUCHSIA_GRADIENT}`} label={label} />
+            <Button className={`!text-sm w-fit !px-5 ml-auto py-2 h-10 flex items-center rounded-l-none rounded-r-sm ${FUCHSIA_GRADIENT}`} label={label} />
           </form>
           <p className={cn(`text-sm h-4`, { message: "h-0" })}>{message}</p>
         </div>
