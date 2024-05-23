@@ -5,6 +5,7 @@ import Button from "@/components/Button";
 import Img from "@/components/Img";
 import { getCurrentPresaleStageDetails, getKFBalance, getUnprivilegedUserBalance, toMbOrNone } from "@/lib/utils";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
 import cn from "classnames";
 import { FC, useEffect, useState } from "react";
 import { FaXmark } from "react-icons/fa6";
@@ -18,22 +19,24 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   const [privilegedAddresses] = useState<string[]>(process.env.NEXT_PUBLIC_PRIVILEGED_ADDRESSES!.split("?"));
   const [kfBalance, setkfBalance] = useState("0");
   const [currentStageDetails, setCurrentStageDetails] = useState<CurrentStageDetailsProps | null>(null);
+  const [_publicKey, setPublicKey] = useState<PublicKey | null>(publicKey);
 
   const tm = <sup className="text-xs relative -top-2.5">™</sup>;
 
   useEffect(() => {
     if (isViewingPresale) {
+      setPublicKey(publicKey);
       setOpacity("opacity-100");
 
-      if (publicKey) {
+      if (_publicKey) {
         // Get balance of privileged accounts
-        if (privilegedAddresses.indexOf(publicKey.toBase58()) >= 0) {
+        if (privilegedAddresses.indexOf(_publicKey.toBase58()) >= 0) {
           getKFBalance(publicKey!).then((r) => {
             const convertedBal: string = toMbOrNone(r);
             setkfBalance(convertedBal);
           });
         } else {
-          getUnprivilegedUserBalance(publicKey.toBase58()).then((bal) => {
+          getUnprivilegedUserBalance(_publicKey.toBase58()).then((bal) => {
             const { totalKfBought } = bal;
             const convertedBal: string = toMbOrNone(totalKfBought);
             setkfBalance(convertedBal);
@@ -45,7 +48,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
         });
       }
     } else setOpacity("opacity-0");
-  }, [isViewingPresale]);
+  }, [isViewingPresale, _publicKey]);
 
   const pane = (
     <div className="flex">
@@ -94,7 +97,10 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
         <div className="flex flex-col w-full h-full">
           <FaXmark
             className={"w-14 h-14 text-white p-3 rounded-full box-border bg-red-400 hover:bg-red-500 ml-auto cursor-pointer relative z-10 top-6 left-6"}
-            onClick={() => setIsViewingPresale(false)}
+            onClick={() => {
+              setIsViewingPresale(false);
+              setPublicKey(null);
+            }}
           />
           <div className="border-[3px] border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2 p-10 bg-vulcan-500/70 -mt-2">
             <Img src={cuteIcon} alt="cute fish icon" size={120} className="w-fit mx-auto" />
