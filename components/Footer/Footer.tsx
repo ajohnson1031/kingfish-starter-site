@@ -43,7 +43,7 @@ const Footer: FC<FooterProps> = () => {
       }
 
       try {
-        const response = await fetch("/api/newsletter", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/newsletter`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
