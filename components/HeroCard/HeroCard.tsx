@@ -52,7 +52,7 @@ const HeroCard: FC<HeroCardProps> = () => {
         </p>
         <div className="flex justify-center gap-3 md:gap-5">
           <Button className={FUCHSIA_GRADIENT} label="Buy Presale" onClick={() => setIsViewingPresale(true)} />
-          <Button className={VIOLET_GRADIENT} label="Whitepaper" onClick={() => handleClick("https://example.com")} />
+          <Button className={VIOLET_GRADIENT} label="Whitepaper" onClick={() => handleClick("./KINGFISH_Whitepaper.pdf")} />
         </div>
       </div>
       <div className="bg-herocard bg-85% md:bg-100% bg-[center_top_-2rem] bg-no-repeat h-[52.5%] md:h-3/4 w-full flex justify-center items-end">

@@ -22,11 +22,12 @@ const Tokenomics: FC<TokenomicsProps> = () => {
   ];
 
   const piedata: any = [
-    { id: 1, value: 25, label: "Presale", color: "#FB923C" },
-    { id: 2, value: 30, label: "Initial Liquidity", color: "#D946EF" },
-    { id: 3, value: 15, label: "Rewards", color: "#22D3EE" },
-    { id: 4, value: 10, label: "Marketing", color: "#A78BFA" },
+    { id: 1, value: 20, label: "Presale", color: "#FB923C" },
+    { id: 2, value: 20, label: "Initial Liquidity", color: "#D946EF" },
+    { id: 3, value: 8, label: "Rewards", color: "#22D3EE" },
+    { id: 4, value: 12, label: "Marketing", color: "#A78BFA" },
     { id: 5, value: 20, label: "Team", color: "#34D399" },
+    { id: 6, value: 20, label: "Future Initiatives", color: "#CCC" },
   ];
 
   useEffect(() => {

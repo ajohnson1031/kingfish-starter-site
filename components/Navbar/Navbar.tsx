@@ -27,7 +27,7 @@ const Navbar: FC<NavbarProps> = () => {
     e.preventDefault();
     if (e.target.name?.toLowerCase() !== "whitepaper")
       window.scrollTo({ top: document.getElementById(e.target?.name)?.getBoundingClientRect().top! + window.scrollY + offset, behavior: "smooth" });
-    else window.open("https://example.com/", "_blank");
+    else window.open("./KINGFISH_Whitepaper.pdf", "_blank");
   };
 
   return (

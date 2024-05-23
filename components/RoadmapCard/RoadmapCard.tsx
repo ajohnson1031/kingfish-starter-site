@@ -17,7 +17,7 @@ const RoadmapCard: FC<RoadmapCardProps> = ({ roadmapItem, index }) => {
           return (
             <div key={`${description}_${i}`} className="flex gap-2 items-center ">
               <div className="w-5 h-5"> {checkbox}</div>
-              <p className={cn("font-semibold py-1 whitespace-pre-line", { "line-through": completed })}>{description}</p>
+              <p className={cn("font-semibold py-1 whitespace-pre-line", { "line-through text-gray-300": completed })}>{description}</p>
             </div>
           );
         })}

@@ -16,19 +16,19 @@ const ROADMAP = [
     title: "Stage One: Initial Launch",
     items: [
       {
+        description: "Mint initial tokens",
+        completed: true,
+      },
+      {
         description: (
           <>
-            Launch KINGFISH<sup className="text-[6px] relative -top-2">TM</sup> website
+            Develop KINGFISH<sup className="text-[6px] relative -top-2">TM</sup> website
           </>
         ),
         completed: false,
       },
       {
-        description: "Mint initial tokens",
-        completed: false,
-      },
-      {
-        description: "Smart contract created / audited",
+        description: "Launch Presale",
         completed: false,
       },
     ],
