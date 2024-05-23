@@ -19,7 +19,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   const [privilegedAddresses] = useState<string[]>(process.env.NEXT_PUBLIC_PRIVILEGED_ADDRESSES!.split("?"));
   const [kfBalance, setkfBalance] = useState("0");
   const [currentStageDetails, setCurrentStageDetails] = useState<CurrentStageDetailsProps | null>(null);
-  const [_publicKey, setPublicKey] = useState<PublicKey | null>(publicKey);
+  const [_publicKey, setPublicKey] = useState<PublicKey | null>(null);
 
   const tm = <sup className="text-xs relative -top-2.5">™</sup>;
 
@@ -53,7 +53,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   const pane = (
     <div className="flex">
       <div className="flex flex-col w-full">
-        {!publicKey ? (
+        {!_publicKey ? (
           <div className="flex flex-col gap-2 w-full">
             <p className="text-2xl text-orange-600 font-semibold">{toMbOrNone(currentStageDetails?.remainBal || 0)}</p>
             <p className="text-2xl text-orange-600 font-semibold">
@@ -67,18 +67,25 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
               You have <span className="text-orange-600">{kfBalance}</span> KingFish{tm}
             </p>
             <p className="text-lg text-white font-bold">Connected Wallet</p>
-            <p className="text-lg text-orange-600 font-bold overflow-hidden text-ellipsis">{publicKey.toBase58()}</p>
+            <p className="text-lg text-orange-600 font-bold overflow-hidden text-ellipsis">{_publicKey.toBase58()}</p>
           </div>
         )}
 
-        {publicKey && (
+        {_publicKey && (
           <Button className={cn("flex mt-5 mx-auto items-center text-white", FUCHSIA_GRADIENT)} label={"Buy $KingFish"} onClick={() => alert("TODO: Add Buy Functionality")} />
         )}
 
         <Button
           className={cn("flex mt-6 mx-auto items-center text-white", FUCHSIA_GRADIENT)}
-          label={!publicKey ? "Connect Wallet" : "Disconnect Wallet"}
-          onClick={!publicKey ? () => setIsViewingWallet(true) : () => disconnect()}
+          label={!_publicKey ? "Connect Wallet" : "Disconnect Wallet"}
+          onClick={() => {
+            if (!_publicKey) {
+              setIsViewingWallet(true);
+            } else {
+              disconnect();
+              setPublicKey(null);
+            }
+          }}
         />
       </div>
     </div>
