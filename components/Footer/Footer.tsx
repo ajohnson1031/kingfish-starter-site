@@ -53,7 +53,6 @@ const Footer: FC<FooterProps> = () => {
 
         const data = await response.json();
         const { message } = data;
-        console.log(message);
 
         switch (message) {
           case "SUBSCRIBER_EXISTS":
