@@ -38,13 +38,14 @@ const Footer: FC<FooterProps> = () => {
 
     if (btnEnabled) {
       setBtnEnabled(false);
-      setMessage(messages.submitting);
+
       if (!email.match(regex)) {
         setMessage(messages.invalid);
         return;
       }
 
       try {
+        setMessage(messages.submitting);
         const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/newsletter`, {
           method: "POST",
           headers: {
