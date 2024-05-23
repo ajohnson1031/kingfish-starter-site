@@ -18,6 +18,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   const [privilegedAddresses] = useState<string[]>(process.env.NEXT_PUBLIC_PRIVILEGED_ADDRESSES!.split("?"));
   const [kfBalance, setkfBalance] = useState("0");
   const [currentStageDetails, setCurrentStageDetails] = useState<CurrentStageDetailsProps | null>(null);
+  const nextMsg = `Until ${currentStageDetails?.currentStage?.next_per_usdc ? `1 USDC = ${currentStageDetails?.currentStage.next_per_usdc} $KingFish` : "Presale End!"}`;
 
   const tm = <sup className="text-xs relative -top-2.5">™</sup>;
 
@@ -74,7 +75,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
             <Img src={cuteIcon} alt="cute fish icon" size={120} className="w-fit mx-auto" />
             <p className="text-3xl font-black text-white">{currentStageDetails?.currentStage?.title || "Stage One"} has started!</p>
             <p className="text-2xl text-gray-300 font-semibold">
-              1 USDC = 20000 KingFish<sup className="text-xs relative -top-2.5">™</sup>
+              1 USDC = {currentStageDetails?.currentStage?.per_usdc} KingFish<sup className="text-xs relative -top-2.5">™</sup>
             </p>
             <div className="rounded-3xl p-2 w-full mx-auto">
               <div className="flex">
@@ -85,7 +86,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                       <p className="text-2xl text-orange-600 font-semibold">
                         KingFish<sup className="text-xs relative -top-2.5">™</sup> remaining
                       </p>
-                      <p className="font-light text-gray-300">Until 1 USDC = {currentStageDetails?.currentStage?.next_per_usdc} $KingFish</p>
+                      <p className="font-light text-gray-300">{nextMsg}</p>
                     </div>
                   ) : (
                     <div className="flex flex-col gap-2 w-full text-center">
