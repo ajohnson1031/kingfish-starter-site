@@ -56,16 +56,16 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
           </div>
         ) : (
           <div className="flex flex-col gap-2 w-full text-center">
-            <p className="text-2xl text-white font-semibold mb-3">
+            <p className="text-2xl text-white font-semibold mb-3 py-2 px-4 bg-vulcan-500/80 rounded-full">
               You have <span className="text-orange-600">{kfBalance}</span> KingFish{tm}
             </p>
             <p className="text-lg text-white font-bold">Connected Wallet</p>
-            <p className="text-lg text-orange-600 font-bold">{publicKey.toBase58()}</p>
+            <p className="text-lg text-orange-600 font-bold overflow-hidden text-ellipsis">{publicKey.toBase58()}</p>
           </div>
         )}
 
         {publicKey && (
-          <Button className={cn("flex mt-6 mx-auto items-center text-white", FUCHSIA_GRADIENT)} label={"Buy $KingFish"} onClick={() => alert("TODO: Add Buy Functionality")} />
+          <Button className={cn("flex mt-5 mx-auto items-center text-white", FUCHSIA_GRADIENT)} label={"Buy $KingFish"} onClick={() => alert("TODO: Add Buy Functionality")} />
         )}
 
         <Button
@@ -98,7 +98,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
             <p className="text-2xl text-gray-300 font-semibold">
               1 USDC = 20000 KingFish<sup className="text-xs relative -top-2.5">™</sup>
             </p>
-            <div className="rounded-3xl p-2 w-full mx-auto mt-5">{pane}</div>
+            <div className="rounded-3xl p-2 w-full mx-auto">{pane}</div>
           </div>
         </div>
       </div>
