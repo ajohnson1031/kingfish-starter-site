@@ -15,7 +15,8 @@ const Footer: FC<FooterProps> = () => {
     invalid: <span className="text-red-300">Please enter a valid email address.</span>,
     valid: <span className="text-green-300">Thanks for signing up! We'll be in touch.</span>,
     error: <span className="text-red-300">Sorry, there was an error. Please try again.</span>,
-    duplicate: <span className="text-yellow-500">You've already signed up. We'll keep you posted.</span>,
+    duplicate: <span className="text-gray-300">You've already signed up. We'll keep you posted.</span>,
+    submitting: <span className="text-yellow-400">Submitting request...</span>,
   });
   const [btnEnabled, setBtnEnabled] = useState<boolean>(true);
 
@@ -37,6 +38,7 @@ const Footer: FC<FooterProps> = () => {
 
     if (btnEnabled) {
       setBtnEnabled(false);
+      setMessage(messages.submitting);
       if (!email.match(regex)) {
         setMessage(messages.invalid);
         return;
@@ -77,7 +79,7 @@ const Footer: FC<FooterProps> = () => {
   };
 
   useEffect(() => {
-    if (!btnEnabled) {
+    if (!btnEnabled && message !== messages.submitting) {
       setTimeout(() => {
         setMessage(null);
         setBtnEnabled(true);
