@@ -22,70 +22,38 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   const tm = <sup className="text-xs relative -top-2.5">™</sup>;
 
   const handleBalances = () => {
-    if (isViewingPresale) {
-      setOpacity("opacity-100");
+    if (publicKey) {
+      // Get balance of privileged accounts
+      const publicKeyString = publicKey.toBase58();
 
-      if (publicKey) {
-        // Get balance of privileged accounts
-        const publicKeyString = publicKey.toBase58();
-
-        if (privilegedAddresses.indexOf(publicKeyString) >= 0) {
-          getKFBalance(publicKey!).then((data) => {
-            const convertedBal: string = toMbOrNone(data);
-            setkfBalance(convertedBal);
-          });
-        } else {
-          getUnprivilegedUserBalance(publicKeyString).then((data) => {
-            const { totalKfBought } = data;
-            const convertedBal: string = toMbOrNone(totalKfBought);
-            setkfBalance(convertedBal);
-          });
-        }
+      if (privilegedAddresses.indexOf(publicKeyString) >= 0) {
+        getKFBalance(publicKey!).then((data) => {
+          const convertedBal: string = toMbOrNone(data);
+          setkfBalance(convertedBal);
+        });
       } else {
-        getCurrentPresaleStageDetails().then((data) => {
-          setCurrentStageDetails({ ...data });
+        getUnprivilegedUserBalance(publicKeyString).then((data) => {
+          const { totalKfBought } = data;
+          const convertedBal: string = toMbOrNone(totalKfBought);
+          setkfBalance(convertedBal);
         });
       }
-    } else setOpacity("opacity-0");
+    } else {
+      getCurrentPresaleStageDetails().then((data) => {
+        setCurrentStageDetails({ ...data });
+      });
+    }
   };
 
   useEffect(() => {
-    handleBalances();
+    if (isViewingPresale) {
+      setOpacity("opacity-100");
+    } else setOpacity("opacity-0");
   }, [isViewingPresale]);
 
-  const pane = (
-    <div className="flex">
-      <div className="flex flex-col w-full">
-        {!publicKey ? (
-          <div className="flex flex-col gap-2 w-full">
-            <p className="text-2xl text-orange-600 font-semibold">{toMbOrNone(currentStageDetails?.remainBal || 0)}</p>
-            <p className="text-2xl text-orange-600 font-semibold">
-              KingFish<sup className="text-xs relative -top-2.5">™</sup> remaining
-            </p>
-            <p className="font-light text-gray-300">Until 1 USDC = {currentStageDetails?.currentStage?.next_per_usdc} $KingFish</p>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-2 w-full text-center">
-            <p className="text-2xl text-white font-semibold mb-3 py-2 px-4 bg-vulcan-500/80 rounded-full">
-              You have <span className="text-orange-600">{kfBalance}</span> KingFish{tm}
-            </p>
-            <p className="text-lg text-white font-bold">Connected Wallet</p>
-            <p className="text-lg text-orange-600 font-bold overflow-hidden text-ellipsis">{publicKey.toBase58()}</p>
-          </div>
-        )}
-
-        {publicKey && (
-          <Button className={cn("flex mt-5 mx-auto items-center text-white", FUCHSIA_GRADIENT)} label={"Buy $KingFish"} onClick={() => alert("TODO: Add Buy Functionality")} />
-        )}
-
-        <Button
-          className={cn("flex mt-6 mx-auto items-center text-white", FUCHSIA_GRADIENT)}
-          label={!publicKey ? "Connect Wallet" : "Disconnect Wallet"}
-          onClick={!publicKey ? () => setIsViewingWallet(true) : () => disconnect()}
-        />
-      </div>
-    </div>
-  );
+  useEffect(() => {
+    handleBalances();
+  }, [publicKey]);
 
   return (
     <div
@@ -108,7 +76,43 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
             <p className="text-2xl text-gray-300 font-semibold">
               1 USDC = 20000 KingFish<sup className="text-xs relative -top-2.5">™</sup>
             </p>
-            <div className="rounded-3xl p-2 w-full mx-auto">{pane}</div>
+            <div className="rounded-3xl p-2 w-full mx-auto">
+              <div className="flex">
+                <div className="flex flex-col w-full">
+                  {!publicKey ? (
+                    <div className="flex flex-col gap-2 w-full">
+                      <p className="text-2xl text-orange-600 font-semibold">{toMbOrNone(currentStageDetails?.remainBal || 0)}</p>
+                      <p className="text-2xl text-orange-600 font-semibold">
+                        KingFish<sup className="text-xs relative -top-2.5">™</sup> remaining
+                      </p>
+                      <p className="font-light text-gray-300">Until 1 USDC = {currentStageDetails?.currentStage?.next_per_usdc} $KingFish</p>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-2 w-full text-center">
+                      <p className="text-2xl text-white font-semibold mb-3 py-2 px-4 bg-vulcan-500/80 rounded-full">
+                        You have <span className="text-orange-600">{kfBalance}</span> KingFish{tm}
+                      </p>
+                      <p className="text-lg text-white font-bold">Connected Wallet</p>
+                      <p className="text-lg text-orange-600 font-bold overflow-hidden text-ellipsis">{publicKey.toBase58()}</p>
+                    </div>
+                  )}
+
+                  {publicKey && (
+                    <Button
+                      className={cn("flex mt-5 mx-auto items-center text-white", FUCHSIA_GRADIENT)}
+                      label={"Buy $KingFish"}
+                      onClick={() => alert("TODO: Add Buy Functionality")}
+                    />
+                  )}
+
+                  <Button
+                    className={cn("flex mt-6 mx-auto items-center text-white", FUCHSIA_GRADIENT)}
+                    label={!publicKey ? "Connect Wallet" : "Disconnect Wallet"}
+                    onClick={() => (!publicKey ? setIsViewingWallet(true) : disconnect())}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
