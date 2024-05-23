@@ -25,7 +25,7 @@ const getKFBalance = async (publicKey: PublicKey) => {
 };
 
 const toMbOrNone = (amt: number) => {
-  let strAmt = amt.toString() || "0";
+  let strAmt = amt?.toString() || "0";
 
   if (strAmt.length > 6 && strAmt.length <= 9) {
     strAmt = `${(amt / 1000000).toFixed(2)}M`;
@@ -54,4 +54,21 @@ const getCurrentPresaleStageDetails = async () => {
   }
 };
 
-export { getCurrentPresaleStageDetails, getKFBalance, imgLoader, toMbOrNone };
+const getUnprivilegedUserBalance = async (publicKey: string) => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/presale/user-presale-balance`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ publicKey }),
+    });
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { getCurrentPresaleStageDetails, getKFBalance, getUnprivilegedUserBalance, imgLoader, toMbOrNone };

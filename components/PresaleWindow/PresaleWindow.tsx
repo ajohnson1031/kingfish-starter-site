@@ -3,7 +3,7 @@ import { useViewerContext } from "@/app/context/ViewerContext";
 import cuteIcon from "@/assets/cute-fish-icon-w-stroke.png";
 import Button from "@/components/Button";
 import Img from "@/components/Img";
-import { getCurrentPresaleStageDetails, getKFBalance, toMbOrNone } from "@/lib/utils";
+import { getCurrentPresaleStageDetails, getKFBalance, getUnprivilegedUserBalance, toMbOrNone } from "@/lib/utils";
 import { useWallet } from "@solana/wallet-adapter-react";
 import cn from "classnames";
 import { FC, useEffect, useState } from "react";
@@ -36,7 +36,11 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
           setkfBalance(convertedBal);
         });
       } else {
-        // TODO: Get user balance via microservice
+        getUnprivilegedUserBalance(publicKey.toBase58()).then((bal) => {
+          const { totalKfBought } = bal;
+          const convertedBal: string = toMbOrNone(totalKfBought);
+          setkfBalance(convertedBal);
+        });
       }
     } else {
       getCurrentPresaleStageDetails().then((data) => {
