@@ -24,30 +24,28 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
     if (isViewingPresale) {
       setOpacity("opacity-100");
       setPrivilegedAddresses(process.env.NEXT_PUBLIC_PRIVILEGED_ADDRESSES!.split("?"));
-    } else setOpacity("opacity-0");
-  }, [isViewingPresale]);
 
-  useEffect(() => {
-    if (publicKey) {
-      // Get balance of privileged accounts
-      if (privilegedAddresses.indexOf(publicKey.toBase58()) >= 0) {
-        getKFBalance(publicKey!).then((r) => {
-          const convertedBal: string = toMbOrNone(r);
-          setkfBalance(convertedBal);
-        });
+      if (publicKey) {
+        // Get balance of privileged accounts
+        if (privilegedAddresses.indexOf(publicKey.toBase58()) >= 0) {
+          getKFBalance(publicKey!).then((r) => {
+            const convertedBal: string = toMbOrNone(r);
+            setkfBalance(convertedBal);
+          });
+        } else {
+          getUnprivilegedUserBalance(publicKey.toBase58()).then((bal) => {
+            const { totalKfBought } = bal;
+            const convertedBal: string = toMbOrNone(totalKfBought);
+            setkfBalance(convertedBal);
+          });
+        }
       } else {
-        getUnprivilegedUserBalance(publicKey.toBase58()).then((bal) => {
-          const { totalKfBought } = bal;
-          const convertedBal: string = toMbOrNone(totalKfBought);
-          setkfBalance(convertedBal);
+        getCurrentPresaleStageDetails().then((data) => {
+          setCurrentStageDetails({ ...data });
         });
       }
-    } else {
-      getCurrentPresaleStageDetails().then((data) => {
-        setCurrentStageDetails({ ...data });
-      });
-    }
-  }, [publicKey]);
+    } else setOpacity("opacity-0");
+  }, [isViewingPresale]);
 
   const pane = (
     <div className="flex">
