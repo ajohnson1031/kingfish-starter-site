@@ -14,7 +14,8 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   const { isViewingPresale, setIsViewingPresale, setIsViewingWallet } = useViewerContext();
   const { publicKey, disconnect, wallet } = useWallet();
   const [opacity, setOpacity] = useState("opacity-0");
-  const [privilegedAddresses, setPrivilegedAddresses] = useState<string[]>([]);
+  // ! priviliged addresses to be removed when presale is over
+  const [privilegedAddresses] = useState<string[]>(process.env.NEXT_PUBLIC_PRIVILEGED_ADDRESSES!.split("?"));
   const [kfBalance, setkfBalance] = useState("0");
   const [currentStageDetails, setCurrentStageDetails] = useState<CurrentStageDetailsProps | null>(null);
 
@@ -23,7 +24,6 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   useEffect(() => {
     if (isViewingPresale) {
       setOpacity("opacity-100");
-      setPrivilegedAddresses(process.env.NEXT_PUBLIC_PRIVILEGED_ADDRESSES!.split("?"));
 
       if (publicKey) {
         // Get balance of privileged accounts
