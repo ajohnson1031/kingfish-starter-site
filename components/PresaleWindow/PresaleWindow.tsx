@@ -1,4 +1,3 @@
-import { FUCHSIA_GRADIENT } from "@/app/constants";
 import { useViewerContext } from "@/app/context/ViewerContext";
 import cuteIcon from "@/assets/cute-fish-icon-w-stroke.png";
 import Button from "@/components/Button";
@@ -7,6 +6,7 @@ import { getCurrentPresaleStageDetails, getKFBalance, getUnprivilegedUserBalance
 import { useWallet } from "@solana/wallet-adapter-react";
 import cn from "classnames";
 import { FC, useEffect, useState } from "react";
+import { BiLogOut } from "react-icons/bi";
 import { FaXmark } from "react-icons/fa6";
 import { CurrentStageDetailsProps, PresaleWindowProps } from "./PresaleWindow.types";
 
@@ -18,11 +18,14 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   const [privilegedAddresses] = useState<string[]>(process.env.NEXT_PUBLIC_PRIVILEGED_ADDRESSES!.split("?"));
   const [kfBalance, setkfBalance] = useState("0");
   const [currentStageDetails, setCurrentStageDetails] = useState<CurrentStageDetailsProps | null>(null);
+  const [buyAmount, setBuyAmount] = useState<string>("0");
+  const [buyMessage, setBuyMessage] = useState<string | null>(null);
+
   const nextMsg = `Until ${currentStageDetails?.currentStage?.next_per_usdc ? `1 USDC = ${currentStageDetails?.currentStage.next_per_usdc} $KingFish` : "Presale End!"}`;
 
   const tm = <sup className="text-xs relative -top-2.5">™</sup>;
 
-  const handleBalances = () => {
+  const handleKFBalances = () => {
     if (publicKey) {
       // Get balance of privileged accounts
       const publicKeyString = publicKey.toBase58();
@@ -46,6 +49,14 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
     }
   };
 
+  const handleBuyAmtChange = (e: any) => {
+    setBuyAmount(e.target.value);
+  };
+
+  const onBuyClick = (e: any) => {
+    e.preventDefault();
+  };
+
   useEffect(() => {
     if (isViewingPresale) {
       setOpacity("opacity-100");
@@ -53,7 +64,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   }, [isViewingPresale]);
 
   useEffect(() => {
-    handleBalances();
+    handleKFBalances();
   }, [publicKey]);
 
   return (
@@ -97,20 +108,31 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                       <p className="text-lg text-orange-600 font-bold overflow-hidden text-ellipsis">{publicKey.toBase58()}</p>
                     </div>
                   )}
+                  <div className="flex gap-3 items-center justify-center mt-6">
+                    {publicKey && (
+                      <div className="w-2/3">
+                        <form onSubmit={onBuyClick} className="flex items-center h-fit w-full">
+                          <input
+                            type="number"
+                            className="w-full rounded-l-full text-right h-11 px-2 text-cyan-800 border-2 box-border outline-none"
+                            value={buyAmount}
+                            placeholder="Enter USDC amount (e.g., 10, 20, 30...)"
+                            onChange={handleBuyAmtChange}
+                          />
+                          <Button
+                            className={`!text-sm w-[120px] !px-3 ml-auto py-2 h-11 min-w-[100px] flex items-center rounded-l-none rounded-r-full text-white bg-green-500 hover:bg-green-400 active:bg-green-600`}
+                            label="GET $KFSH"
+                          />
+                        </form>
+                      </div>
+                    )}
 
-                  {publicKey && (
                     <Button
-                      className={cn("flex mt-5 mx-auto items-center text-white", FUCHSIA_GRADIENT)}
-                      label={"Buy $KingFish"}
-                      onClick={() => alert("TODO: Add Buy Functionality")}
+                      className={cn("flex !p-3 items-center !justify-center text-white bg-red-400 hover:bg-red-500")}
+                      label={!publicKey ? "Connect Wallet" : <BiLogOut color="white" size={24} className="relative right-0.5" />}
+                      onClick={() => (!publicKey ? setIsViewingWallet(true) : disconnect())}
                     />
-                  )}
-
-                  <Button
-                    className={cn("flex mt-6 mx-auto items-center text-white", FUCHSIA_GRADIENT)}
-                    label={!publicKey ? "Connect Wallet" : "Disconnect Wallet"}
-                    onClick={() => (!publicKey ? setIsViewingWallet(true) : disconnect())}
-                  />
+                  </div>
                 </div>
               </div>
             </div>

@@ -51,5 +51,10 @@
 
   body {
     background-color: #0f151b;
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      display: none;
+    }
   }
 }
