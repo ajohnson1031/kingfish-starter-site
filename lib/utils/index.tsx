@@ -24,4 +24,34 @@ const getKFBalance = async (publicKey: PublicKey) => {
   }
 };
 
-export { getKFBalance, imgLoader };
+const toMbOrNone = (amt: number) => {
+  let strAmt = amt.toString() || "0";
+
+  if (strAmt.length > 6 && strAmt.length <= 9) {
+    strAmt = `${(amt / 1000000).toFixed(2)}M`;
+  }
+
+  if (strAmt.length > 9) {
+    strAmt = `${(amt / 1000000000).toFixed(2)}B`;
+  }
+
+  return strAmt;
+};
+
+const getCurrentPresaleStageDetails = async () => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/presale/current-stage`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { getCurrentPresaleStageDetails, getKFBalance, imgLoader, toMbOrNone };

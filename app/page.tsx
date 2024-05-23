@@ -59,7 +59,7 @@ export default function Home() {
           <Community communityItems={COMMUNITY_CARDS} />
         </main>
         {!isViewingPresale && <Footer />}
-        <PresaleWindow />
+        {isViewingPresale && <PresaleWindow />}
       </WalletProvider>
     </ConnectionProvider>
   );

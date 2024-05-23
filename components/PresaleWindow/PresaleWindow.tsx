@@ -1,43 +1,46 @@
-import { FUCHSIA_GRADIENT, PRESALE_STAGES } from "@/app/constants";
+import { FUCHSIA_GRADIENT } from "@/app/constants";
 import { useViewerContext } from "@/app/context/ViewerContext";
 import cuteIcon from "@/assets/cute-fish-icon-w-stroke.png";
 import Button from "@/components/Button";
 import Img from "@/components/Img";
-import { getKFBalance } from "@/lib/utils";
+import { getCurrentPresaleStageDetails, getKFBalance, toMbOrNone } from "@/lib/utils";
 import { useWallet } from "@solana/wallet-adapter-react";
 import cn from "classnames";
 import { FC, useEffect, useState } from "react";
 import { FaXmark } from "react-icons/fa6";
-import { PresaleWindowProps } from "./PresaleWindow.types";
+import { CurrentStageDetailsProps, PresaleWindowProps } from "./PresaleWindow.types";
 
 const PresaleWindow: FC<PresaleWindowProps> = () => {
   const { isViewingPresale, setIsViewingPresale, setIsViewingWallet } = useViewerContext();
   const { publicKey, disconnect, wallet } = useWallet();
   const [opacity, setOpacity] = useState("opacity-0");
+  const [privilegedAddresses, setPrivilegedAddresses] = useState<string[]>([]);
   const [kfBalance, setkfBalance] = useState("0");
+  const [currentStageDetails, setCurrentStageDetails] = useState<CurrentStageDetailsProps | null>(null);
 
-  const { stage_one } = PRESALE_STAGES;
   const tm = <sup className="text-xs relative -top-2.5">™</sup>;
 
   useEffect(() => {
-    if (isViewingPresale) setOpacity("opacity-100");
-    else setOpacity("opacity-0");
+    if (isViewingPresale) {
+      setOpacity("opacity-100");
+      setPrivilegedAddresses(process.env.NEXT_PUBLIC_PRIVILEGED_ADDRESSES!.split("?"));
+    } else setOpacity("opacity-0");
   }, [isViewingPresale]);
 
   useEffect(() => {
     if (publicKey) {
-      getKFBalance(publicKey!).then((r) => {
-        const strBal: string = r.toString() || "0";
-        let convertedBal: string = strBal;
-        if (strBal.length > 6 && strBal.length <= 9) {
-          convertedBal = `${(r / 1000000).toFixed(2)}M`;
-        }
-
-        if (strBal.length > 9) {
-          convertedBal = `${(r / 1000000000).toFixed(2)}B`;
-        }
-
-        setkfBalance(convertedBal);
+      // Get balance of privileged accounts
+      if (privilegedAddresses.indexOf(publicKey.toBase58()) >= 0) {
+        getKFBalance(publicKey!).then((r) => {
+          const convertedBal: string = toMbOrNone(r);
+          setkfBalance(convertedBal);
+        });
+      } else {
+        // TODO: Get user balance via microservice
+      }
+    } else {
+      getCurrentPresaleStageDetails().then((data) => {
+        setCurrentStageDetails({ ...data });
       });
     }
   }, [publicKey]);
@@ -47,12 +50,11 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
       <div className="flex flex-col w-full">
         {!publicKey ? (
           <div className="flex flex-col gap-2 w-full">
-            {/* TODO: Make amount remaining dynamic */}
-            <p className="text-2xl text-orange-600 font-semibold">{(stage_one.amt / 1000000000).toFixed(2)}B</p>
+            <p className="text-2xl text-orange-600 font-semibold">{toMbOrNone(currentStageDetails?.remainBal || 0)}</p>
             <p className="text-2xl text-orange-600 font-semibold">
               KingFish<sup className="text-xs relative -top-2.5">™</sup> remaining
             </p>
-            <p className="font-light text-gray-300">Until 1 USDC = 15000 $KingFish</p>
+            <p className="font-light text-gray-300">Until 1 USDC = {currentStageDetails?.currentStage?.next_per_usdc} $KingFish</p>
           </div>
         ) : (
           <div className="flex flex-col gap-2 w-full text-center">
@@ -94,7 +96,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
           />
           <div className="border-[3px] border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2 p-10 bg-vulcan-500/70 -mt-2">
             <Img src={cuteIcon} alt="cute fish icon" size={120} className="w-fit mx-auto" />
-            <p className="text-3xl font-black text-white">{stage_one.title} has started!</p>
+            <p className="text-3xl font-black text-white">{currentStageDetails?.currentStage?.title || "Stage One"} has started!</p>
             <p className="text-2xl text-gray-300 font-semibold">
               1 USDC = 20000 KingFish<sup className="text-xs relative -top-2.5">™</sup>
             </p>
