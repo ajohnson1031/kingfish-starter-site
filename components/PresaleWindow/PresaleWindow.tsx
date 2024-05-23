@@ -2,12 +2,13 @@ import { useViewerContext } from "@/app/context/ViewerContext";
 import cuteIcon from "@/assets/cute-fish-icon-w-stroke.png";
 import Button from "@/components/Button";
 import Img from "@/components/Img";
-import { getCurrentPresaleStageDetails, getKFBalance, getUnprivilegedUserBalance, toMbOrNone } from "@/lib/utils";
+import { getCurrentPresaleStageDetails, getTokenBalances, getUnprivilegedUserBalance, handleTxn, toMbOrNone } from "@/lib/utils";
 import { useWallet } from "@solana/wallet-adapter-react";
 import cn from "classnames";
 import { FC, useEffect, useState } from "react";
 import { BiLogOut } from "react-icons/bi";
 import { FaXmark } from "react-icons/fa6";
+import FishBowl from "../FishBowl";
 import { CurrentStageDetailsProps, PresaleWindowProps } from "./PresaleWindow.types";
 
 const PresaleWindow: FC<PresaleWindowProps> = () => {
@@ -17,9 +18,20 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   // ! priviliged addresses tobe removed when presale is over
   const [privilegedAddresses] = useState<string[]>(process.env.NEXT_PUBLIC_PRIVILEGED_ADDRESSES!.split("?"));
   const [kfBalance, setkfBalance] = useState("0");
+  const [usdcBalance, setusdcBalance] = useState("0");
   const [currentStageDetails, setCurrentStageDetails] = useState<CurrentStageDetailsProps | null>(null);
-  const [buyAmount, setBuyAmount] = useState<string>("0");
-  const [buyMessage, setBuyMessage] = useState<string | null>(null);
+  const [buyAmount, setBuyAmount] = useState<string>("");
+  const [buyMessage, setBuyMessage] = useState<JSX.Element | null>(null);
+  const [isTransmittingTxn, setIsTransmittingTxn] = useState<boolean>(false);
+
+  const [buyMessages] = useState<Record<string, JSX.Element>>({
+    invalid: <span className="text-red-300">Spend amount is required.</span>,
+    deficit: <span className="text-red-300">Spend amount exceeds USDC balance (Your USDC = {usdcBalance}).</span>,
+    success: <span className="text-green-300">Fishbowl busted to shards! Welcome to KingFish™!</span>,
+    error: <span className="text-red-300">Sorry, there was an error. Please try again.</span>,
+    duplicate: <span className="text-gray-300">You've already signed up. We'll keep you posted.</span>,
+    submitting: <span className="text-yellow-400">Submitting request...</span>,
+  });
 
   const nextMsg = `Until ${currentStageDetails?.currentStage?.next_per_usdc ? `1 USDC = ${currentStageDetails?.currentStage.next_per_usdc} $KingFish` : "Presale End!"}`;
 
@@ -31,15 +43,20 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
       const publicKeyString = publicKey.toBase58();
 
       if (privilegedAddresses.indexOf(publicKeyString) >= 0) {
-        getKFBalance(publicKey!).then((data) => {
-          const convertedBal: string = toMbOrNone(data);
-          setkfBalance(convertedBal);
+        getTokenBalances(publicKey!).then((data) => {
+          const convertedKfBal: string = toMbOrNone(data?.kfBalance);
+          setkfBalance(convertedKfBal);
+          setusdcBalance(data?.usdcBalance);
         });
       } else {
         getUnprivilegedUserBalance(publicKeyString).then((data) => {
           const { totalKfBought } = data;
           const convertedBal: string = toMbOrNone(totalKfBought);
           setkfBalance(convertedBal);
+        });
+
+        getTokenBalances(publicKey!).then((data) => {
+          setusdcBalance(data?.usdcBalance);
         });
       }
     } else {
@@ -50,11 +67,41 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   };
 
   const handleBuyAmtChange = (e: any) => {
-    setBuyAmount(e.target.value);
+    const newValue = e.target.value;
+    // Allow only digits (0-9)
+    if (/^\d*$/.test(newValue) && newValue !== "0") {
+      setBuyAmount(newValue);
+      setBuyMessage(null);
+    }
   };
 
-  const onBuyClick = (e: any) => {
+  const onBuyClick = async (e: any) => {
     e.preventDefault();
+
+    // if spend amount is empty
+    if (!buyAmount.length) {
+      setBuyMessage(buyMessages.invalid);
+      return;
+    }
+
+    // convert string values to numbers for comparison
+    const spendNum = Number(buyAmount);
+    const usdcNum = Number(usdcBalance);
+
+    // if desired amount is greater than user usdc balance
+    // if (spendNum > usdcNum) {
+    //   setBuyMessage(buyMessages.deficit);
+    //   return;
+    // }
+    setIsTransmittingTxn(true);
+    const data = await handleTxn(publicKey?.toBase58()!, spendNum);
+    console.log(data);
+
+    if (data.message === "SUCCESS") {
+      setBuyMessage(buyMessages.success);
+      setIsTransmittingTxn(false);
+      setBuyAmount("");
+    }
   };
 
   useEffect(() => {
@@ -80,15 +127,35 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
         <div className="flex flex-col w-full h-full">
           <FaXmark
             className={"w-14 h-14 text-white p-3 rounded-full box-border bg-red-400 hover:bg-red-500 ml-auto cursor-pointer relative z-10 top-6 left-6"}
-            onClick={() => setIsViewingPresale(false)}
+            onClick={() => {
+              if (!isTransmittingTxn) setIsViewingPresale(false);
+            }}
           />
-          <div className="border-[3px] border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2 p-10 bg-vulcan-500/70 -mt-2">
-            <Img src={cuteIcon} alt="cute fish icon" size={120} className="w-fit mx-auto" />
-            <p className="text-3xl font-black text-white">{currentStageDetails?.currentStage?.title || "Stage One"} has started!</p>
-            <p className="text-2xl text-gray-300 font-semibold">
+          <div
+            className={`border-[3px] border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2 p-10 bg-vulcan-500/70 -mt-2 ${
+              isTransmittingTxn ? "bg-black/85" : "bg-vulcan-500/70"
+            }`}
+          >
+            {isTransmittingTxn && (
+              <div>
+                <FishBowl />
+                <p className={`text-xl text-white text-center font-bold transition ease-in duration-200 delay-300 ${isTransmittingTxn ? "opacity-100" : "opacity-0"}`}>
+                  One moment, breaking fishbowl to free your King
+                  <span className="text-orange-500">
+                    Fish<sup>™</sup>
+                  </span>
+                </p>
+              </div>
+            )}
+
+            <Img src={cuteIcon} alt="cute fish icon" size={120} className={`w-fit mx-auto ${isTransmittingTxn ? "opacity-0" : "opacity-100"}`} />
+            <p className={`text-3xl font-black text-white ${isTransmittingTxn ? "opacity-0" : "opacity-100"}`}>
+              {currentStageDetails?.currentStage?.title || "Stage One"} has started!
+            </p>
+            <p className={`text-2xl text-gray-300 font-semibold transition-opacity duration-100 ${isTransmittingTxn ? "opacity-0" : "opacity-100"}`}>
               1 USDC = {currentStageDetails?.currentStage?.per_usdc} KingFish<sup className="text-xs relative -top-2.5">™</sup>
             </p>
-            <div className="rounded-3xl p-2 w-full mx-auto">
+            <div className={`rounded-3xl p-2 w-full mx-auto ${isTransmittingTxn ? "opacity-0" : "opacity-100"}`}>
               <div className="flex">
                 <div className="flex flex-col w-full">
                   {!publicKey ? (
@@ -113,10 +180,12 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                       <div className="w-2/3">
                         <form onSubmit={onBuyClick} className="flex items-center h-fit w-full">
                           <input
-                            type="number"
+                            type="text"
                             className="w-full rounded-l-full text-right h-11 px-2 text-cyan-800 border-2 box-border outline-none"
                             value={buyAmount}
-                            placeholder="Enter USDC amount (e.g., 10, 20, 30...)"
+                            placeholder="Enter USDC spend amount (e.g., 10, 20, 30...)"
+                            min="1"
+                            step="1"
                             onChange={handleBuyAmtChange}
                           />
                           <Button
@@ -133,6 +202,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                       onClick={() => (!publicKey ? setIsViewingWallet(true) : disconnect())}
                     />
                   </div>
+                  <p className={cn(`text-sm h-4 mt-2`, { buyMessage: "h-0" })}>{buyMessage}</p>
                 </div>
               </div>
             </div>

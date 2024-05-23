@@ -5,7 +5,7 @@ const imgLoader = ({ src }: { src: string }) => {
   return `./${src}`;
 };
 
-const getKFBalance = async (publicKey: PublicKey) => {
+const getTokenBalances = async (publicKey: PublicKey) => {
   try {
     const connStr = `https://stylish-capable-fire.solana-mainnet.quiknode.pro/${process.env.NEXT_PUBLIC_CUSTOM_RPC_HOST_KEY}`;
     const connection = new Connection(connStr);
@@ -14,10 +14,14 @@ const getKFBalance = async (publicKey: PublicKey) => {
         programId: TOKEN_PROGRAM_ID,
       });
 
-      const tokenAccount = tokenAccounts.value.find((accountInfo) => accountInfo.account.data.parsed.info.mint === process.env.NEXT_PUBLIC_TOKEN_MINT_ADDRESS);
+      const kfTokenAccount = tokenAccounts.value.find((accountInfo) => accountInfo.account.data.parsed.info.mint === process.env.NEXT_PUBLIC_TOKEN_MINT_ADDRESS);
 
-      const balance = tokenAccount ? tokenAccount.account.data.parsed.info.tokenAmount.uiAmount : 0;
-      return balance;
+      const kfBalance = kfTokenAccount ? kfTokenAccount.account.data.parsed.info.tokenAmount.uiAmount : 0;
+
+      const usdcTokenAccount = tokenAccounts.value.find((accountInfo) => accountInfo.account.data.parsed.info.mint === process.env.NEXT_PUBLIC_USDC_TOKEN_ADDRESS);
+
+      const usdcBalance = usdcTokenAccount ? usdcTokenAccount.account.data.parsed.info.tokenAmount.uiAmount : 0;
+      return { kfBalance, usdcBalance };
     }
   } catch (error) {
     console.error("Could not get token accounts", error);
@@ -71,4 +75,22 @@ const getUnprivilegedUserBalance = async (publicKey: string) => {
   }
 };
 
-export { getCurrentPresaleStageDetails, getKFBalance, getUnprivilegedUserBalance, imgLoader, toMbOrNone };
+const handleTxn = async (publicKey: string, usdcAmt: number) => {
+  try {
+    // ${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/
+    const response = await fetch(`http://localhost:5010/presale/break-fishbowl`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ publicKey, usdcAmt }),
+    });
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { getCurrentPresaleStageDetails, getTokenBalances, getUnprivilegedUserBalance, handleTxn, imgLoader, toMbOrNone };
