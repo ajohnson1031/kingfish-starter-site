@@ -15,7 +15,7 @@ const Button: FC<ButtonProps> = ({ variant = "primary", label, className, onClic
   }
 
   return (
-    <button className={cn("px-8 py-3 rounded-full font-bold text-sm lg:text-xl max-h-12 !cursor-pointer", variantClass, className)} onClick={onClick}>
+    <button className={cn("px-8 py-3 rounded-full font-bold text-sm lg:text-xl max-h-12 !cursor-pointer text-center", variantClass, className)} onClick={onClick}>
       {label}
     </button>
   );

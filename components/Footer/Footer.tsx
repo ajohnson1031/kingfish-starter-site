@@ -1,4 +1,4 @@
-import { FUCHSIA_GRADIENT, OPACITY_SKY_GRADIENT, VIOLET_GRADIENT } from "@/app/constants";
+import { EMAIL_REGEX, FUCHSIA_GRADIENT, OPACITY_SKY_GRADIENT, VIOLET_GRADIENT } from "@/app/constants";
 import { useViewerContext } from "@/app/context/ViewerContext";
 import branding from "@/assets/branding.png";
 import { Button, Img } from "@/components";
@@ -20,8 +20,6 @@ const Footer: FC<FooterProps> = () => {
   });
   const [btnEnabled, setBtnEnabled] = useState<boolean>(true);
 
-  const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
   const label = (
     <div className="flex items-center justify-center">
       <HiArrowLongRight size={32} />
@@ -39,14 +37,15 @@ const Footer: FC<FooterProps> = () => {
     if (btnEnabled) {
       setBtnEnabled(false);
 
-      if (!email.match(regex)) {
+      if (!email.match(EMAIL_REGEX)) {
         setMessage(messages.invalid);
         return;
       }
 
       try {
         setMessage(messages.submitting);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/newsletter`, {
+        // const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/newsletter`, {
+        const response = await fetch(`http://localhost:5010/newsletter`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

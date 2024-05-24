@@ -189,11 +189,13 @@ const ECO_CARDS = [
 ];
 
 const KINGFISH_TOKEN_ADDY = "BhzhiA6Bkv8q7BZS9QnZUQnFUMrqDSdNdKZAhs6bFtcF";
+const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export {
   COMMUNITY_CARDS,
   CYAN_GRADIENT,
   ECO_CARDS,
+  EMAIL_REGEX,
   FUCHSIA_GRADIENT,
   KINGFISH_TOKEN_ADDY,
   OPACITY_CYAN_GRADIENT,
