@@ -78,7 +78,8 @@ const getUnprivilegedUserBalance = async (publicKey: string) => {
 
 const handleTxn = async (wallet: Wallet, signTransaction: any, senderPublicKey: string, amount: number) => {
   // Initialize connection to the Solana network
-  const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
+  const connStr = `https://stylish-capable-fire.solana-mainnet.quiknode.pro/${process.env.NEXT_PUBLIC_CUSTOM_RPC_HOST_KEY}`;
+  const connection = new Connection(connStr);
 
   // Example token mint address (replace with your token's actual mint address)
   const tokenMintAddress = new PublicKey(process.env.NEXT_PUBLIC_PRESALE_WALLET!);
