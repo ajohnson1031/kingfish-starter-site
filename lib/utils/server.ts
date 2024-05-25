@@ -74,12 +74,12 @@ const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterPro
   const toWalletPublicKey = new PublicKey(process.env.NEXT_PUBLIC_PRESALE_WALLET!);
 
   // Create associated token account for the sender if it doesn't exist
-  const fromTokenAccountAddress = await PublicKey.findProgramAddress([fromWallet.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), USDC_MINT_ADDRESS.toBuffer()], TOKEN_PROGRAM_ID);
+  const fromTokenAccountAddress = await PublicKey.findProgramAddressSync([fromWallet.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), USDC_MINT_ADDRESS.toBuffer()], TOKEN_PROGRAM_ID);
 
   const fromTokenAccount = fromTokenAccountAddress[0];
 
   // Create associated token account for the recipient if it doesn't exist
-  const toTokenAccountAddress = await PublicKey.findProgramAddress([toWalletPublicKey.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), USDC_MINT_ADDRESS.toBuffer()], TOKEN_PROGRAM_ID);
+  const toTokenAccountAddress = await PublicKey.findProgramAddressSync([toWalletPublicKey.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), USDC_MINT_ADDRESS.toBuffer()], TOKEN_PROGRAM_ID);
 
   const toTokenAccount = toTokenAccountAddress[0];
 
@@ -93,6 +93,7 @@ const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterPro
 
   // Transfer 5 USDC (5 * 10^6)
   const txnAmt = amount * Math.pow(10, 6);
+  console.log("amount", amount, "txnAmt", txnAmt);
 
   transaction.add(createTransferInstruction(fromTokenAccount, toTokenAccount, fromWallet, txnAmt, [], TOKEN_PROGRAM_ID));
 
@@ -119,6 +120,7 @@ const breakFishbowl = async (publicKey: string, usdcAmt: number, txid: string, w
     });
 
     const data = await response.json();
+    console.log(data);
     return data;
   } catch (error) {
     console.error(error);

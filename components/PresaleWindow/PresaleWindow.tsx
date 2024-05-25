@@ -23,7 +23,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   const [privilegedAddresses] = useState<string[]>(process.env.NEXT_PUBLIC_PRIVILEGED_ADDRESSES!.split("?"));
 
   const [kfBalance, setkfBalance] = useState("0");
-  const [usdcBalance, setusdcBalance] = useState("0");
+  const [usdcBalance, setusdcBalance] = useState(0);
   const [currentStageDetails, setCurrentStageDetails] = useState<CurrentStageDetailsProps | null>(null);
   const [buyAmount, setBuyAmount] = useState<string>("");
   const [buyMessage, setBuyMessage] = useState<JSX.Element | null>(null);
@@ -34,7 +34,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
 
   const [buyMessages] = useState<Record<string, JSX.Element>>({
     invalid: <span className="text-red-300">Spend amount is required.</span>,
-    deficit: <span className="text-red-300">Spend amount exceeds USDC balance (Your USDC = {usdcBalance}).</span>,
+    deficit: <span className="text-red-300">Spend amount exceeds USDC balance.</span>,
     success: <span className="text-green-300">Fishbowl busted to shards! Transaction sent!</span>,
     error: <span className="text-red-300">Sorry, there was an error. Please try again later.</span>,
     email: <span className="text-red-300">Please enter a valid email address.</span>,
@@ -51,6 +51,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
 
       if (privilegedAddresses.indexOf(publicKeyString) >= 0) {
         getTokenBalances(publicKey!).then((data) => {
+          console.log(data);
           const convertedKfBal: string = toMbOrNone(data?.kfBalance);
           setkfBalance(convertedKfBal);
           setusdcBalance(data?.usdcBalance);
@@ -132,6 +133,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
         // here's where the magic happens. await txn handler resolution. if txid returned, send details to microservice, send email, etc.
         const txn = await handleTxn(publicKey, sendTransaction, spendNum);
         if (!!txn?.txid) {
+          console.log("this is the spendNum", spendNum);
           setIsTransmittingTxn(false);
           const resp = await breakFishbowl(publicKey.toBase58(), spendNum, txn.txid, wallet.adapter.name, walletEmail);
 
