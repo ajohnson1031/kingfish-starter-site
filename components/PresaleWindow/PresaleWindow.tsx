@@ -3,7 +3,8 @@ import { useViewerContext } from "@/app/context/ViewerContext";
 import cuteIcon from "@/assets/cute-fish-icon-w-stroke.png";
 import Button from "@/components/Button";
 import Img from "@/components/Img";
-import { breakFishbowl, getCurrentPresaleStageDetails, getTokenBalances, getUnprivilegedUserBalance, handleTxn, toMbOrNone } from "@/lib/utils";
+import { breakFishbowl, getCurrentPresaleStageDetails, getTokenBalances, getUnprivilegedUserBalance, handleTxn } from "@/lib/utils/server";
+import { toMbOrNone } from "@/lib/utils/static";
 import { useWallet } from "@solana/wallet-adapter-react";
 import cn from "classnames";
 import { FC, useEffect, useState } from "react";
@@ -13,8 +14,9 @@ import FishBowl from "../FishBowl";
 import { CurrentStageDetailsProps, PresaleWindowProps } from "./PresaleWindow.types";
 
 const PresaleWindow: FC<PresaleWindowProps> = () => {
+  const { publicKey, disconnect, wallet, sendTransaction } = useWallet();
+
   const { isViewingPresale, setIsViewingPresale, setIsViewingWallet } = useViewerContext();
-  const { publicKey, disconnect, wallet, signTransaction } = useWallet();
   const [opacity, setOpacity] = useState("opacity-0");
 
   // ! priviliged addresses to be removed when presale is over
@@ -33,7 +35,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   const [buyMessages] = useState<Record<string, JSX.Element>>({
     invalid: <span className="text-red-300">Spend amount is required.</span>,
     deficit: <span className="text-red-300">Spend amount exceeds USDC balance (Your USDC = {usdcBalance}).</span>,
-    success: <span className="text-green-300">Fishbowl busted to shards! Welcome to KingFish™!</span>,
+    success: <span className="text-green-300">Fishbowl busted to shards! Transaction sent!</span>,
     error: <span className="text-red-300">Sorry, there was an error. Please try again later.</span>,
     email: <span className="text-red-300">Please enter a valid email address.</span>,
   });
@@ -128,8 +130,11 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
         setIsTransmittingTxn(true);
 
         // here's where the magic happens. await txn handler resolution. if txid returned, send details to microservice, send email, etc.
-        const txn = await handleTxn(wallet, signTransaction, publicKey.toBase58(), spendNum);
-        if (!!txn?.txid) breakFishbowl(publicKey.toBase58(), spendNum, txn.txid, wallet.adapter.name, walletEmail);
+        const txn = await handleTxn(publicKey, sendTransaction, spendNum);
+        if (!!txn?.txid) {
+          setIsTransmittingTxn(false);
+          breakFishbowl(publicKey.toBase58(), spendNum, txn.txid, wallet.adapter.name, walletEmail);
+        }
       }
     } catch (error) {
       console.error(error);
@@ -280,7 +285,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                         </label>
                         {walletEmail.length > 0 && editStoredEmail === false && (
                           <p
-                            className="text-blue-500 hover:text-blue-400 text-sm underline cursor-pointer"
+                            className="text-blue-400 hover:text-blue-300 text-sm underline cursor-pointer"
                             onClick={() => {
                               setConfirmChecked(true);
                               setEditStoredEmail(true);

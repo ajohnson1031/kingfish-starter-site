@@ -1,5 +1,5 @@
 "use client";
-import { imgLoader } from "@/lib/utils";
+import { imgLoader } from "@/lib/utils/static";
 import cn from "classnames";
 import Image from "next/image";
 import { FC } from "react";

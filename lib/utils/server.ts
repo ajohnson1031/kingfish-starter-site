@@ -1,10 +1,6 @@
-import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { Wallet } from "@solana/wallet-adapter-react";
-import { Connection, PublicKey, Transaction, TransactionInstruction } from "@solana/web3.js";
-
-const imgLoader = ({ src }: { src: string }) => {
-  return `./${src}`;
-};
+import { TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction, createTransferInstruction } from "@solana/spl-token";
+import { WalletAdapterProps } from "@solana/wallet-adapter-base";
+import { Connection, PublicKey, Transaction } from "@solana/web3.js";
 
 const getTokenBalances = async (publicKey: PublicKey) => {
   try {
@@ -27,20 +23,6 @@ const getTokenBalances = async (publicKey: PublicKey) => {
   } catch (error) {
     console.error("Could not get token accounts", error);
   }
-};
-
-const toMbOrNone = (amt: number) => {
-  let strAmt = amt?.toString() || "0";
-
-  if (strAmt.length > 6 && strAmt.length <= 9) {
-    strAmt = `${(amt / 1000000).toFixed(2)}M`;
-  }
-
-  if (strAmt.length > 9) {
-    strAmt = `${(amt / 1000000000).toFixed(2)}B`;
-  }
-
-  return strAmt;
 };
 
 const getCurrentPresaleStageDetails = async () => {
@@ -76,51 +58,52 @@ const getUnprivilegedUserBalance = async (publicKey: string) => {
   }
 };
 
-const handleTxn = async (wallet: Wallet, signTransaction: any, senderPublicKey: string, amount: number) => {
-  // Initialize connection to the Solana network
+const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterProps["sendTransaction"], amount: number) => {
+  if (!publicKey) {
+    console.log("Wallet not connected");
+    return;
+  }
+
   const connStr = `https://stylish-capable-fire.solana-mainnet.quiknode.pro/${process.env.NEXT_PUBLIC_CUSTOM_RPC_HOST_KEY}`;
   const connection = new Connection(connStr);
 
-  // Example token mint address (replace with your token's actual mint address)
-  const tokenMintAddress = new PublicKey(process.env.NEXT_PUBLIC_PRESALE_WALLET!);
+  const fromWallet = publicKey;
 
-  // Convert sender and receiver public keys to PublicKey instances
-  const senderPublicKeyObj = new PublicKey(senderPublicKey);
-  const receiverPublicKeyObj = new PublicKey(process.env.NEXT_PUBLIC_PRESALE_WALLET!);
+  // Token mint address for USDC on mainnet
+  const USDC_MINT_ADDRESS = new PublicKey(process.env.NEXT_PUBLIC_USDC_TOKEN_ADDRESS!);
+  const toWalletPublicKey = new PublicKey(process.env.NEXT_PUBLIC_PRESALE_WALLET!);
 
-  // Fetch token accounts for sender and receiver
-  const senderTokenAccount = await connection.getTokenAccountBalance(senderPublicKeyObj);
-  const receiverTokenAccount = await connection.getTokenAccountBalance(receiverPublicKeyObj);
+  // Create associated token account for the sender if it doesn't exist
+  const fromTokenAccountAddress = await PublicKey.findProgramAddress([fromWallet.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), USDC_MINT_ADDRESS.toBuffer()], TOKEN_PROGRAM_ID);
 
-  // Construct transfer instruction with amount
-  const data = Buffer.alloc(8); // Buffer for 8 bytes (typically used for amount)
-  data.writeInt32LE(amount, 0); // Write amount to buffer (adjust based on token decimals)
+  const fromTokenAccount = fromTokenAccountAddress[0];
 
-  const instruction = new TransactionInstruction({
-    keys: [
-      { pubkey: senderPublicKeyObj, isSigner: true, isWritable: true },
-      { pubkey: receiverPublicKeyObj, isSigner: false, isWritable: true },
-    ],
-    programId: tokenMintAddress,
-    data, // Include the amount data
-  });
+  // Create associated token account for the recipient if it doesn't exist
+  const toTokenAccountAddress = await PublicKey.findProgramAddress([toWalletPublicKey.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), USDC_MINT_ADDRESS.toBuffer()], TOKEN_PROGRAM_ID);
 
-  // Create a new transaction
-  const transaction = new Transaction().add(instruction);
+  const toTokenAccount = toTokenAccountAddress[0];
 
-  // Sign and send transaction
-  if (wallet) {
-    try {
-      const signature = await signTransaction(transaction);
-      const txid = await connection.sendRawTransaction(signature.serialize());
-      console.log("Transaction ID:", txid);
-      return { txid };
-    } catch (error) {
-      console.error(error);
-      return { txid: null };
-    }
-  } else {
-    console.error("Wallet not connected.");
+  const transaction = new Transaction();
+
+  // Create the sender's token account if it doesn't exist
+  transaction.add(createAssociatedTokenAccountInstruction(fromWallet, fromTokenAccount, fromWallet, USDC_MINT_ADDRESS));
+
+  // Create the recipient's token account if it doesn't exist
+  transaction.add(createAssociatedTokenAccountInstruction(fromWallet, toTokenAccount, toWalletPublicKey, USDC_MINT_ADDRESS));
+
+  // Transfer 5 USDC (5 * 10^6)
+  const txnAmt = amount * Math.pow(10, 6);
+
+  transaction.add(createTransferInstruction(fromTokenAccount, toTokenAccount, fromWallet, txnAmt, [], TOKEN_PROGRAM_ID));
+
+  try {
+    const txid = await sendTransaction(transaction, connection);
+    await connection.confirmTransaction(txid, "confirmed");
+    console.log("Transaction signature (ID):", txid);
+    return { txid };
+  } catch (error) {
+    console.error("Transaction failed", error);
+    return { txid: null };
   }
 };
 
@@ -142,4 +125,4 @@ const breakFishbowl = async (publicKey: string, usdcAmt: number, txid: string, w
   }
 };
 
-export { breakFishbowl, getCurrentPresaleStageDetails, getTokenBalances, getUnprivilegedUserBalance, handleTxn, imgLoader, toMbOrNone };
+export { breakFishbowl, getCurrentPresaleStageDetails, getTokenBalances, getUnprivilegedUserBalance, handleTxn };

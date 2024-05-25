@@ -2,15 +2,7 @@
 import { Community, Ecosystem, Footer, HeroCard, Navbar, Roadmap, Socials, Tokenomics } from "@/components";
 import PresaleWindow from "@/components/PresaleWindow";
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
-import {
-  CoinbaseWalletAdapter,
-  LedgerWalletAdapter,
-  MathWalletAdapter,
-  PhantomWalletAdapter,
-  SolflareWalletAdapter,
-  TrezorWalletAdapter,
-  TrustWalletAdapter,
-} from "@solana/wallet-adapter-wallets";
+import { PhantomWalletAdapter } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
 import Head from "next/head";
 import { useMemo } from "react";
@@ -18,18 +10,7 @@ import { COMMUNITY_CARDS, ECO_CARDS, ROADMAP } from "./constants";
 import { useViewerContext } from "./context/ViewerContext";
 
 export default function Home() {
-  const wallets = useMemo(
-    () => [
-      new PhantomWalletAdapter(),
-      new SolflareWalletAdapter(),
-      new MathWalletAdapter(),
-      new CoinbaseWalletAdapter(),
-      new TrustWalletAdapter(),
-      new TrezorWalletAdapter(),
-      new LedgerWalletAdapter(),
-    ],
-    []
-  );
+  const wallets = useMemo(() => [new PhantomWalletAdapter()], []);
 
   const endpoint = useMemo(() => clusterApiUrl("mainnet-beta"), []);
   const { isViewingPresale } = useViewerContext();
