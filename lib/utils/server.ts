@@ -74,14 +74,13 @@ const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterPro
   // Example adjustment for associated token account creation
   const fromWallet = publicKey; // Assuming this is the sender's wallet public key
 
-  const TOKEN_PROGRAM_Id = new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
-
   // Create associated token account for the sender if it doesn't exist
-  const fromTokenAccountAddress = await PublicKey.findProgramAddressSync([fromWallet.toBuffer(), TOKEN_PROGRAM_Id.toBuffer(), USDC_MINT_ADDRESS.toBuffer()], TOKEN_PROGRAM_Id);
+  const fromTokenAccountAddress = await PublicKey.findProgramAddressSync([fromWallet.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), USDC_MINT_ADDRESS.toBuffer()], TOKEN_PROGRAM_ID);
 
   const fromTokenAccount = fromTokenAccountAddress[0];
+
   // Create associated token account for the recipient if it doesn't exist
-  const toTokenAccountAddress = await PublicKey.findProgramAddressSync([toWalletPublicKey.toBuffer(), TOKEN_PROGRAM_Id.toBuffer(), USDC_MINT_ADDRESS.toBuffer()], TOKEN_PROGRAM_Id);
+  const toTokenAccountAddress = await PublicKey.findProgramAddressSync([toWalletPublicKey.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), USDC_MINT_ADDRESS.toBuffer()], TOKEN_PROGRAM_ID);
 
   const toTokenAccount = toTokenAccountAddress[0];
 
@@ -97,7 +96,7 @@ const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterPro
   const txnAmt = amount * Math.pow(10, 6);
   console.log("amount", amount, "txnAmt", txnAmt);
 
-  transaction.add(createTransferInstruction(fromTokenAccount, toTokenAccount, fromWallet, txnAmt, [], TOKEN_PROGRAM_Id));
+  transaction.add(createTransferInstruction(fromTokenAccount, toTokenAccount, fromWallet, txnAmt, [], TOKEN_PROGRAM_ID));
 
   try {
     const txid = await sendTransaction(transaction, connection);
