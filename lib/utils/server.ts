@@ -67,19 +67,21 @@ const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterPro
   const connStr = `https://stylish-capable-fire.solana-mainnet.quiknode.pro/${process.env.NEXT_PUBLIC_CUSTOM_RPC_HOST_KEY}`;
   const connection = new Connection(connStr);
 
-  const fromWallet = publicKey;
-
   // Token mint address for USDC on mainnet
   const USDC_MINT_ADDRESS = new PublicKey(process.env.NEXT_PUBLIC_USDC_TOKEN_ADDRESS!);
   const toWalletPublicKey = new PublicKey(process.env.NEXT_PUBLIC_PRESALE_WALLET!);
 
+  // Example adjustment for associated token account creation
+  const fromWallet = publicKey; // Assuming this is the sender's wallet public key
+
+  const TOKEN_PROGRAM_Id = new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
+
   // Create associated token account for the sender if it doesn't exist
-  const fromTokenAccountAddress = await PublicKey.findProgramAddressSync([fromWallet.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), USDC_MINT_ADDRESS.toBuffer()], TOKEN_PROGRAM_ID);
+  const fromTokenAccountAddress = await PublicKey.findProgramAddressSync([fromWallet.toBuffer(), TOKEN_PROGRAM_Id.toBuffer(), USDC_MINT_ADDRESS.toBuffer()], TOKEN_PROGRAM_Id);
 
   const fromTokenAccount = fromTokenAccountAddress[0];
-
   // Create associated token account for the recipient if it doesn't exist
-  const toTokenAccountAddress = await PublicKey.findProgramAddressSync([toWalletPublicKey.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), USDC_MINT_ADDRESS.toBuffer()], TOKEN_PROGRAM_ID);
+  const toTokenAccountAddress = await PublicKey.findProgramAddressSync([toWalletPublicKey.toBuffer(), TOKEN_PROGRAM_Id.toBuffer(), USDC_MINT_ADDRESS.toBuffer()], TOKEN_PROGRAM_Id);
 
   const toTokenAccount = toTokenAccountAddress[0];
 
@@ -95,7 +97,7 @@ const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterPro
   const txnAmt = amount * Math.pow(10, 6);
   console.log("amount", amount, "txnAmt", txnAmt);
 
-  transaction.add(createTransferInstruction(fromTokenAccount, toTokenAccount, fromWallet, txnAmt, [], TOKEN_PROGRAM_ID));
+  transaction.add(createTransferInstruction(fromTokenAccount, toTokenAccount, fromWallet, txnAmt, [], TOKEN_PROGRAM_Id));
 
   try {
     const txid = await sendTransaction(transaction, connection);
