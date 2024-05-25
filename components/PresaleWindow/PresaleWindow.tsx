@@ -133,7 +133,11 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
         const txn = await handleTxn(publicKey, sendTransaction, spendNum);
         if (!!txn?.txid) {
           setIsTransmittingTxn(false);
-          breakFishbowl(publicKey.toBase58(), spendNum, txn.txid, wallet.adapter.name, walletEmail);
+          const resp = await breakFishbowl(publicKey.toBase58(), spendNum, txn.txid, wallet.adapter.name, walletEmail);
+
+          const { message } = resp;
+
+          if (message === "SUCCESS") handleKFBalances();
         }
       }
     } catch (error) {
