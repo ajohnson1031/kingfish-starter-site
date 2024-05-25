@@ -7,7 +7,7 @@ import { Button, Img, Wallets } from "@/components";
 import { ButtonVariant } from "@/components/Button";
 import { useWallet } from "@solana/wallet-adapter-react";
 import cn from "classnames";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
@@ -15,8 +15,12 @@ import { ImgVariant } from "../Img";
 import { HeroCardProps } from "./HeroCard.types";
 
 const HeroCard: FC<HeroCardProps> = () => {
+  const [currentUrl, setCurrentUrl] = useState<string | null>(null);
+
+  const PROD = currentUrl?.includes("kingfish.app");
+
   const { select, wallets, publicKey, disconnect } = useWallet();
-  const { isViewingWallet, setIsViewingWallet, setIsViewingPresale } = useViewerContext();
+  const { isViewingWallet, setIsViewingWallet, setIsViewingPresale, setIsViewingComingSoon } = useViewerContext();
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const handleClick = (url?: string) => {
@@ -31,6 +35,10 @@ const HeroCard: FC<HeroCardProps> = () => {
       setIsCopied(false);
     }, 3000);
   };
+
+  useEffect(() => {
+    setCurrentUrl(window.location.href);
+  }, []);
 
   return (
     <div className="h-[75vh] md:h-screen mt-40 mb-20">
@@ -51,7 +59,13 @@ const HeroCard: FC<HeroCardProps> = () => {
           Inspired by the Solana Ecosystem & every fish in the world's oceans. <br className="hidden lg:block" /> A community-driven, uniquely rewarding system.
         </p>
         <div className="flex justify-center gap-3 md:gap-5">
-          <Button className={FUCHSIA_GRADIENT} label="Buy Presale" onClick={() => setIsViewingPresale(true)} />
+          <Button
+            className={FUCHSIA_GRADIENT}
+            label="Buy Presale"
+            onClick={() => {
+              PROD ? setIsViewingComingSoon(true) : setIsViewingPresale(true);
+            }}
+          />
           <Button className={VIOLET_GRADIENT} label="Whitepaper" onClick={() => handleClick("./KINGFISH_Whitepaper.pdf")} />
         </div>
       </div>

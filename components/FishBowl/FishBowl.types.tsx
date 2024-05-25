@@ -1,1 +1,3 @@
-export interface FishBowlProps {}
+export interface FishBowlProps {
+  isTransmittingTxn: boolean;
+}

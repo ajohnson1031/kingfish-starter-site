@@ -186,22 +186,12 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
               }`}
             >
               <FaXmark
-                className={"w-11 h-11 text-white p-2 rounded-full box-border bg-red-400 hover:bg-red-500 ml-auto cursor-pointer relative z-10 -top-5 left-6"}
-                onClick={() => {
-                  if (!isTransmittingTxn) setIsViewingPresale(false);
-                }}
+                className={`w-11 h-11 text-white p-2 rounded-full box-border bg-red-400 hover:bg-red-500 ml-auto cursor-pointer relative z-10 -top-5 left-6 ${
+                  isTransmittingTxn ? "hidden" : "block"
+                }`}
+                onClick={() => setIsViewingPresale(false)}
               />
-              {isTransmittingTxn && (
-                <div>
-                  <FishBowl />
-                  <p className={`text-xl text-white text-center font-bold transition ease-in duration-200 delay-300 ${isTransmittingTxn ? "opacity-100" : "opacity-0"}`}>
-                    One moment, breaking fishbowl to free your King
-                    <span className="text-orange-500">
-                      Fish<sup>™</sup>
-                    </span>
-                  </p>
-                </div>
-              )}
+              <FishBowl isTransmittingTxn={isTransmittingTxn} />
 
               <Img src={cuteIcon} alt="cute fish icon" size={120} className={`w-fit mx-auto -mt-10 ${isTransmittingTxn ? "opacity-0" : "opacity-100"}`} />
               <p className={`text-3xl font-black text-white ${isTransmittingTxn ? "opacity-0" : "opacity-100"}`}>
