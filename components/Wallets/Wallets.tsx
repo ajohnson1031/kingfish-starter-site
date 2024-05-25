@@ -24,7 +24,7 @@ const Wallets = ({ select, wallets, publicKey, disconnect }: WalletsProps) => {
             </button>
           ))
       ) : (
-        <p>No wallet found. Please download a supported Solana wallet</p>
+        <p className="text-gray-300">No wallet found. Please download a supported Solana wallet</p>
       )}
     </div>
   ) : (

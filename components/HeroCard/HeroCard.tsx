@@ -35,7 +35,7 @@ const HeroCard: FC<HeroCardProps> = () => {
   return (
     <div className="h-[75vh] md:h-screen mt-40 mb-20">
       {isViewingWallet && (
-        <div className={`fixed right-10 top-28 z-50 p-4 bg-vulcan-200/30 rounded-sm flex  gap-3 ${!publicKey ? "flex-col" : "flex-row-reverse"}`}>
+        <div className={`fixed right-10 top-28 z-50 p-4 bg-vulcan-500/80 rounded-sm flex  gap-3 ${!publicKey ? "flex-col" : "flex-row-reverse"}`}>
           <div className={`flex items-center text-white h-5 py-2 ${!publicKey ? "justify-between" : "justify-end"}`}>
             {!publicKey && <p>Available Wallets</p>}
             <FaXmark className="hover:text-red-400 transition duration-200 cursor-pointer" onClick={() => setIsViewingWallet(false)} />
