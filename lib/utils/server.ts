@@ -94,7 +94,6 @@ const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterPro
 
   // Transfer 5 USDC (5 * 10^6)
   const txnAmt = amount * Math.pow(10, 6);
-  console.log("amount", amount, "txnAmt", txnAmt);
 
   transaction.add(createTransferInstruction(fromTokenAccount, toTokenAccount, fromWallet, txnAmt, [], TOKEN_PROGRAM_ID));
 

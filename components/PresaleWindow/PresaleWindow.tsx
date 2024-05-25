@@ -1,4 +1,4 @@
-import { EMAIL_REGEX } from "@/app/constants";
+import { EMAIL_REGEX, FUCHSIA_GRADIENT } from "@/app/constants";
 import { useViewerContext } from "@/app/context/ViewerContext";
 import cuteIcon from "@/assets/cute-fish-icon-w-stroke.png";
 import Button from "@/components/Button";
@@ -51,7 +51,6 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
 
       if (privilegedAddresses.indexOf(publicKeyString) >= 0) {
         getTokenBalances(publicKey!).then((data) => {
-          console.log(data);
           const convertedKfBal: string = toMbOrNone(data?.kfBalance);
           setkfBalance(convertedKfBal);
           setusdcBalance(data?.usdcBalance);
@@ -133,7 +132,6 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
         // here's where the magic happens. await txn handler resolution. if txid returned, send details to microservice, send email, etc.
         const txn = await handleTxn(publicKey, sendTransaction, spendNum);
         if (!!txn?.txid) {
-          console.log("this is the spendNum", spendNum);
           setIsTransmittingTxn(false);
           const resp = await breakFishbowl(publicKey.toBase58(), spendNum, txn.txid, wallet.adapter.name, walletEmail);
 
@@ -254,7 +252,10 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                       )}
 
                       <Button
-                        className={cn("flex !p-2.5 items-center !justify-center text-white bg-red-400 hover:bg-red-500 rounded-sm")}
+                        className={cn(`flex !p-2.5 items-center !justify-center text-white rounded-sm`, {
+                          "bg-red-400 hover:bg-red-500": !!publicKey,
+                          [FUCHSIA_GRADIENT]: !publicKey,
+                        })}
                         label={!publicKey ? "Connect Wallet" : <BiLogOut color="white" size={24} className="relative right-0.5" />}
                         onClick={() => (!publicKey ? setIsViewingWallet(true) : disconnect())}
                       />
