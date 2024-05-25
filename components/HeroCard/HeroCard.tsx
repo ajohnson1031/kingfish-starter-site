@@ -1,6 +1,6 @@
 "use client";
 
-import { FUCHSIA_GRADIENT, KINGFISH_TOKEN_ADDY, OPACITY_FUCHSIA_GRADIENT, VIOLET_GRADIENT } from "@/app/constants";
+import { FUCHSIA_GRADIENT, OPACITY_FUCHSIA_GRADIENT, VIOLET_GRADIENT } from "@/app/constants";
 import { useViewerContext } from "@/app/context/ViewerContext";
 import cuteIcon from "@/assets/cute-fish-icon.png";
 import { Button, Img, Wallets } from "@/components";
@@ -28,7 +28,7 @@ const HeroCard: FC<HeroCardProps> = () => {
   };
 
   const copyKF = () => {
-    navigator.clipboard.writeText(KINGFISH_TOKEN_ADDY);
+    navigator.clipboard.writeText(process.env.NEXT_PUBLIC_TOKEN_MINT_ADDRESS!);
     setIsCopied(true);
 
     setTimeout(() => {
@@ -74,7 +74,7 @@ const HeroCard: FC<HeroCardProps> = () => {
           <Img src={cuteIcon} width={55} />
           <div className="hidden lg:block">
             <p>Solana Chain Address</p>
-            <p>{KINGFISH_TOKEN_ADDY.slice(0, 17)}...</p>
+            <p>{process.env.NEXT_PUBLIC_TOKEN_MINT_ADDRESS!.slice(0, 17)}...</p>
           </div>
           <Button
             variant={ButtonVariant.SECONDARY}
