@@ -44,7 +44,8 @@ const Footer: FC<FooterProps> = () => {
 
       try {
         setMessage(messages.submitting);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/newsletter`, {
+        // const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/newsletter`, {
+        const response = await fetch(`http://localhost:5010/newsletter`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

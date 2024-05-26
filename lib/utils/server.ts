@@ -1,4 +1,4 @@
-import { TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction, createTransferInstruction } from "@solana/spl-token";
+import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID, createTransferInstruction } from "@solana/spl-token";
 import { WalletAdapterProps } from "@solana/wallet-adapter-base";
 import { Connection, PublicKey, Transaction } from "@solana/web3.js";
 
@@ -58,48 +58,31 @@ const getUnprivilegedUserBalance = async (publicKey: string) => {
   }
 };
 
+const findAssociatedTokenAddress = async (walletAddress: PublicKey, tokenMintAddress: PublicKey): Promise<PublicKey> => {
+  return (await PublicKey.findProgramAddress([walletAddress.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), tokenMintAddress.toBuffer()], ASSOCIATED_TOKEN_PROGRAM_ID))[0];
+};
+
 const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterProps["sendTransaction"], amount: number) => {
   if (!publicKey) {
-    console.log("Wallet not connected");
+    console.error("Wallet not connected!");
     return;
   }
 
+  const amountInSmallestUnit = amount * Math.pow(10, 6);
   const connStr = `https://stylish-capable-fire.solana-mainnet.quiknode.pro/${process.env.NEXT_PUBLIC_CUSTOM_RPC_HOST_KEY}`;
   const connection = new Connection(connStr);
-
-  // Token mint address for USDC on mainnet
   const USDC_MINT_ADDRESS = new PublicKey(process.env.NEXT_PUBLIC_USDC_TOKEN_ADDRESS!);
-  const toWalletPublicKey = new PublicKey(process.env.NEXT_PUBLIC_PRESALE_WALLET!);
 
-  // Example adjustment for associated token account creation
-  const fromWallet = publicKey; // Assuming this is the sender's wallet public key
+  const recipientPublicKey = new PublicKey(process.env.NEXT_PUBLIC_PRESALE_WALLET!);
+  const senderTokenAddress = await findAssociatedTokenAddress(publicKey, USDC_MINT_ADDRESS);
+  const recipientTokenAddress = await findAssociatedTokenAddress(recipientPublicKey, USDC_MINT_ADDRESS);
 
-  // Create associated token account for the sender if it doesn't exist
-  const fromTokenAccountAddress = await PublicKey.findProgramAddressSync([fromWallet.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), USDC_MINT_ADDRESS.toBuffer()], TOKEN_PROGRAM_ID);
+  const transferInstruction = createTransferInstruction(senderTokenAddress, recipientTokenAddress, publicKey, amountInSmallestUnit, [], TOKEN_PROGRAM_ID);
 
-  const fromTokenAccount = fromTokenAccountAddress[0];
-
-  // Create associated token account for the recipient if it doesn't exist
-  const toTokenAccountAddress = await PublicKey.findProgramAddressSync([toWalletPublicKey.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), USDC_MINT_ADDRESS.toBuffer()], TOKEN_PROGRAM_ID);
-
-  const toTokenAccount = toTokenAccountAddress[0];
-
-  const transaction = new Transaction();
-
-  // Create the sender's token account if it doesn't exist
-  transaction.add(createAssociatedTokenAccountInstruction(fromWallet, fromTokenAccount, fromWallet, USDC_MINT_ADDRESS));
-
-  // Create the recipient's token account if it doesn't exist
-  transaction.add(createAssociatedTokenAccountInstruction(fromWallet, toTokenAccount, toWalletPublicKey, USDC_MINT_ADDRESS));
-
-  // Transfer 5 USDC (5 * 10^6)
-  const txnAmt = amount * Math.pow(10, 6);
-
-  transaction.add(createTransferInstruction(fromTokenAccount, toTokenAccount, fromWallet, txnAmt, [], TOKEN_PROGRAM_ID));
+  const transaction = new Transaction().add(transferInstruction);
 
   try {
     const txid = await sendTransaction(transaction, connection);
-    await connection.confirmTransaction(txid, "confirmed");
     console.log("Transaction signature (ID):", txid);
     return { txid };
   } catch (error) {
@@ -111,7 +94,8 @@ const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterPro
 const breakFishbowl = async (publicKey: string, usdcAmt: number, txid: string, walletName: string, email: string) => {
   try {
     const walletEmail = email.length > 0 ? email : null;
-    const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/presale/break-fishbowl`, {
+    // const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/presale/break-fishbowl`, {
+    const response = await fetch(`http://localhost:5010/presale/break-fishbowl`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -120,7 +104,6 @@ const breakFishbowl = async (publicKey: string, usdcAmt: number, txid: string, w
     });
 
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error(error);

@@ -7,7 +7,7 @@ import { breakFishbowl, getCurrentPresaleStageDetails, getTokenBalances, getUnpr
 import { toMbOrNone } from "@/lib/utils/static";
 import { useWallet } from "@solana/wallet-adapter-react";
 import cn from "classnames";
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { BiLogOut } from "react-icons/bi";
 import { FaXmark } from "react-icons/fa6";
 import FishBowl from "../FishBowl";
@@ -130,14 +130,18 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
         setIsTransmittingTxn(true);
 
         // here's where the magic happens. await txn handler resolution. if txid returned, send details to microservice, send email, etc.
-        const txn = await handleTxn(publicKey, sendTransaction, spendNum);
+        const txn = await sendUSDC();
         if (!!txn?.txid) {
           setIsTransmittingTxn(false);
           const resp = await breakFishbowl(publicKey.toBase58(), spendNum, txn.txid, wallet.adapter.name, walletEmail);
 
           const { message } = resp;
 
-          if (message === "SUCCESS") handleKFBalances();
+          if (message === "SUCCESS") {
+            handleKFBalances();
+            setBuyAmount("");
+            setBuyMessage(buyMessages.success);
+          }
         }
       }
     } catch (error) {
@@ -145,6 +149,8 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
       setBuyMessage(buyMessages.error);
     }
   };
+
+  const sendUSDC = useCallback(() => handleTxn(publicKey!, sendTransaction, Number(buyAmount)), [publicKey, sendTransaction]);
 
   useEffect(() => {
     if (isViewingPresale) {
