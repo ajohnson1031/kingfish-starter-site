@@ -94,8 +94,7 @@ const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterPro
 const breakFishbowl = async (publicKey: string, usdcAmt: number, txid: string, walletName: string, email: string) => {
   try {
     const walletEmail = email.length > 0 ? email : null;
-    // const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/presale/break-fishbowl`, {
-    const response = await fetch(`http://localhost:5010/presale/break-fishbowl`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/presale/break-fishbowl`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
