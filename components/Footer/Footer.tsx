@@ -27,7 +27,7 @@ const Footer: FC<FooterProps> = () => {
   );
 
   const handleEmail = ({ target: { value } }: any) => {
-    setEmail(value);
+    setEmail(value.toLowerCase());
     setMessage(null);
   };
 

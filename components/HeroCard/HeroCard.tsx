@@ -17,7 +17,7 @@ import { HeroCardProps } from "./HeroCard.types";
 const HeroCard: FC<HeroCardProps> = () => {
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
 
-  const PROD = currentUrl?.includes("kingfish.app");
+  const PROD = !currentUrl?.includes("kingfish.app");
 
   const { select, wallets, publicKey, disconnect } = useWallet();
   const { isViewingWallet, setIsViewingWallet, setIsViewingPresale, setIsViewingComingSoon } = useViewerContext();
