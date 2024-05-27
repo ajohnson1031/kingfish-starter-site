@@ -1,6 +1,7 @@
 import { EMAIL_REGEX, FUCHSIA_GRADIENT, OPACITY_SKY_GRADIENT } from "@/app/constants";
 import cuteIcon from "@/assets/cute-fish-icon-w-stroke.png";
 import { Button, Img } from "@/components";
+import { messages } from "@/components/Footer/constants";
 import cn from "classnames";
 import { FC, useEffect, useState } from "react";
 import { FaXmark } from "react-icons/fa6";
@@ -11,13 +12,7 @@ const ComingSoon: FC<ComingSoonProps> = ({ isViewingComingSoon, setIsViewingComi
   const [opacity, setOpacity] = useState("opacity-0");
   const [email, setEmail] = useState<string>("");
   const [message, setMessage] = useState<JSX.Element | null>(null);
-  const [messages] = useState<Record<string, JSX.Element>>({
-    invalid: <span className="text-red-300">Please enter a valid email address.</span>,
-    valid: <span className="text-green-300">Thanks for signing up! We'll be in touch.</span>,
-    error: <span className="text-red-300">Sorry, there was an error. Please try again.</span>,
-    duplicate: <span className="text-gray-300">You've already signed up. We'll keep you posted.</span>,
-    submitting: <span className="text-yellow-400">One moment, adding plankton...</span>,
-  });
+
   const [btnEnabled, setBtnEnabled] = useState<boolean>(true);
 
   const handleEmail = ({ target: { value } }: any) => {

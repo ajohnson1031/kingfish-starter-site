@@ -12,6 +12,7 @@ import { BiLogOut } from "react-icons/bi";
 import { FaXmark } from "react-icons/fa6";
 import FishBowl from "../FishBowl";
 import { CurrentStageDetailsProps, PresaleWindowProps } from "./PresaleWindow.types";
+import { buyMessages, txnErrorResponses } from "./constants";
 
 const PresaleWindow: FC<PresaleWindowProps> = () => {
   const { publicKey, disconnect, wallet, sendTransaction } = useWallet();
@@ -31,14 +32,6 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   const [confirmChecked, setConfirmChecked] = useState<boolean>(false);
   const [editStoredEmail, setEditStoredEmail] = useState<boolean>(false);
   const [walletEmail, setWalletEmail] = useState<string>("");
-
-  const [buyMessages] = useState<Record<string, JSX.Element>>({
-    invalid: <span className="text-red-300">Spend amount is required.</span>,
-    deficit: <span className="text-red-300">Spend amount exceeds USDC balance.</span>,
-    success: <span className="text-green-300">Fishbowl busted to shards! Transaction sent!</span>,
-    error: <span className="text-red-300">Sorry, there was an error. Please try again later.</span>,
-    email: <span className="text-red-300">Please enter a valid email address.</span>,
-  });
 
   const nextMsg = `Until ${currentStageDetails?.currentStage?.next_per_usdc ? `1 USDC = ${currentStageDetails?.currentStage.next_per_usdc} $KingFish` : "Presale Ends!"}`;
 
@@ -66,10 +59,6 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
           setusdcBalance(data?.usdcBalance);
         });
       }
-    } else {
-      getCurrentPresaleStageDetails().then((data) => {
-        setCurrentStageDetails({ ...data });
-      });
     }
   };
 
@@ -125,32 +114,36 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
       return;
     }
 
-    try {
-      if (wallet && publicKey) {
-        setIsTransmittingTxn(true);
+    if (wallet && publicKey) {
+      setIsTransmittingTxn(true);
 
+      try {
         // here's where the magic happens. await txn handler resolution. if txid returned, send details to microservice, send email, etc.
         const txn = await sendUSDC();
         if (!!txn?.txid) {
           setIsTransmittingTxn(false);
-          const resp = await breakFishbowl(publicKey.toBase58(), spendNum, txn.txid, wallet.adapter.name, walletEmail);
+          const res = await breakFishbowl(publicKey.toBase58(), spendNum, txn.txid, wallet.adapter.name, walletEmail);
 
-          const { message } = resp;
+          const { message } = res;
 
           if (message === "SUCCESS") {
             handleKFBalances();
             setBuyAmount("");
             setBuyMessage(buyMessages.success);
-          }
+          } else setBuyMessage(buyMessages.error);
+        } else {
+          setBuyMessage(buyMessages.error);
+          setIsTransmittingTxn(false);
         }
+      } catch (error: any) {
+        console.error(error);
+        setBuyMessage(txnErrorResponses[error.message || "Default"]);
+        setIsTransmittingTxn(false);
       }
-    } catch (error) {
-      console.error(error);
-      setBuyMessage(buyMessages.error);
     }
   };
 
-  const sendUSDC = useCallback(() => handleTxn(publicKey!, sendTransaction, Number(buyAmount)), [publicKey, sendTransaction]);
+  const sendUSDC = useCallback(() => handleTxn(publicKey!, sendTransaction, Number(buyAmount)), [publicKey, buyAmount, sendTransaction]);
 
   useEffect(() => {
     if (isViewingPresale) {
@@ -170,12 +163,21 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   }, [publicKey]);
 
   useEffect(() => {
-    setTimeout(() => setBuyMessage(null), 4000);
+    const timeoutId = setTimeout(() => setBuyMessage(null), 4000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [buyMessage]);
+
+  useEffect(() => {
+    getCurrentPresaleStageDetails().then((data) => {
+      setCurrentStageDetails({ ...data });
+    });
+  }, []);
 
   return (
     <>
-      {/* <div className="absolute top-1/3 left-1/4 z-40 w-1/2 h-1/2 bg-black/90 rounded-md"></div> */}
       <div
         className={cn(
           "w-[100vw] h-[calc(100vh-81px)] md:h-[calc(100vh-97px)] fixed top-[81px] md:top-[97px] left-0 z-30 p-10 flex transition-opacity ease-in duration-300 bg-presale bg-contain",
