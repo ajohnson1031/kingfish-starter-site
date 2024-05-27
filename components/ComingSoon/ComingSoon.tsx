@@ -90,7 +90,7 @@ const ComingSoon: FC<ComingSoonProps> = ({ isViewingComingSoon, setIsViewingComi
   return (
     <div
       className={cn(
-        "w-[100vw] h-[calc(100vh-81px)] md:h-[calc(100vh-97px)] fixed top-[81px] md:top-[97px] left-0 z-30 p-10 transition-opacity ease-in duration-300 bg-presale bg-contain",
+        "w-[100vw] h-[calc(100vh-81px)] md:h-[calc(100vh-97px)] fixed top-[81px] md:top-[97px] left-0 z-30 p-10 transition-opacity ease-in duration-300 bg-presale bg-cover",
         { hidden: !isViewingComingSoon, flex: isViewingComingSoon },
         opacity
       )}
