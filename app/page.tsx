@@ -1,11 +1,12 @@
 "use client";
 import { ComingSoon, Community, Ecosystem, Footer, HeroCard, Navbar, Roadmap, Socials, Tokenomics } from "@/components";
 import PresaleWindow from "@/components/PresaleWindow";
+import { getCurrentPresaleStageDetails } from "@/lib/utils/server";
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
 import { PhantomWalletAdapter } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
 import Head from "next/head";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { COMMUNITY_CARDS, ECO_CARDS, ROADMAP } from "./constants";
 import { useViewerContext } from "./context/ViewerContext";
 
@@ -13,7 +14,13 @@ export default function Home() {
   const wallets = useMemo(() => [new PhantomWalletAdapter()], []);
 
   const endpoint = useMemo(() => clusterApiUrl("mainnet-beta"), []);
-  const { isViewingPresale, isViewingComingSoon, setIsViewingComingSoon } = useViewerContext();
+  const { isViewingPresale, isViewingComingSoon, setIsViewingComingSoon, setCurrentStageDetails } = useViewerContext();
+
+  useEffect(() => {
+    getCurrentPresaleStageDetails().then((data) => {
+      setCurrentStageDetails({ ...data });
+    });
+  }, []);
 
   return (
     <ConnectionProvider endpoint={endpoint}>

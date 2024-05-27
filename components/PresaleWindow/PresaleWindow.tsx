@@ -3,7 +3,7 @@ import { useViewerContext } from "@/app/context/ViewerContext";
 import cuteIcon from "@/assets/cute-fish-icon-w-stroke.png";
 import Button from "@/components/Button";
 import Img from "@/components/Img";
-import { breakFishbowl, getCurrentPresaleStageDetails, getTokenBalances, getUnprivilegedUserBalance, handleTxn } from "@/lib/utils/server";
+import { breakFishbowl, getTokenBalances, getUnprivilegedUserBalance, handleTxn } from "@/lib/utils/server";
 import { toMbOrNone } from "@/lib/utils/static";
 import { useWallet } from "@solana/wallet-adapter-react";
 import cn from "classnames";
@@ -11,7 +11,7 @@ import { FC, useCallback, useEffect, useState } from "react";
 import { BiLogOut } from "react-icons/bi";
 import { FaXmark } from "react-icons/fa6";
 import FishBowl from "../FishBowl";
-import { CurrentStageDetailsProps, PresaleWindowProps } from "./PresaleWindow.types";
+import { PresaleWindowProps } from "./PresaleWindow.types";
 import { buyMessages, txnErrorResponses } from "./constants";
 
 const PresaleWindow: FC<PresaleWindowProps> = () => {
@@ -25,13 +25,14 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
 
   const [kfBalance, setkfBalance] = useState("0");
   const [usdcBalance, setusdcBalance] = useState(0);
-  const [currentStageDetails, setCurrentStageDetails] = useState<CurrentStageDetailsProps | null>(null);
+
   const [buyAmount, setBuyAmount] = useState<string>("");
   const [buyMessage, setBuyMessage] = useState<JSX.Element | null>(null);
   const [isTransmittingTxn, setIsTransmittingTxn] = useState<boolean>(false);
   const [confirmChecked, setConfirmChecked] = useState<boolean>(false);
   const [editStoredEmail, setEditStoredEmail] = useState<boolean>(false);
   const [walletEmail, setWalletEmail] = useState<string>("");
+  const { currentStageDetails } = useViewerContext();
 
   const nextMsg = `Until ${currentStageDetails?.currentStage?.next_per_usdc ? `1 USDC = ${currentStageDetails?.currentStage.next_per_usdc} $KingFish` : "Presale Ends!"}`;
 
@@ -169,12 +170,6 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
       clearTimeout(timeoutId);
     };
   }, [buyMessage]);
-
-  useEffect(() => {
-    getCurrentPresaleStageDetails().then((data) => {
-      setCurrentStageDetails({ ...data });
-    });
-  }, []);
 
   return (
     <>
