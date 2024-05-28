@@ -26,8 +26,31 @@ export default function Home() {
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
         <Head>
-          <title>KingFish HQ</title>
-          <meta name="description" content="KingFish: the Happiest Meme Coin in the Seven Seas" />
+          <title>KingFish - The Breakout Meme Coin of 2024</title>
+          <meta
+            name="description"
+            content="Discover KingFish, the breakout meme coin of 2024. Join our decentralized community and explore unique features, robust technology on the Solana blockchain, and exciting growth opportunities."
+          />
+          <meta name="keywords" content="KingFish, KFSH, meme coin, cryptocurrency, Solana blockchain, decentralized finance, crypto community, staking rewards, token exchange" />
+          <meta name="author" content="KingFish Team" />
+
+          <meta property="og:title" content="KingFish - The Breakout Meme Coin of 2024" />
+          <meta
+            property="og:description"
+            content="Join KingFish and be part of a revolutionary community-driven cryptocurrency. Explore our features, robust technology, and potential for significant growth."
+          />
+          <meta property="og:image" content="https://kingfish.app/kingfish-logo.png" />
+          <meta property="og:url" content="https://kingfish.app" />
+
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="KingFish - The Breakout Meme Coin of 2024" />
+          <meta
+            name="twitter:description"
+            content="Discover KingFish, a revolutionary meme coin on the Solana blockchain. Join our community and explore unique features and growth opportunities."
+          />
+          <meta name="twitter:image" content="https://kingfish.app/kingfish-logo.png" />
+          <meta name="robots" content="index, follow" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
           <link rel="icon" href="/favicon.ico" />
           <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
