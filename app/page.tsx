@@ -46,7 +46,7 @@ export default function Home() {
           <Roadmap roadmapItems={ROADMAP} />
           <Community communityItems={COMMUNITY_CARDS} />
         </main>
-        {!isViewingPresale && <Footer />}
+        {!isViewingPresale && !isViewingComingSoon && <Footer />}
         {isViewingComingSoon && <ComingSoon isViewingComingSoon={isViewingComingSoon} setIsViewingComingSoon={setIsViewingComingSoon} />}
         {isViewingPresale && <PresaleWindow />}
       </WalletProvider>
