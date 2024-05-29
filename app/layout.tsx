@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { ViewerProvider } from "./context/ViewerContext";
 import "./globals.css";
 export const metadata: Metadata = {
@@ -8,7 +8,6 @@ export const metadata: Metadata = {
   applicationName: "KingFish™",
   generator: "NextJS",
   keywords: "KingFish, KFSH, meme coin, cryptocurrency, Solana blockchain, decentralized finance, crypto community, staking rewards, token exchange",
-  viewport: { width: "device-width", initialScale: 1 },
   robots: "index, follow",
 };
 
@@ -25,3 +24,10 @@ export default function RootLayout({
     </html>
   );
 }
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
