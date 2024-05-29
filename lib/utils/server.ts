@@ -83,11 +83,11 @@ const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterPro
 
   try {
     const txid = await sendTransaction(transaction, connection);
-    console.log("Transaction signature (ID):", txid);
+
     return { txid };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Transaction failed", error);
-    return { txid: null };
+    return { txid: null, error: error.message };
   }
 };
 

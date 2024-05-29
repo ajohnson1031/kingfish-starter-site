@@ -17,7 +17,7 @@ const Img: FC<ImgProps> = ({ src, type = ImgVariant.STATIC_IMAGE, width, height,
 
   const renderedComponent = type === ImgVariant.STATIC_IMAGE ? Component : <Component size={size} color={color} title={alt} />;
 
-  return <div className={cn(`!h-[${size}] !w-[${size}px]`, className)}>{renderedComponent}</div>;
+  return <div className={cn(`!h-[${height || size}] !w-[${width || size}px]`, className)}>{renderedComponent}</div>;
 };
 
 export default Img;

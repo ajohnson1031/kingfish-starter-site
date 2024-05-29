@@ -99,8 +99,8 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   const onBuyClick = async (e: any) => {
     e.preventDefault();
 
-    // if spend amount is empty
     if (!buyAmount.length) {
+      // if spend amount is empty
       setBuyMessage(buyMessages.invalid);
       return;
     }
@@ -133,11 +133,11 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
             setBuyMessage(buyMessages.success);
           } else setBuyMessage(buyMessages.error);
         } else {
-          setBuyMessage(buyMessages.error);
+          setBuyMessage(txnErrorResponses[txn?.error]);
           setIsTransmittingTxn(false);
         }
       } catch (error: any) {
-        console.error(error);
+        console.log(error.message);
         setBuyMessage(txnErrorResponses[error.message || "Default"]);
         setIsTransmittingTxn(false);
       }
@@ -183,8 +183,8 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
       <div className="flex flex-col w-full md:w-1/2 h-full rounded-3xl mx-auto">
         <div className="flex flex-col w-full h-full">
           <div
-            className={`border-[3px] border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2 p-10 -mt-2 transition-all duration-200 ${
-              isTransmittingTxn ? "bg-black/80" : "bg-vulcan-500/80"
+            className={`border-[3px] overflow-hidden border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2 p-10 -mt-2 ${
+              isTransmittingTxn ? "bg-vulcan-900/80 p-0" : "bg-vulcan-500/80"
             }`}
           >
             <FaXmark
@@ -193,111 +193,117 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
               }`}
               onClick={() => setIsViewingPresale(false)}
             />
-            <FishBowl isTransmittingTxn={isTransmittingTxn} />
+            {isTransmittingTxn && (
+              <div className="flex relative z-50 w-full h-[572px] top-0 left-0">
+                <FishBowl />
+              </div>
+            )}
 
-            <Img src={cuteIcon} alt="cute fish icon" size={120} className={`w-fit mx-auto -mt-10 ${isTransmittingTxn ? "opacity-0" : "opacity-100"}`} />
-            <p className={`text-3xl font-black text-white ${isTransmittingTxn ? "opacity-0" : "opacity-100"}`}>
-              {currentStageDetails?.currentStage?.title || "Stage One"} has started!
-            </p>
-            <p className={`text-2xl text-gray-300 font-semibold transition-opacity duration-100 ${isTransmittingTxn ? "opacity-0" : "opacity-100"}`}>
-              1 USDC = {currentStageDetails?.currentStage?.per_usdc} KingFish<sup className="text-xs relative -top-2.5">™</sup>
-            </p>
-            <div className={`rounded-3xl p-2 w-full mx-auto ${isTransmittingTxn ? "opacity-0" : "opacity-100"}`}>
-              <div className="flex">
-                <div className="flex flex-col w-full">
-                  {!publicKey ? (
-                    <div className="flex flex-col gap-2 w-full">
-                      <p className="text-2xl text-orange-600 font-semibold">{toMbOrNone(currentStageDetails?.remainBal || 0)}</p>
-                      <p className="text-2xl text-orange-600 font-semibold">
-                        KingFish<sup className="text-xs relative -top-2.5">™</sup> remaining
-                      </p>
-                      <p className="font-light text-gray-300">{nextMsg}</p>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col gap-2 w-full text-center">
-                      <p className="text-2xl text-white font-semibold mb-3 py-2 px-4 bg-vulcan-500/80 rounded-full">
-                        You have <span className="text-orange-600">{kfBalance}</span> KingFish{tm}
-                      </p>
-                      <p className="text-lg text-white font-bold">Connected Wallet</p>
-                      <p className="text-lg text-orange-600 font-bold overflow-hidden text-ellipsis">{publicKey.toBase58()}</p>
-                    </div>
-                  )}
-                  <div className="flex gap-3 items-center justify-center mt-6">
-                    {publicKey && (
-                      <div className="w-full">
-                        <form onSubmit={onBuyClick} className="flex items-center h-fit w-full gap-3">
-                          <input
-                            type="text"
-                            className="w-full rounded-sm text-right h-11 px-2 text-cyan-800 border-2 box-border outline-none"
-                            value={buyAmount}
-                            placeholder="Enter USDC spend amt. (e.g., 10, 20, 10000...)"
-                            min="1"
-                            step="1"
-                            onChange={handleBuyAmtChange}
-                          />
-                          <Button
-                            className={`!text-sm w-[120px] !px-3 ml-auto py-2 h-11 min-w-[100px] flex items-center rounded-sm text-white bg-green-500 hover:bg-green-400 active:bg-green-600`}
-                            label="GET $KFSH"
-                          />
-                        </form>
+            {!isTransmittingTxn && (
+              <>
+                <Img src={cuteIcon} alt="cute fish icon" size={120} className={"w-fit mx-auto -mt-10"} />
+                <p className={"text-3xl font-black text-white"}>{currentStageDetails?.currentStage?.title || "Stage One"} has started!</p>
+                <p className={"text-2xl text-gray-300 font-semibold transition-opacity duration-100 $"}>
+                  1 USDC = {currentStageDetails?.currentStage?.per_usdc} KingFish<sup className="text-xs relative -top-2.5">™</sup>
+                </p>
+                <div className={"rounded-3xl p-2 w-full mx-auto"}>
+                  <div className="flex">
+                    <div className="flex flex-col w-full">
+                      {!publicKey ? (
+                        <div className="flex flex-col gap-2 w-full">
+                          <p className="text-2xl text-orange-600 font-semibold">{toMbOrNone(currentStageDetails?.remainBal || 0)}</p>
+                          <p className="text-2xl text-orange-600 font-semibold">
+                            KingFish<sup className="text-xs relative -top-2.5">™</sup> remaining
+                          </p>
+                          <p className="font-light text-gray-300">{nextMsg}</p>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-2 w-full text-center">
+                          <p className="text-2xl text-white font-semibold mb-3 py-2 px-4 bg-vulcan-500/80 rounded-full">
+                            You have <span className="text-orange-600">{kfBalance}</span> KingFish{tm}
+                          </p>
+                          <p className="text-lg text-white font-bold">Connected Wallet</p>
+                          <p className="text-lg text-orange-600 font-bold overflow-hidden text-ellipsis">{publicKey.toBase58()}</p>
+                        </div>
+                      )}
+                      <div className="flex gap-3 items-center justify-center mt-6">
+                        {publicKey && (
+                          <div className="w-full">
+                            <form onSubmit={onBuyClick} className="flex items-center h-fit w-full gap-3">
+                              <input
+                                type="text"
+                                className="w-full rounded-sm text-right h-11 px-2 text-cyan-800 border-2 box-border outline-none"
+                                value={buyAmount}
+                                placeholder="Enter USDC spend amt. (e.g., 10, 20, 10000...)"
+                                min="1"
+                                step="1"
+                                onChange={handleBuyAmtChange}
+                              />
+                              <Button
+                                className={`!text-sm w-[120px] !px-3 ml-auto py-2 h-11 min-w-[100px] flex items-center rounded-sm text-white bg-green-500 hover:bg-green-400 active:bg-green-600`}
+                                label="GET $KFSH"
+                              />
+                            </form>
+                          </div>
+                        )}
+
+                        <Button
+                          className={cn(`flex !p-2.5 items-center !justify-center text-white`, {
+                            "bg-red-400 hover:bg-red-500 rounded-sm": !!publicKey,
+                            [`${FUCHSIA_GRADIENT} !rounded--full !px-6`]: !publicKey,
+                          })}
+                          label={!publicKey ? "Connect Wallet" : <BiLogOut color="white" size={24} className="relative right-0.5" />}
+                          onClick={() => (!publicKey ? setIsViewingWallet(true) : disconnect())}
+                        />
                       </div>
-                    )}
 
-                    <Button
-                      className={cn(`flex !p-2.5 items-center !justify-center text-white`, {
-                        "bg-red-400 hover:bg-red-500 rounded-sm": !!publicKey,
-                        [`${FUCHSIA_GRADIENT} !rounded--full !px-6`]: !publicKey,
-                      })}
-                      label={!publicKey ? "Connect Wallet" : <BiLogOut color="white" size={24} className="relative right-0.5" />}
-                      onClick={() => (!publicKey ? setIsViewingWallet(true) : disconnect())}
-                    />
-                  </div>
+                      {confirmChecked && editStoredEmail && (
+                        <div className="flex gap-3 items-center justify-center mt-6">
+                          <div className="w-full">
+                            <form onSubmit={handleEmailStore} className="flex items-center h-fit w-full gap-3">
+                              <input
+                                type="text"
+                                className="w-full rounded-sm text-right h-11 px-2 text-cyan-800 border-2 box-border outline-none"
+                                value={walletEmail}
+                                placeholder="Enter preferred email..."
+                                min="1"
+                                step="1"
+                                onChange={(e) => setWalletEmail(e.target.value)}
+                              />
+                              <Button
+                                className={`!text-sm  !px-3 ml-auto py-2 h-11 flex items-center rounded-sm text-white bg-blue-500 hover:bg-blue-400 active:bg-blue-600`}
+                                label="SUBMIT"
+                              />
+                            </form>
+                          </div>
+                        </div>
+                      )}
 
-                  {confirmChecked && editStoredEmail && (
-                    <div className="flex gap-3 items-center justify-center mt-6">
-                      <div className="w-full">
-                        <form onSubmit={handleEmailStore} className="flex items-center h-fit w-full gap-3">
-                          <input
-                            type="text"
-                            className="w-full rounded-sm text-right h-11 px-2 text-cyan-800 border-2 box-border outline-none"
-                            value={walletEmail}
-                            placeholder="Enter preferred email..."
-                            min="1"
-                            step="1"
-                            onChange={(e) => setWalletEmail(e.target.value)}
-                          />
-                          <Button
-                            className={`!text-sm  !px-3 ml-auto py-2 h-11 flex items-center rounded-sm text-white bg-blue-500 hover:bg-blue-400 active:bg-blue-600`}
-                            label="SUBMIT"
-                          />
-                        </form>
-                      </div>
-                    </div>
-                  )}
-
-                  <p className={cn(`text-sm h-4 mt-2`, { buyMessage: "h-0" })}>{buyMessage}</p>
-                  {publicKey && (
-                    <div className="flex justify-center items-center gap-2 mt-2">
-                      <input className="w-4 h-4" name="confirmCheckBox" type="checkbox" checked={confirmChecked} onChange={toggleConfirmCheck} />
-                      <label className="text-white text-sm" htmlFor="confirmCheckBox">
-                        Send confirmation email on trade?
-                      </label>
-                      {walletEmail.length > 0 && editStoredEmail === false && (
-                        <p
-                          className="text-blue-400 hover:text-blue-300 text-sm underline cursor-pointer"
-                          onClick={() => {
-                            setConfirmChecked(true);
-                            setEditStoredEmail(true);
-                          }}
-                        >
-                          [Edit Stored Email]
-                        </p>
+                      <p className={cn(`text-sm h-4 mt-2`, { buyMessage: "h-0" })}>{buyMessage}</p>
+                      {publicKey && (
+                        <div className="flex justify-center items-center gap-2 mt-2">
+                          <input className="w-4 h-4" name="confirmCheckBox" type="checkbox" checked={confirmChecked} onChange={toggleConfirmCheck} />
+                          <label className="text-white text-sm" htmlFor="confirmCheckBox">
+                            Send confirmation email on trade?
+                          </label>
+                          {walletEmail.length > 0 && editStoredEmail === false && (
+                            <p
+                              className="text-blue-400 hover:text-blue-300 text-sm underline cursor-pointer"
+                              onClick={() => {
+                                setConfirmChecked(true);
+                                setEditStoredEmail(true);
+                              }}
+                            >
+                              [Edit Stored Email]
+                            </p>
+                          )}
+                        </div>
                       )}
                     </div>
-                  )}
+                  </div>
                 </div>
-              </div>
-            </div>
+              </>
+            )}
           </div>
         </div>
       </div>

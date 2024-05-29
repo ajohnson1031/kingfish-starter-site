@@ -11,6 +11,7 @@ const txnErrorResponses: Record<string, JSX.Element> = {
   "Transaction rejected by network": <span className="text-red-300">Your txn was rejected by the network. Please try again.</span>,
   "Transaction confirmation timeout": <span className="text-red-300">Your txn timed out. Please try again.</span>,
   "Signature verification failed": <span className="text-red-300">Txn signature unverifiable. Please try again.</span>,
+  "User rejected the request.": <span className="text-red-300">Txn rejected by user.</span>,
   "Account not found": <span className="text-red-300">Account not found.</span>,
   Default: <span className="text-red-300">Error in txn. Please try again or {contactSupport}.</span>,
 };
