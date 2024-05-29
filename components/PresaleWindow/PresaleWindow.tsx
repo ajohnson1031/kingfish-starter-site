@@ -184,7 +184,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
         <div className="flex flex-col w-full h-full">
           <div
             className={`border-[3px] overflow-hidden border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2 p-10 -mt-2 ${
-              isTransmittingTxn ? "bg-vulcan-900/80 p-0" : "bg-vulcan-500/80"
+              isTransmittingTxn ? "bg-vulcan-900/80 !p-0" : "bg-vulcan-500/80"
             }`}
           >
             <FaXmark
