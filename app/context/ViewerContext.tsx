@@ -10,6 +10,8 @@ interface ViewerProps {
   setIsViewingPresale: Dispatch<SetStateAction<boolean>>;
   isViewingComingSoon: boolean;
   setIsViewingComingSoon: Dispatch<SetStateAction<boolean>>;
+  isViewingRankings: boolean;
+  setIsViewingRankings: Dispatch<SetStateAction<boolean>>;
   currentStageDetails: CurrentStageDetailsProps | null;
   setCurrentStageDetails: Dispatch<SetStateAction<CurrentStageDetailsProps | null>>;
 }
@@ -21,6 +23,8 @@ const ViewerContext = createContext<ViewerProps>({
   setIsViewingPresale: () => {},
   isViewingComingSoon: false,
   setIsViewingComingSoon: () => {},
+  isViewingRankings: false,
+  setIsViewingRankings: () => {},
   currentStageDetails: null,
   setCurrentStageDetails: () => {},
 });
@@ -29,6 +33,7 @@ const ViewerProvider = ({ children }: { children: any }) => {
   const [isViewingWallet, setIsViewingWallet] = useState<boolean>(false);
   const [isViewingPresale, setIsViewingPresale] = useState<boolean>(false);
   const [isViewingComingSoon, setIsViewingComingSoon] = useState<boolean>(false);
+  const [isViewingRankings, setIsViewingRankings] = useState<boolean>(false);
   const [currentStageDetails, setCurrentStageDetails] = useState<CurrentStageDetailsProps | null>(null);
 
   return (
@@ -40,6 +45,8 @@ const ViewerProvider = ({ children }: { children: any }) => {
         setIsViewingPresale,
         isViewingComingSoon,
         setIsViewingComingSoon,
+        isViewingRankings,
+        setIsViewingRankings,
         currentStageDetails,
         setCurrentStageDetails,
       }}

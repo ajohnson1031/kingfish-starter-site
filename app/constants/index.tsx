@@ -1,6 +1,13 @@
 import community from "@/assets/community.jpg";
+import danio from "@/assets/danio.png";
+import guppy from "@/assets/guppy.png";
 import lplocked from "@/assets/lp-locked.jpg";
+import manta from "@/assets/manta.png";
+import marlin from "@/assets/marlin.png";
 import rewards from "@/assets/rewards.jpg";
+import shark from "@/assets/shark.png";
+import trout from "@/assets/trout.png";
+import whale from "@/assets/whale.png";
 
 const FUCHSIA_GRADIENT: string = "bg-gradient-to-r from-fuchsia-500 to-orange-400 hover:from-fuchsia-600 hover:to-orange-500";
 const OPACITY_FUCHSIA_GRADIENT: string = "bg-gradient-to-r from-fuchsia-500/50 to-orange-400/50";
@@ -189,12 +196,51 @@ const ECO_CARDS = [
 
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+const MEMBER_TIERS = [
+  {
+    name: "Danio",
+    holdings: "1 - 99,999",
+    imgSrc: danio,
+  },
+  {
+    name: "Guppy",
+    holdings: "100,000 - 499,999",
+    imgSrc: guppy,
+  },
+  {
+    name: "Trout",
+    holdings: "500,000 - 999,999",
+    imgSrc: trout,
+  },
+  {
+    name: "Manta",
+    holdings: "1,000,000 - 1,499,999",
+    imgSrc: manta,
+  },
+  {
+    name: "Marlin",
+    holdings: "1,500,000 - 1,999,999",
+    imgSrc: marlin,
+  },
+  {
+    name: "Shark",
+    holdings: "2,000,000 - 4,999,999",
+    imgSrc: shark,
+  },
+  {
+    name: "Whale",
+    holdings: "5,000,000 - 10,000,000",
+    imgSrc: whale,
+  },
+];
+
 export {
   COMMUNITY_CARDS,
   CYAN_GRADIENT,
   ECO_CARDS,
   EMAIL_REGEX,
   FUCHSIA_GRADIENT,
+  MEMBER_TIERS,
   OPACITY_CYAN_GRADIENT,
   OPACITY_FUCHSIA_GRADIENT,
   OPACITY_SKY_GRADIENT,

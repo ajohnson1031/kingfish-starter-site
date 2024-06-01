@@ -1,23 +1,23 @@
 import { EMAIL_REGEX, FUCHSIA_GRADIENT } from "@/app/constants";
 import { useViewerContext } from "@/app/context/ViewerContext";
 import cuteIcon from "@/assets/cute-fish-icon-w-stroke.png";
-import Button from "@/components/Button";
-import Img from "@/components/Img";
+import { Button, CustomTooltip, FishBowl, Img, MemberTierList } from "@/components";
+import { ImgVariant } from "@/components/Img";
 import { breakFishbowl, getTokenBalances, getUnprivilegedUserBalance, handleTxn } from "@/lib/utils/server";
 import { toMbOrNone } from "@/lib/utils/static";
 import { useWallet } from "@solana/wallet-adapter-react";
 import cn from "classnames";
 import { FC, useCallback, useEffect, useState } from "react";
 import { BiLogOut } from "react-icons/bi";
+import { BsFillInfoCircleFill } from "react-icons/bs";
 import { FaXmark } from "react-icons/fa6";
-import FishBowl from "../FishBowl";
 import { PresaleWindowProps } from "./PresaleWindow.types";
 import { buyMessages, txnErrorResponses } from "./constants";
 
 const PresaleWindow: FC<PresaleWindowProps> = () => {
   const { publicKey, disconnect, wallet, sendTransaction } = useWallet();
 
-  const { isViewingPresale, setIsViewingPresale, setIsViewingWallet } = useViewerContext();
+  const { isViewingPresale, currentStageDetails, isViewingRankings, setIsViewingRankings, setIsViewingPresale, setIsViewingWallet } = useViewerContext();
   const [opacity, setOpacity] = useState("opacity-0");
 
   // ! priviliged addresses to be removed when presale is over
@@ -32,7 +32,6 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   const [confirmChecked, setConfirmChecked] = useState<boolean>(false);
   const [editStoredEmail, setEditStoredEmail] = useState<boolean>(false);
   const [walletEmail, setWalletEmail] = useState<string>("");
-  const { currentStageDetails } = useViewerContext();
 
   const nextMsg = `Until ${currentStageDetails?.currentStage?.next_per_usdc ? `1 USDC = ${currentStageDetails?.currentStage.next_per_usdc} $KingFish` : "Presale Ends!"}`;
 
@@ -183,15 +182,18 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
       <div className="flex flex-col w-full md:w-1/2 h-full rounded-3xl mx-auto">
         <div className="flex flex-col w-full h-full">
           <div
-            className={`border-[3px] overflow-hidden border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2 p-10 -mt-2 ${
+            className={`border-[3px] overflow-hidden border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2 p-0 sm:p-10 -mt-2 h-[80%] md:h-auto ${
               isTransmittingTxn ? "bg-vulcan-900/80 !p-0" : "bg-vulcan-500/80"
             }`}
           >
             <FaXmark
-              className={`w-11 h-11 text-white p-2 rounded-full box-border bg-red-400 hover:bg-red-500 ml-auto cursor-pointer relative z-10 -top-5 left-6 ${
-                isTransmittingTxn ? "hidden" : "block"
-              }`}
-              onClick={() => setIsViewingPresale(false)}
+              className={cn("w-11 h-11 text-white p-2 rounded-full box-border bg-red-400 hover:bg-red-500 ml-[76%] sm:ml-auto cursor-pointer relative z-10 -top-5 left-6 block", {
+                hidden: isTransmittingTxn || isViewingRankings,
+              })}
+              onClick={() => {
+                setIsViewingPresale(false);
+                setIsViewingRankings(false);
+              }}
             />
             {isTransmittingTxn && (
               <div className="flex relative z-50 w-full h-[572px] top-0 left-0">
@@ -201,31 +203,71 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
 
             {!isTransmittingTxn && (
               <>
-                <Img src={cuteIcon} alt="cute fish icon" size={120} className={"w-fit mx-auto -mt-10"} />
-                <p className={"text-3xl font-black text-white"}>{currentStageDetails?.currentStage?.title || "Stage One"} has started!</p>
-                <p className={"text-2xl text-gray-300 font-semibold transition-opacity duration-100 $"}>
-                  1 USDC = {currentStageDetails?.currentStage?.per_usdc} KingFish<sup className="text-xs relative -top-2.5">™</sup>
-                </p>
+                <div className="w-fit mx-auto">
+                  <CustomTooltip title={!isViewingRankings ? "Click to View Tier List" : "Click to View Presale Stats"}>
+                    {!isViewingRankings ? (
+                      <div className="border-2 border-blue-500 rounded-full cursor-pointer w-fit relative z-10 ml-auto top-[76px]">
+                        <Img
+                          src={BsFillInfoCircleFill}
+                          type={ImgVariant.ICON}
+                          color="#3B82F6"
+                          className="bg-white rounded-full overflow-hidden border-white border box-border w-fit"
+                          size={16}
+                          onClick={() => setIsViewingRankings(true)}
+                        />
+                      </div>
+                    ) : (
+                      <div className="border-2 border-red-500 rounded-full cursor-pointer w-fit relative z-10 ml-auto top-[116px]">
+                        <Img
+                          src={FaXmark}
+                          type={ImgVariant.ICON}
+                          color="white"
+                          className="bg-red-500 rounded-full overflow-hidden border-white border box-border w-fit"
+                          size={16}
+                          onClick={() => setIsViewingRankings(false)}
+                        />
+                      </div>
+                    )}
+                  </CustomTooltip>{" "}
+                  <Img src={cuteIcon} alt="cute fish icon" size={120} className={cn("w-fit mx-auto -mt-10", { "mt-0": isViewingRankings })} />
+                </div>
+
+                <span className={`${isViewingRankings ? "hidden" : ""}`}>
+                  <div className="flex justify-center items-center gap-2">
+                    <p className={"text-3xl font-black text-white"}>{currentStageDetails?.currentStage?.title || "Stage One"} has started!</p>
+                  </div>
+                  <p className={"text-2xl text-gray-300 font-semibold transition-opacity duration-100 $"}>
+                    1 USDC = {currentStageDetails?.currentStage?.per_usdc} KingFish<sup className="text-xs relative -top-2.5">™</sup>
+                  </p>
+                </span>
                 <div className={"rounded-3xl p-2 w-full mx-auto"}>
                   <div className="flex">
                     <div className="flex flex-col w-full">
-                      {!publicKey ? (
-                        <div className="flex flex-col gap-2 w-full">
-                          <p className="text-2xl text-orange-600 font-semibold">{toMbOrNone(currentStageDetails?.remainBal || 0)}</p>
-                          <p className="text-2xl text-orange-600 font-semibold">
-                            KingFish<sup className="text-xs relative -top-2.5">™</sup> remaining
-                          </p>
-                          <p className="font-light text-gray-300">{nextMsg}</p>
-                        </div>
-                      ) : (
-                        <div className="flex flex-col gap-2 w-full text-center">
-                          <p className="text-2xl text-white font-semibold mb-3 py-2 px-4 bg-vulcan-500/80 rounded-full">
-                            You have <span className="text-orange-600">{kfBalance}</span> KingFish{tm}
-                          </p>
-                          <p className="text-lg text-white font-bold">Connected Wallet</p>
-                          <p className="text-lg text-orange-600 font-bold overflow-hidden text-ellipsis">{publicKey.toBase58()}</p>
-                        </div>
+                      {isViewingRankings && <MemberTierList />}
+                      {!isViewingRankings && (
+                        <>
+                          {!publicKey ? (
+                            <div className={cn("flex flex-col gap-2 w-full", { hidden: isViewingRankings })}>
+                              <p className="text-2xl text-orange-600 font-semibold">{toMbOrNone(currentStageDetails?.remainBal || 0)}</p>
+                              <p className="text-2xl text-orange-600 font-semibold">
+                                KingFish<sup className="text-xs relative -top-2.5">™</sup> remaining
+                              </p>
+                              <p className="font-light text-gray-300">{nextMsg}</p>
+                            </div>
+                          ) : (
+                            <div className={cn("flex flex-col gap-2 w-full text-center")}>
+                              <p className="text-2xl text-white font-semibold mb-3 py-2 px-4 bg-vulcan-500/80 rounded-full">
+                                You have <span className="text-orange-600">{kfBalance}</span> KingFish{tm}
+                              </p>
+                              <div className={cn("flex flex-col gap-2")}>
+                                <p className="text-lg text-white font-bold">Connected Wallet</p>
+                                <p className="text-lg text-orange-600 font-bold overflow-hidden text-ellipsis">{publicKey.toBase58()}</p>
+                              </div>
+                            </div>
+                          )}
+                        </>
                       )}
+
                       <div className="flex gap-3 items-center justify-center mt-6">
                         {publicKey && (
                           <div className="w-full">
@@ -258,7 +300,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                       </div>
 
                       {confirmChecked && editStoredEmail && (
-                        <div className="flex gap-3 items-center justify-center mt-6">
+                        <div className={cn("flex gap-3 items-center justify-center mt-6", { hidden: isViewingRankings })}>
                           <div className="w-full">
                             <form onSubmit={handleEmailStore} className="flex items-center h-fit w-full gap-3">
                               <input
@@ -304,6 +346,8 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                 </div>
               </>
             )}
+
+            {!isTransmittingTxn && isViewingRankings && <div></div>}
           </div>
         </div>
       </div>

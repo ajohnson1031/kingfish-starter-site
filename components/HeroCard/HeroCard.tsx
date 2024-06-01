@@ -41,7 +41,7 @@ const HeroCard: FC<HeroCardProps> = () => {
   }, []);
 
   return (
-    <div className="h-[75vh] md:h-screen mt-40 mb-20">
+    <div className="h-[70vh] md:h-screen mt-40 mb-20">
       {isViewingWallet && (
         <div className={`fixed right-10 top-28 z-50 p-4 bg-vulcan-500/80 rounded-sm flex  gap-3 ${!publicKey ? "flex-col" : "flex-row-reverse"}`}>
           <div className={`flex items-center text-white h-5 py-2 ${!publicKey ? "justify-between" : "justify-end"}`}>
@@ -69,7 +69,7 @@ const HeroCard: FC<HeroCardProps> = () => {
           <Button className={VIOLET_GRADIENT} label="Whitepaper" onClick={() => handleClick("./KINGFISH_Whitepaper.pdf")} />
         </div>
       </div>
-      <div className="bg-herocard bg-85% md:bg-100% bg-[center_top_-2rem] bg-no-repeat h-[52.5%] md:h-3/4 w-full flex justify-center items-end">
+      <div className="bg-herocard bg-85% md:bg-100% bg-[center_top_-2rem] bg-no-repeat h-[58.5%] md:h-[70%] lg:h-[75%] w-full flex justify-center items-end">
         <div className={cn("w-fit max-h-24 flex items-center gap-4 relative bottom-0 rounded-lg p-6 text-white", OPACITY_FUCHSIA_GRADIENT)}>
           <Img src={cuteIcon} width={55} />
           <div className="hidden lg:block">
