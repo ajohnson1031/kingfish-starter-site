@@ -61,7 +61,7 @@ const HeroCard: FC<HeroCardProps> = () => {
         <div className="flex justify-center gap-3 md:gap-5">
           <Button
             className={FUCHSIA_GRADIENT}
-            label="Buy Presale"
+            label="Signup for Presale"
             onClick={() => {
               PROD ? setIsViewingComingSoon(true) : setIsViewingPresale(true);
             }}

@@ -93,7 +93,7 @@ const Footer: FC<FooterProps> = () => {
         <div className="branding flex flex-col gap-3 h-11/12 w-fit justify-between items-center">
           <Img src={branding} width={200} />
           <h2 className="h-0.5 rounded-full bg-gradient-to-r from-vulcan-300 w-60" />
-          <Button className={`${VIOLET_GRADIENT} !text-sm`} label="BUY PRESALE" onClick={() => (PROD ? setIsViewingComingSoon(true) : setIsViewingPresale(true))} />
+          <Button className={`${VIOLET_GRADIENT} !text-sm`} label="SIGNUP FOR PRESALE" onClick={() => (PROD ? setIsViewingComingSoon(true) : setIsViewingPresale(true))} />
         </div>
         <div className={cn("email h-11/12 w-full rounded-lg px-5 py-3 flex flex-col justify-center", OPACITY_SKY_GRADIENT)}>
           <p className="font-medium">
