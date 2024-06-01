@@ -110,7 +110,7 @@ const ComingSoon: FC<ComingSoonProps> = ({ isViewingComingSoon, setIsViewingComi
               />
             )}
             <div className="w-fit mx-auto">
-              <CustomTooltip title={!isViewingRankings ? "Click to View Newsletter Signup" : "Click to View Presale Stats"}>
+              <CustomTooltip title={isViewingRankings ? "Click to View Newsletter Signup" : "Click to View Presale Stats"}>
                 {!isViewingRankings ? (
                   <div className="border-2 border-blue-500 rounded-full cursor-pointer w-fit relative z-10 ml-auto top-[76px]">
                     <Img
