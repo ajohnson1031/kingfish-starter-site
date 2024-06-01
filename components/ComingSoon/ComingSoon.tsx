@@ -6,7 +6,7 @@ import { messages } from "@/components/Footer/constants";
 import { ImgVariant } from "@/components/Img";
 import cn from "classnames";
 import { FC, useEffect, useState } from "react";
-import { BsFillInfoCircleFill } from "react-icons/bs";
+import { FaInfo } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { HiArrowLongRight } from "react-icons/hi2";
 import { ComingSoonProps } from "./ComingSoon.types";
@@ -110,15 +110,15 @@ const ComingSoon: FC<ComingSoonProps> = ({ isViewingComingSoon, setIsViewingComi
               />
             )}
             <div className="w-fit mx-auto">
-              <CustomTooltip title={isViewingRankings ? "Click to View Newsletter Signup" : "Click to View Presale Stats"}>
+              <CustomTooltip title={isViewingRankings ? "Click to View Newsletter Signup" : "Click to View Holder Stats"}>
                 {!isViewingRankings ? (
                   <div className="border-2 border-blue-500 rounded-full cursor-pointer w-fit relative z-10 ml-auto top-[76px]">
                     <Img
-                      src={BsFillInfoCircleFill}
+                      src={FaInfo}
                       type={ImgVariant.ICON}
-                      color="#3B82F6"
-                      className="bg-white rounded-full overflow-hidden border-white border box-border w-fit"
-                      size={16}
+                      color="white"
+                      className="bg-blue-500 p-0.5 rounded-full overflow-hidden border-blue-500 border box-border w-fit"
+                      size={12}
                       onClick={() => setIsViewingRankings(true)}
                     />
                   </div>
@@ -128,7 +128,7 @@ const ComingSoon: FC<ComingSoonProps> = ({ isViewingComingSoon, setIsViewingComi
                       src={FaXmark}
                       type={ImgVariant.ICON}
                       color="white"
-                      className="bg-red-500 rounded-full overflow-hidden border-white border box-border w-fit"
+                      className="bg-red-500 rounded-full overflow-hidden border-red-500 border box-border w-fit"
                       size={16}
                       onClick={() => setIsViewingRankings(false)}
                     />
