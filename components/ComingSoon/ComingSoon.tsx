@@ -4,6 +4,8 @@ import cuteIcon from "@/assets/cute-fish-icon-w-stroke.png";
 import { Button, CustomTooltip, Img, MemberTierList } from "@/components";
 import { messages } from "@/components/Footer/constants";
 import { ImgVariant } from "@/components/Img";
+import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
+import "@leenguyen/react-flip-clock-countdown/dist/index.css";
 import cn from "classnames";
 import { FC, useEffect, useState } from "react";
 import { FaInfo } from "react-icons/fa";
@@ -141,22 +143,23 @@ const ComingSoon: FC<ComingSoonProps> = ({ isViewingComingSoon, setIsViewingComi
             {isViewingRankings && <MemberTierList />}
             {!isViewingRankings && (
               <>
-                <p className="text-4xl text-white font-bold text-center my-10">
-                  Coming Soon
-                  <br />
-                  Stay Tuna'd...
-                </p>
+                <div className="text-4xl text-white font-bold text-center my-10">
+                  <div className="flex flex-col items-center text-white gap-4">
+                    <p>Presale Begins In...</p>
+                    <FlipClockCountdown to={new Date("6/11/2024").toISOString()} />
+                  </div>
+                </div>
 
                 <div className={cn("email h-11/12 w-3/4 rounded-lg px-5 py-3 flex flex-col justify-center mx-auto", OPACITY_SKY_GRADIENT)}>
                   <p className="font-medium text-white">
-                    Sign up to receive regular{" "}
+                    Sign up to get notified when
                     <span className="font-extrabold">
-                      King
+                      &nbsp;King
                       <span className="text-orange-500">
                         Fish<sup className="text-[6px] relative -top-2">TM</sup>
                       </span>
                     </span>{" "}
-                    updates.
+                    launches.
                   </p>
                   <form onSubmit={onClick} className="flex items-center">
                     <input type="text" className="w-full rounded-l-sm h-10 px-2 text-cyan-800 border-2 box-border outline-none my-2" value={email} onChange={handleEmail} />

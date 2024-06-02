@@ -97,14 +97,14 @@ const Footer: FC<FooterProps> = () => {
         </div>
         <div className={cn("email h-11/12 w-full rounded-lg px-5 py-3 flex flex-col justify-center", OPACITY_SKY_GRADIENT)}>
           <p className="font-medium">
-            Sign up to receive regular{" "}
+            Sign up to get notified when{" "}
             <span className="font-extrabold">
               King
               <span className="text-orange-500">
                 Fish<sup className="text-[6px] relative -top-2">TM</sup>
               </span>
             </span>{" "}
-            updates.
+            launches.
           </p>
           <form onSubmit={onClick} className="flex items-center">
             <input type="text" className="w-full rounded-l-sm h-10 px-2 text-cyan-800 border-2 box-border outline-none my-2" value={email} onChange={handleEmail} />
