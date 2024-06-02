@@ -63,7 +63,7 @@ const HeroCard: FC<HeroCardProps> = () => {
             className={FUCHSIA_GRADIENT}
             label="Signup for Presale"
             onClick={() => {
-              !PROD ? setIsViewingComingSoon(true) : setIsViewingPresale(true);
+              PROD ? setIsViewingComingSoon(true) : setIsViewingPresale(true);
             }}
           />
           <Button className={VIOLET_GRADIENT} label="Whitepaper" onClick={() => handleClick("./KINGFISH_Whitepaper.pdf")} />
