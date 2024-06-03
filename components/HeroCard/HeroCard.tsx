@@ -15,13 +15,11 @@ import { ImgVariant } from "../Img";
 import { HeroCardProps } from "./HeroCard.types";
 
 const HeroCard: FC<HeroCardProps> = () => {
-  const [currentUrl, setCurrentUrl] = useState<string | null>(null);
-
-  const PROD = currentUrl?.includes("kingfish.app");
-
-  const { select, wallets, publicKey, disconnect } = useWallet();
   const { isViewingWallet, setIsViewingWallet, setIsViewingPresale, setIsViewingComingSoon } = useViewerContext();
+  const { select, wallets, publicKey, disconnect } = useWallet();
+  const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [isCopied, setIsCopied] = useState<boolean>(false);
+  const PROD = currentUrl?.includes("kingfish.app");
 
   const handleClick = (url?: string) => {
     window.open(url, "_blank");

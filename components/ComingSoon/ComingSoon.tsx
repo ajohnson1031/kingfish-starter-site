@@ -6,6 +6,8 @@ import { messages } from "@/components/Footer/constants";
 import { ImgVariant } from "@/components/Img";
 import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
 import "@leenguyen/react-flip-clock-countdown/dist/index.css";
+import { useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import cn from "classnames";
 import { FC, useEffect, useState } from "react";
 import { FaInfo } from "react-icons/fa";
@@ -14,12 +16,15 @@ import { HiArrowLongRight } from "react-icons/hi2";
 import { ComingSoonProps } from "./ComingSoon.types";
 
 const ComingSoon: FC<ComingSoonProps> = ({ isViewingComingSoon, setIsViewingComingSoon }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const { isViewingRankings, setIsViewingRankings } = useViewerContext();
   const [opacity, setOpacity] = useState("opacity-0");
   const [email, setEmail] = useState<string>("");
   const [message, setMessage] = useState<JSX.Element | null>(null);
-
   const [btnEnabled, setBtnEnabled] = useState<boolean>(true);
+
+  const digitBlockStyle = !isMobile ? {} : { width: 30, height: 60, fontSize: 24 };
 
   const handleEmail = ({ target: { value } }: any) => {
     setEmail(value.toLowerCase());
@@ -143,14 +148,14 @@ const ComingSoon: FC<ComingSoonProps> = ({ isViewingComingSoon, setIsViewingComi
             {isViewingRankings && <MemberTierList />}
             {!isViewingRankings && (
               <>
-                <div className="text-4xl text-white font-bold text-center my-10">
+                <div className="text-2xl md:text-4xl text-white font-bold text-center my-10">
                   <div className="flex flex-col items-center text-white gap-4">
                     <p>Presale Begins In...</p>
-                    <FlipClockCountdown to={new Date("6/11/2024").toISOString()} />
+                    <FlipClockCountdown to={new Date("6/11/2024").toISOString()} dividerStyle={{ color: "transparent", height: 0 }} digitBlockStyle={digitBlockStyle} />
                   </div>
                 </div>
 
-                <div className={cn("email h-11/12 w-3/4 rounded-lg px-5 py-3 flex flex-col justify-center mx-auto", OPACITY_SKY_GRADIENT)}>
+                <div className={cn("email h-11/12 w-full rounded-lg px-5 py-3 flex flex-col justify-center mx-0 md:mx-auto", OPACITY_SKY_GRADIENT)}>
                   <p className="font-medium text-white">
                     Sign up to get notified when
                     <span className="font-extrabold">
