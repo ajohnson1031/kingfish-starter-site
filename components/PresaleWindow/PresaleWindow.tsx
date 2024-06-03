@@ -187,9 +187,12 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
             }`}
           >
             <FaXmark
-              className={cn("w-11 h-11 text-white p-2 rounded-full box-border bg-red-400 hover:bg-red-500 ml-[76%] sm:ml-auto cursor-pointer relative z-10 -top-5 left-6 block", {
-                hidden: isTransmittingTxn || isViewingRankings,
-              })}
+              className={cn(
+                "w-11 h-11 text-white p-2 rounded-full box-border bg-red-400 hover:bg-red-500 ml-[76%] sm:ml-auto cursor-pointer relative z-10 -top-16 md:-top-5 left-6 block",
+                {
+                  hidden: isTransmittingTxn || isViewingRankings,
+                }
+              )}
               onClick={() => {
                 setIsViewingPresale(false);
                 setIsViewingRankings(false);
@@ -234,7 +237,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
 
                 <span className={`${isViewingRankings ? "hidden" : ""}`}>
                   <div className="flex justify-center items-center gap-2">
-                    <p className={"text-3xl font-black text-white"}>{currentStageDetails?.currentStage?.title || "Stage One"} has started!</p>
+                    <p className={"text-2xl md:text-3xl font-black text-white"}>{currentStageDetails?.currentStage?.title || "Stage One"} has started!</p>
                   </div>
                   <p className={"text-2xl text-gray-300 font-semibold transition-opacity duration-100 $"}>
                     1 USDC = {currentStageDetails?.currentStage?.per_usdc} KingFish<sup className="text-xs relative -top-2.5">™</sup>
