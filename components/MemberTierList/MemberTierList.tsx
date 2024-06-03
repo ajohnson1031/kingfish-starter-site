@@ -9,7 +9,7 @@ const MemberTierList: FC<MemberTierListProps> = () => {
       <p className="font-bold mb-4">
         Higher ranked King<span className="text-orange-500">Fish</span> holders receive
         <br />
-        more SolanaOcean during planned <span className="text-orange-500">AIRDROPS</span>
+        more SolanaOcean during planned <span className="text-orange-500">SEADROPS</span>
       </p>
       {memberTiers.map((memberTier, i) => (
         <MemberTierListItem key={`${memberTier.name}_${i}`} memberTier={memberTier} />

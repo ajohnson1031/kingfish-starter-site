@@ -289,14 +289,16 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                           </div>
                         )}
 
-                        <Button
-                          className={cn(`flex !p-2.5 items-center !justify-center text-white`, {
-                            "bg-red-400 hover:bg-red-500 rounded-sm": !!publicKey,
-                            [`${FUCHSIA_GRADIENT} !rounded--full !px-6`]: !publicKey,
-                          })}
-                          label={!publicKey ? "Connect Wallet" : <BiLogOut color="white" size={24} className="relative right-0.5" />}
-                          onClick={() => (!publicKey ? setIsViewingWallet(true) : disconnect())}
-                        />
+                        {!isViewingRankings && (
+                          <Button
+                            className={cn(`flex !p-2.5 items-center !justify-center text-white`, {
+                              "bg-red-400 hover:bg-red-500 rounded-sm": !!publicKey,
+                              [`${FUCHSIA_GRADIENT} !rounded--full !px-6`]: !publicKey,
+                            })}
+                            label={!publicKey ? "Connect Wallet" : <BiLogOut color="white" size={24} className="relative right-0.5" />}
+                            onClick={() => (!publicKey ? setIsViewingWallet(true) : disconnect())}
+                          />
+                        )}
                       </div>
 
                       {confirmChecked && editStoredEmail && (

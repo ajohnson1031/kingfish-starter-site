@@ -109,7 +109,7 @@ const ComingSoon: FC<ComingSoonProps> = ({ isViewingComingSoon, setIsViewingComi
       {/* Container Div */}
       <div className="flex flex-col w-full md:w-1/2 h-full rounded-3xl mx-auto">
         <div className="flex flex-col w-full h-full">
-          <div className="border-[3px] border-gray-300 rounded-3xl flex flex-col justify-start text-center gap-2 p-10 -mt-2 transition-all duration-200 bg-vulcan-500/80 h-fit min-h-[578px]">
+          <div className="border-[3px] border-gray-300 rounded-3xl flex flex-col justify-start text-center gap-2 py-10 px-2.5 md:px-10 -mt-2 transition-all duration-200 bg-vulcan-500/80 h-fit min-h-[578px]">
             {!isViewingRankings && (
               <FaXmark
                 className="w-11 h-11 text-white p-2 rounded-full box-border bg-red-400 hover:bg-red-500 ml-auto cursor-pointer relative z-10 -top-5 left-6"
