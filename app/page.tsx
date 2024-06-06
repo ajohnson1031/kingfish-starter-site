@@ -3,7 +3,8 @@ import { ComingSoon, Community, Ecosystem, Footer, HeroCard, Navbar, Roadmap, So
 import PresaleWindow from "@/components/PresaleWindow";
 import { getCurrentPresaleStageDetails } from "@/lib/utils/server";
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
-import { CoinbaseWalletAdapter, LedgerWalletAdapter, TorusWalletAdapter, TrezorWalletAdapter, TrustWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { SolflareWalletAdapter } from "@solana/wallet-adapter-solflare";
+import { CoinbaseWalletAdapter, LedgerWalletAdapter, PhantomWalletAdapter, TorusWalletAdapter, TrezorWalletAdapter, TrustWalletAdapter } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
 import Head from "next/head";
 import { useEffect, useMemo } from "react";
@@ -13,8 +14,8 @@ import { useViewerContext } from "./context/ViewerContext";
 export default function Home() {
   const wallets = useMemo(
     () => [
-      // new PhantomWalletAdapter(),
-      // new SolflareWalletAdapter(),
+      new PhantomWalletAdapter(),
+      new SolflareWalletAdapter(),
       new CoinbaseWalletAdapter(),
       new LedgerWalletAdapter(),
       new TorusWalletAdapter(),
