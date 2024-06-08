@@ -3,8 +3,9 @@ import { useViewerContext } from "@/app/context/ViewerContext";
 import cuteIcon from "@/assets/cute-fish-icon-w-stroke.png";
 import { Button, CustomTooltip, FishBowl, Img, MemberTierList } from "@/components";
 import { ImgVariant } from "@/components/Img";
-import { breakFishbowl, getTokenBalances, getUnprivilegedUserBalance, handleTxn } from "@/lib/utils/server";
+import { breakFishbowl, getTokenBalances, getUnprivilegedUserBalance } from "@/lib/utils/server";
 import { toMbOrNone } from "@/lib/utils/static";
+import { handleTxn } from "@/lib/utils/test";
 import { useWallet } from "@solana/wallet-adapter-react";
 import cn from "classnames";
 import { FC, useCallback, useEffect, useState } from "react";
@@ -100,6 +101,12 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
 
     if (!buyAmount.length) {
       // if spend amount is empty
+      setBuyMessage(buyMessages.invalid);
+      return;
+    }
+
+    if (!/^[1-9]\d*$/.test(buyAmount)) {
+      console.error("Invalid amount! Please enter a positive integer.");
       setBuyMessage(buyMessages.invalid);
       return;
     }
@@ -274,6 +281,21 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                       <div className="flex gap-3 items-center justify-center mt-6">
                         {publicKey && (
                           <div className="w-full">
+                            {/* <form onSubmit={onBuyClick} className="flex items-center h-fit w-full gap-3">
+                              <input
+                                type="text"
+                                className="w-full rounded-sm text-right h-11 px-2 text-cyan-800 border-2 box-border outline-none"
+                                value={buyAmount}
+                                placeholder="Enter USDC spend amt. (e.g., 10, 20, 10000...)"
+                                min="1"
+                                step="1"
+                                onChange={handleBuyAmtChange}
+                              />
+                              <Button
+                                className={`!text-sm w-[120px] !px-3 ml-auto py-2 h-11 min-w-[100px] flex items-center rounded-sm text-white bg-green-500 hover:bg-green-400 active:bg-green-600`}
+                                label="GET $KFSH"
+                              />
+                            </form> */}
                             <form onSubmit={onBuyClick} className="flex items-center h-fit w-full gap-3">
                               <input
                                 type="text"
@@ -282,6 +304,8 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                                 placeholder="Enter USDC spend amt. (e.g., 10, 20, 10000...)"
                                 min="1"
                                 step="1"
+                                required
+                                pattern="^[1-9]\d*$" // This pattern ensures only positive integers are allowed
                                 onChange={handleBuyAmtChange}
                               />
                               <Button

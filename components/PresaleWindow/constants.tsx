@@ -17,7 +17,7 @@ const txnErrorResponses: Record<string, JSX.Element> = {
 };
 
 const buyMessages: Record<string, JSX.Element> = {
-  invalid: <span className="text-red-300">Spend amount is required.</span>,
+  invalid: <span className="text-red-300">Valid spend amount is required.</span>,
   deficit: <span className="text-red-300">Spend amount exceeds USDC balance.</span>,
   success: <span className="text-green-300">Fishbowl busted to shards! Transaction sent!</span>,
   error: <span className="text-red-300">Sorry, there was an error. Please try again later.</span>,
