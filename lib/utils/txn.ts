@@ -14,6 +14,12 @@ const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterPro
     return { txid: null, error: "Wallet not connected!" };
   }
 
+  // Ask user to confirm the transaction
+  const confirm = window.confirm(`Do you want to send ${amount} USDC to the specified recipient?`);
+  if (!confirm) {
+    return { txid: null, error: "Transaction cancelled by user." };
+  }
+
   const amountInSmallestUnit = amount * Math.pow(10, 6);
 
   const connStr = process.env.NEXT_PUBLIC_CUSTOM_RPC_HOST_URL!;
@@ -29,7 +35,10 @@ const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterPro
     const transferInstruction = createTransferInstruction(senderTokenAddress, recipientTokenAddress, publicKey, amountInSmallestUnit, [], TOKEN_PROGRAM_ID);
 
     const transaction = new Transaction().add(transferInstruction);
+
+    // Set the fee payer
     transaction.feePayer = publicKey;
+
     // Simulate the transaction
     const { value: simulationResult } = await connection.simulateTransaction(transaction);
 
