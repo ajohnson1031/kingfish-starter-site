@@ -5,7 +5,7 @@ import { Button, CustomTooltip, FishBowl, Img, MemberTierList } from "@/componen
 import { ImgVariant } from "@/components/Img";
 import { breakFishbowl, getTokenBalances, getUnprivilegedUserBalance } from "@/lib/utils/server";
 import { toMbOrNone } from "@/lib/utils/static";
-import { handleTxn } from "@/lib/utils/test";
+import { handleTxn } from "@/lib/utils/txn";
 import { useWallet } from "@solana/wallet-adapter-react";
 import cn from "classnames";
 import { FC, useCallback, useEffect, useState } from "react";

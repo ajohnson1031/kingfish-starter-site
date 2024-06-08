@@ -1,6 +1,5 @@
-import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID, createTransferInstruction } from "@solana/spl-token";
-import { WalletAdapterProps } from "@solana/wallet-adapter-base";
-import { Connection, PublicKey, Transaction } from "@solana/web3.js";
+import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { Connection, PublicKey } from "@solana/web3.js";
 
 const getTokenBalances = async (publicKey: PublicKey) => {
   try {
@@ -58,39 +57,6 @@ const getUnprivilegedUserBalance = async (publicKey: string) => {
   }
 };
 
-const findAssociatedTokenAddress = async (walletAddress: PublicKey, tokenMintAddress: PublicKey): Promise<PublicKey> => {
-  return (await PublicKey.findProgramAddress([walletAddress.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), tokenMintAddress.toBuffer()], ASSOCIATED_TOKEN_PROGRAM_ID))[0];
-};
-
-const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterProps["sendTransaction"], amount: number) => {
-  if (!publicKey) {
-    console.error("Wallet not connected!");
-    return;
-  }
-
-  const amountInSmallestUnit = amount * Math.pow(10, 6);
-  const connStr = `https://stylish-capable-fire.solana-mainnet.quiknode.pro/${process.env.NEXT_PUBLIC_CUSTOM_RPC_HOST_KEY}`;
-  const connection = new Connection(connStr);
-  const USDC_MINT_ADDRESS = new PublicKey(process.env.NEXT_PUBLIC_USDC_TOKEN_ADDRESS!);
-
-  const recipientPublicKey = new PublicKey(process.env.NEXT_PUBLIC_PRESALE_WALLET!);
-  const senderTokenAddress = await findAssociatedTokenAddress(publicKey, USDC_MINT_ADDRESS);
-  const recipientTokenAddress = await findAssociatedTokenAddress(recipientPublicKey, USDC_MINT_ADDRESS);
-
-  const transferInstruction = createTransferInstruction(senderTokenAddress, recipientTokenAddress, publicKey, amountInSmallestUnit, [], TOKEN_PROGRAM_ID);
-
-  const transaction = new Transaction().add(transferInstruction);
-
-  try {
-    const txid = await sendTransaction(transaction, connection);
-
-    return { txid };
-  } catch (error: any) {
-    console.error("Transaction failed", error);
-    return { txid: null, error: error.message };
-  }
-};
-
 const breakFishbowl = async (publicKey: string, usdcAmt: number, txid: string, walletName: string, email: string) => {
   try {
     const walletEmail = email.length > 0 ? email : null;
@@ -109,4 +75,4 @@ const breakFishbowl = async (publicKey: string, usdcAmt: number, txid: string, w
   }
 };
 
-export { breakFishbowl, getCurrentPresaleStageDetails, getTokenBalances, getUnprivilegedUserBalance, handleTxn };
+export { breakFishbowl, getCurrentPresaleStageDetails, getTokenBalances, getUnprivilegedUserBalance };
