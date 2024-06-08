@@ -281,21 +281,6 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                       <div className="flex gap-3 items-center justify-center mt-6">
                         {publicKey && (
                           <div className="w-full">
-                            {/* <form onSubmit={onBuyClick} className="flex items-center h-fit w-full gap-3">
-                              <input
-                                type="text"
-                                className="w-full rounded-sm text-right h-11 px-2 text-cyan-800 border-2 box-border outline-none"
-                                value={buyAmount}
-                                placeholder="Enter USDC spend amt. (e.g., 10, 20, 10000...)"
-                                min="1"
-                                step="1"
-                                onChange={handleBuyAmtChange}
-                              />
-                              <Button
-                                className={`!text-sm w-[120px] !px-3 ml-auto py-2 h-11 min-w-[100px] flex items-center rounded-sm text-white bg-green-500 hover:bg-green-400 active:bg-green-600`}
-                                label="GET $KFSH"
-                              />
-                            </form> */}
                             <form onSubmit={onBuyClick} className="flex items-center h-fit w-full gap-3">
                               <input
                                 type="text"
@@ -309,8 +294,8 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                                 onChange={handleBuyAmtChange}
                               />
                               <Button
-                                className={`!text-sm w-[120px] !px-3 ml-auto py-2 h-11 min-w-[100px] flex items-center rounded-sm text-white bg-green-500 hover:bg-green-400 active:bg-green-600`}
-                                label="GET $KFSH"
+                                className={`!text-sm w-fit !px-3 ml-auto py-2 h-11 min-w-[150px] flex items-center justify-center rounded-sm text-white bg-green-500 hover:bg-green-400 active:bg-green-600`}
+                                label="PLACE BUY ORDER"
                               />
                             </form>
                           </div>
