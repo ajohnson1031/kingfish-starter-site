@@ -12,6 +12,7 @@ const txnErrorResponses: Record<string, JSX.Element> = {
   "Transaction confirmation timeout": <span className="text-red-300">Your txn timed out. Please try again.</span>,
   "Signature verification failed": <span className="text-red-300">Txn signature unverifiable. Please try again.</span>,
   "User rejected the request.": <span className="text-red-300">Txn rejected by user.</span>,
+  "Transaction cancelled": <span className="text-red-300">Txn rejected by user.</span>,
   "Account not found": <span className="text-red-300">Account not found.</span>,
   Default: <span className="text-red-300">Error in txn. Please try again or {contactSupport}.</span>,
 };
@@ -19,7 +20,7 @@ const txnErrorResponses: Record<string, JSX.Element> = {
 const buyMessages: Record<string, JSX.Element> = {
   invalid: <span className="text-red-300">Valid spend amount is required.</span>,
   deficit: <span className="text-red-300">Spend amount exceeds USDC balance.</span>,
-  success: <span className="text-green-300">Fishbowl busted to shards! Transaction sent!</span>,
+  success: <span className="text-green-300">Reefs raided successfully! Kingfish found and txn sent!</span>,
   error: <span className="text-red-300">Sorry, there was an error. Please try again later.</span>,
   email: <span className="text-red-300">Please enter a valid email address.</span>,
 };

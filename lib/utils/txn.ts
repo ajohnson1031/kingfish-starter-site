@@ -8,38 +8,37 @@ const findAssociatedTokenAddress = async (walletAddress: PublicKey, tokenMintAdd
   return address;
 };
 
-// Main function to handle transaction
-const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterProps["sendTransaction"], amount: number) => {
+// Main function to handle transaction and provide user feedback
+const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterProps["sendTransaction"], amount: number): Promise<{ txid: string | null; error?: string }> => {
   if (!publicKey) {
-    console.error("Wallet not connected!");
-    return;
+    return { txid: null, error: "Wallet not connected!" };
   }
 
-  // Convert amount to smallest unit (e.g., lamports for SOL)
   const amountInSmallestUnit = amount * Math.pow(10, 6);
 
-  // Use an environment variable for the RPC connection string
   const connStr = process.env.NEXT_PUBLIC_CUSTOM_RPC_HOST_URL!;
   const connection = new Connection(connStr);
 
-  // Use an environment variable for the USDC mint address
   const USDC_MINT_ADDRESS = new PublicKey(process.env.NEXT_PUBLIC_USDC_TOKEN_ADDRESS!);
-
-  // Use an environment variable for the recipient wallet address
   const recipientPublicKey = new PublicKey(process.env.NEXT_PUBLIC_PRESALE_WALLET!);
 
-  // Find associated token addresses
-  const senderTokenAddress = await findAssociatedTokenAddress(publicKey, USDC_MINT_ADDRESS);
-  const recipientTokenAddress = await findAssociatedTokenAddress(recipientPublicKey, USDC_MINT_ADDRESS);
-
-  // Create transfer instruction
-  const transferInstruction = createTransferInstruction(senderTokenAddress, recipientTokenAddress, publicKey, amountInSmallestUnit, [], TOKEN_PROGRAM_ID);
-
-  // Create a new transaction
-  const transaction = new Transaction().add(transferInstruction);
-
   try {
-    // Send transaction
+    const senderTokenAddress = await findAssociatedTokenAddress(publicKey, USDC_MINT_ADDRESS);
+    const recipientTokenAddress = await findAssociatedTokenAddress(recipientPublicKey, USDC_MINT_ADDRESS);
+
+    const transferInstruction = createTransferInstruction(senderTokenAddress, recipientTokenAddress, publicKey, amountInSmallestUnit, [], TOKEN_PROGRAM_ID);
+
+    const transaction = new Transaction().add(transferInstruction);
+    transaction.feePayer = publicKey;
+    // Simulate the transaction
+    const { value: simulationResult } = await connection.simulateTransaction(transaction);
+
+    if (simulationResult.err) {
+      console.error("Transaction simulation failed", simulationResult.err);
+      return { txid: null, error: "Transaction simulation failed." };
+    }
+
+    // If simulation is successful, send the transaction
     const txid = await sendTransaction(transaction, connection);
     return { txid };
   } catch (error: any) {

@@ -139,7 +139,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
             setBuyMessage(buyMessages.success);
           } else setBuyMessage(buyMessages.error);
         } else {
-          setBuyMessage(txnErrorResponses[txn?.error]);
+          setBuyMessage(txnErrorResponses[txn?.error!]);
           setIsTransmittingTxn(false);
         }
       } catch (error: any) {
