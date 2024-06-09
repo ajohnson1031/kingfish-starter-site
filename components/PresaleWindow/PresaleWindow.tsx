@@ -287,6 +287,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                           <div className="w-full">
                             <form id="presale-submit" onSubmit={onBuyClick} className="flex items-center h-fit w-full gap-3">
                               <input
+                                id="presale-amount-input"
                                 type="text"
                                 className="w-full rounded-sm text-right h-11 px-2 text-cyan-800 border-2 box-border outline-none"
                                 value={buyAmount}

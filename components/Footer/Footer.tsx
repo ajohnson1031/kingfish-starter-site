@@ -107,7 +107,15 @@ const Footer: FC<FooterProps> = () => {
             launches.
           </p>
           <form onSubmit={onClick} className="flex items-center">
-            <input type="text" className="w-full rounded-l-sm h-10 px-2 text-cyan-800 border-2 box-border outline-none my-2" value={email} onChange={handleEmail} />
+            <input
+              id="footer-input"
+              type="text"
+              className="w-full rounded-l-sm h-10 px-2 text-cyan-800 border-2 box-border outline-none my-2"
+              required
+              autoComplete="emailAddress"
+              value={email}
+              onChange={handleEmail}
+            />
             <Button className={`!text-sm w-fit !px-5 ml-auto py-2 h-10 flex items-center rounded-l-none rounded-r-sm ${FUCHSIA_GRADIENT}`} label={label} />
           </form>
           <p className={cn(`text-sm h-4`, { message: "h-0" })}>{message}</p>
