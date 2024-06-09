@@ -127,7 +127,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
       try {
         // here's where the magic happens. await txn handler resolution. if txid returned, send details to microservice, send email, etc.
         const txn = await sendUSDC();
-        if (!!txn?.txid) {
+        if (txn?.txid) {
           setIsTransmittingTxn(false);
           const res = await breakFishbowl(publicKey.toBase58(), spendNum, txn.txid, wallet.adapter.name, walletEmail);
 
@@ -137,16 +137,20 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
             handleKFBalances();
             setBuyAmount("");
             setBuyMessage(buyMessages.success);
-          } else setBuyMessage(buyMessages.error);
+          } else {
+            setBuyMessage(buyMessages.error);
+          }
         } else {
           setBuyMessage(txnErrorResponses[txn?.error!]);
           setIsTransmittingTxn(false);
         }
       } catch (error: any) {
-        console.log(error.message);
+        console.error("Transaction error:", error);
         setBuyMessage(txnErrorResponses[error.message || "Default"]);
         setIsTransmittingTxn(false);
       }
+    } else {
+      setBuyMessage(buyMessages.walletNotConnected);
     }
   };
 

@@ -9,9 +9,9 @@ const findAssociatedTokenAddress = async (walletAddress: PublicKey, tokenMintAdd
 };
 
 // Main function to handle transaction and provide user feedback
-const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterProps["sendTransaction"], amount: number): Promise<{ txid: string | null; error?: string }> => {
+const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterProps["sendTransaction"], amount: number): Promise<{ txid?: string; error?: string }> => {
   if (!publicKey) {
-    return { txid: null, error: "Wallet not connected!" };
+    return { error: "Wallet not connected!" };
   }
 
   const amountInSmallestUnit = amount * Math.pow(10, 6);
@@ -29,8 +29,6 @@ const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterPro
     const transferInstruction = createTransferInstruction(senderTokenAddress, recipientTokenAddress, publicKey, amountInSmallestUnit, [], TOKEN_PROGRAM_ID);
 
     const transaction = new Transaction().add(transferInstruction);
-
-    // Set the fee payer
     transaction.feePayer = publicKey;
 
     // Simulate the transaction
@@ -38,7 +36,7 @@ const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterPro
 
     if (simulationResult.err) {
       console.error("Transaction simulation failed", simulationResult.err);
-      return { txid: null, error: "Transaction simulation failed." };
+      return { error: "Transaction simulation failed." };
     }
 
     // If simulation is successful, send the transaction
@@ -46,7 +44,7 @@ const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterPro
     return { txid };
   } catch (error: any) {
     console.error("Transaction failed", error);
-    return { txid: null, error: error.message };
+    return { error: error.message };
   }
 };
 
