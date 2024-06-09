@@ -112,7 +112,7 @@ const Footer: FC<FooterProps> = () => {
               type="text"
               className="w-full rounded-l-sm h-10 px-2 text-cyan-800 border-2 box-border outline-none my-2"
               required
-              autoComplete="emailAddress"
+              autoComplete="email"
               value={email}
               onChange={handleEmail}
             />
