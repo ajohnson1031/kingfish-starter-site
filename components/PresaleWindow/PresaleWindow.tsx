@@ -285,7 +285,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                       <div className="flex gap-3 items-center justify-center mt-6">
                         {publicKey && (
                           <div className="w-full">
-                            <form onSubmit={onBuyClick} className="flex items-center h-fit w-full gap-3">
+                            <form id="presale-submit" onSubmit={onBuyClick} className="flex items-center h-fit w-full gap-3">
                               <input
                                 type="text"
                                 className="w-full rounded-sm text-right h-11 px-2 text-cyan-800 border-2 box-border outline-none"
