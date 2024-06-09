@@ -343,10 +343,12 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                       <p className={cn(`text-sm h-4 mt-2`, { buyMessage: "h-0" })}>{buyMessage}</p>
                       {publicKey && (
                         <div className="flex justify-center items-center gap-2 mt-2">
-                          <input className="w-4 h-4" name="confirmCheckBox" type="checkbox" checked={confirmChecked} onChange={toggleConfirmCheck} />
-                          <label className="text-white text-sm" htmlFor="confirmCheckBox">
-                            Send confirmation email on trade?
-                          </label>
+                          <form className="flex justify-center items-center gap-2 mt-2">
+                            <input className="w-4 h-4" name="confirmCheckBox" type="checkbox" checked={confirmChecked} onChange={toggleConfirmCheck} />
+                            <label className="text-white text-sm" htmlFor="confirmCheckBox">
+                              Send confirmation email on trade?
+                            </label>
+                          </form>
                           {walletEmail.length > 0 && editStoredEmail === false && (
                             <p
                               className="text-blue-400 hover:text-blue-300 text-sm underline cursor-pointer"
