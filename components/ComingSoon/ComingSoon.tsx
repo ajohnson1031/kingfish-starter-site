@@ -4,8 +4,8 @@ import cuteIcon from "@/assets/cute-fish-icon-w-stroke.png";
 import { Button, CustomTooltip, Img, MemberTierList } from "@/components";
 import { messages } from "@/components/Footer/constants";
 import { ImgVariant } from "@/components/Img";
-// import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
-// import "@leenguyen/react-flip-clock-countdown/dist/index.css";
+import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
+import "@leenguyen/react-flip-clock-countdown/dist/index.css";
 import { useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import cn from "classnames";
@@ -149,11 +149,9 @@ const ComingSoon: FC<ComingSoonProps> = ({ isViewingComingSoon, setIsViewingComi
             {!isViewingRankings && (
               <>
                 <div className="text-2xl md:text-4xl text-white font-bold text-center my-10">
-                  <div className="flex flex-col items-center text-white gap-1">
-                    <p>Coming Soon</p>
-                    <p>Stay Tuna'd...</p>
-                    {/* <p>Presale Begins In...</p> */}
-                    {/*<FlipClockCountdown to={new Date("6/11/2024").toISOString()} dividerStyle={{ color: "transparent", height: 0 }} digitBlockStyle={digitBlockStyle} />*/}
+                  <div className="flex flex-col items-center text-white gap-4">
+                    <p>Presale Begins In...</p>
+                    <FlipClockCountdown to={new Date("6/13/2024 12:00:00").toISOString()} dividerStyle={{ color: "transparent", height: 0 }} digitBlockStyle={digitBlockStyle} />
                   </div>
                 </div>
 
