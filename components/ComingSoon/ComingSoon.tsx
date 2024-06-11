@@ -151,7 +151,7 @@ const ComingSoon: FC<ComingSoonProps> = ({ isViewingComingSoon, setIsViewingComi
                 <div className="text-2xl md:text-4xl text-white font-bold text-center my-10">
                   <div className="flex flex-col items-center text-white gap-4">
                     <p>Presale Begins In...</p>
-                    <FlipClockCountdown to={new Date("6/13/2024 12:00:00").toISOString()} dividerStyle={{ color: "transparent", height: 0 }} digitBlockStyle={digitBlockStyle} />
+                    <FlipClockCountdown to={new Date("6/12/2024 12:00:00").toISOString()} dividerStyle={{ color: "transparent", height: 0 }} digitBlockStyle={digitBlockStyle} />
                   </div>
                 </div>
 
