@@ -5,6 +5,7 @@ import { useViewerContext } from "@/app/context/ViewerContext";
 import cuteIcon from "@/assets/cute-fish-icon.png";
 import { Button, Img, Wallets } from "@/components";
 import { ButtonVariant } from "@/components/Button";
+import { getTokenBalances, getUnprivilegedUserBalance } from "@/lib/utils/server";
 import { useWallet } from "@solana/wallet-adapter-react";
 import cn from "classnames";
 import { FC, useEffect, useState } from "react";
@@ -15,11 +16,12 @@ import { ImgVariant } from "../Img";
 import { HeroCardProps } from "./HeroCard.types";
 
 const HeroCard: FC<HeroCardProps> = () => {
-  const { isViewingWallet, setIsViewingWallet, setIsViewingPresale, setIsViewingComingSoon } = useViewerContext();
+  const { isViewingWallet, setIsViewingWallet, setIsViewingPresale } = useViewerContext();
   const { select, wallets, publicKey, disconnect } = useWallet();
-  const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const [isCopied, setIsCopied] = useState<boolean>(false);
-  const PROD = currentUrl?.includes("kingfish.app");
+  const [btnText, setBtnText] = useState("Join Presale");
+  // ! priviliged addresses to be removed when presale is over
+  const [privilegedAddresses] = useState<string[]>(process.env.NEXT_PUBLIC_PRIVILEGED_ADDRESSES!.split("?"));
 
   const handleClick = (url?: string) => {
     window.open(url, "_blank");
@@ -34,9 +36,28 @@ const HeroCard: FC<HeroCardProps> = () => {
     }, 3000);
   };
 
+  const handleBtnText = () => {
+    if (publicKey) {
+      // Get balance of privileged accounts
+      const publicKeyString = publicKey.toBase58();
+
+      if (privilegedAddresses.indexOf(publicKeyString) >= 0) {
+        getTokenBalances(publicKey!).then((data) => {
+          const { kfBalance: myBal } = data!;
+          if (Number(myBal) > 0) setBtnText("Get More $KFSH");
+        });
+      } else {
+        getUnprivilegedUserBalance(publicKeyString).then((data) => {
+          const { totalKfBought } = data;
+          if (Number(totalKfBought) > 0) setBtnText("Get More $KFSH");
+        });
+      }
+    }
+  };
+
   useEffect(() => {
-    setCurrentUrl(window.location.href);
-  }, []);
+    handleBtnText();
+  }, [publicKey]);
 
   return (
     <div className="h-[70vh] md:h-screen mt-40 mb-20">
@@ -57,13 +78,7 @@ const HeroCard: FC<HeroCardProps> = () => {
           Inspired by the Solana Ecosystem & every fish in the world's oceans. <br className="hidden lg:block" /> A community-driven, uniquely rewarding system.
         </p>
         <div className="flex justify-center gap-3 md:gap-5">
-          <Button
-            className={FUCHSIA_GRADIENT}
-            label="Signup for Presale"
-            onClick={() => {
-              PROD ? setIsViewingComingSoon(true) : setIsViewingPresale(true);
-            }}
-          />
+          <Button className={FUCHSIA_GRADIENT} label={btnText} onClick={() => setIsViewingPresale(true)} />
           <Button className={VIOLET_GRADIENT} label="Whitepaper" onClick={() => handleClick("./KINGFISH_Whitepaper.pdf")} />
         </div>
       </div>

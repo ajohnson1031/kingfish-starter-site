@@ -73,16 +73,26 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   };
 
   const toggleConfirmCheck = () => {
-    const confirmSetting = localStorage.getItem("KF_TRADE_SETTING") || "";
+    handleEmailOnToggle(!confirmChecked);
+    setConfirmChecked(!confirmChecked);
+  };
 
-    if (confirmSetting.length > 0) {
-      const { email } = JSON.parse(confirmSetting);
-      setWalletEmail(email);
+  const handleEmailOnToggle = (confirmChecked: boolean) => {
+    if (!confirmChecked) {
+      setWalletEmail("");
       setEditStoredEmail(false);
     } else {
-      setEditStoredEmail(true);
+      const confirmSetting = localStorage.getItem("KF_TRADE_SETTING") || "";
+
+      if (confirmSetting.length > 0) {
+        const { email } = JSON.parse(confirmSetting);
+        setWalletEmail(email);
+        setEditStoredEmail(false);
+      } else {
+        setWalletEmail("");
+        setEditStoredEmail(false);
+      }
     }
-    setConfirmChecked(!confirmChecked);
   };
 
   const handleEmailStore = (e: any) => {
@@ -318,11 +328,12 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                         )}
                       </div>
 
-                      {confirmChecked && editStoredEmail && (
+                      {editStoredEmail && (
                         <div className={cn("flex gap-3 items-center justify-center mt-6", { hidden: isViewingRankings })}>
                           <div className="w-full">
                             <form onSubmit={handleEmailStore} className="flex items-center h-fit w-full gap-3">
                               <input
+                                id="stored-email"
                                 type="text"
                                 className="w-full rounded-sm text-right h-11 px-2 text-cyan-800 border-2 box-border outline-none"
                                 value={walletEmail}
@@ -340,20 +351,19 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                         </div>
                       )}
 
-                      <p className={cn(`text-sm h-4 mt-2`, { buyMessage: "h-0" })}>{buyMessage}</p>
+                      <p className={cn(`text-sm h-4`, { buyMessage: "h-0" })}>{buyMessage}</p>
                       {publicKey && (
-                        <div className="flex justify-center items-center gap-2 mt-2">
-                          <form className="flex justify-center items-center gap-2 mt-2">
+                        <div className="flex justify-center items-center gap-2">
+                          <form className="flex justify-center items-center gap-2">
                             <input className="w-4 h-4" name="confirmCheckBox" type="checkbox" checked={confirmChecked} onChange={toggleConfirmCheck} />
                             <label className="text-white text-sm" htmlFor="confirmCheckBox">
                               Send confirmation email on trade?
                             </label>
                           </form>
-                          {walletEmail.length > 0 && editStoredEmail === false && (
+                          {walletEmail.length > 0 && (
                             <p
                               className="text-blue-400 hover:text-blue-300 text-sm underline cursor-pointer"
                               onClick={() => {
-                                setConfirmChecked(true);
                                 setEditStoredEmail(true);
                               }}
                             >
