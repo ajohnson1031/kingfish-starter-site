@@ -7,9 +7,9 @@ const Wallets = ({ select, wallets, publicKey, disconnect }: WalletsProps) => {
 
   return !publicKey ? (
     <div className="flex gap-4 flex-col w-72">
-      {wallets.filter((wallet: any) => wallet.readyState === "Installed" && wallet.adapter.name === "Solflare").length > 0 ? (
+      {wallets.filter((wallet: any) => wallet.readyState === "Installed").length > 0 ? (
         wallets
-          .filter((wallet: any) => wallet.readyState === "Installed" && wallet.adapter.name === "Solflare")
+          .filter((wallet: any) => wallet.adapter.name === "Solflare")
           .map((wallet: any) => {
             return (
               <button
