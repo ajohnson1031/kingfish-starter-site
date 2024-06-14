@@ -1,6 +1,7 @@
 "use client";
 
 import { CurrentStageDetailsProps } from "@/components/PresaleWindow";
+import { Wallet } from "@solana/wallet-adapter-react";
 import { createContext, Dispatch, SetStateAction, useContext, useState } from "react";
 
 interface ViewerProps {
@@ -14,6 +15,8 @@ interface ViewerProps {
   setIsViewingRankings: Dispatch<SetStateAction<boolean>>;
   currentStageDetails: CurrentStageDetailsProps | null;
   setCurrentStageDetails: Dispatch<SetStateAction<CurrentStageDetailsProps | null>>;
+  userWallets: Wallet[];
+  setUserWallets: Dispatch<SetStateAction<Wallet[]>>;
 }
 
 const ViewerContext = createContext<ViewerProps>({
@@ -27,6 +30,8 @@ const ViewerContext = createContext<ViewerProps>({
   setIsViewingRankings: () => {},
   currentStageDetails: null,
   setCurrentStageDetails: () => {},
+  userWallets: [],
+  setUserWallets: () => {},
 });
 
 const ViewerProvider = ({ children }: { children: any }) => {
@@ -35,6 +40,7 @@ const ViewerProvider = ({ children }: { children: any }) => {
   const [isViewingComingSoon, setIsViewingComingSoon] = useState<boolean>(false);
   const [isViewingRankings, setIsViewingRankings] = useState<boolean>(false);
   const [currentStageDetails, setCurrentStageDetails] = useState<CurrentStageDetailsProps | null>(null);
+  const [userWallets, setUserWallets] = useState<Wallet[]>([]);
 
   return (
     <ViewerContext.Provider
@@ -49,6 +55,8 @@ const ViewerProvider = ({ children }: { children: any }) => {
         setIsViewingRankings,
         currentStageDetails,
         setCurrentStageDetails,
+        userWallets,
+        setUserWallets,
       }}
     >
       {children}

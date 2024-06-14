@@ -16,7 +16,7 @@ import { ImgVariant } from "../Img";
 import { HeroCardProps } from "./HeroCard.types";
 
 const HeroCard: FC<HeroCardProps> = () => {
-  const { isViewingWallet, setIsViewingWallet, setIsViewingPresale } = useViewerContext();
+  const { isViewingWallet, setIsViewingWallet, setIsViewingPresale, userWallets, setUserWallets } = useViewerContext();
   const { select, wallets, publicKey, disconnect } = useWallet();
   const [isCopied, setIsCopied] = useState<boolean>(false);
   const [btnText, setBtnText] = useState("Join Presale");
@@ -57,6 +57,7 @@ const HeroCard: FC<HeroCardProps> = () => {
 
   useEffect(() => {
     handleBtnText();
+    setUserWallets(wallets);
   }, [publicKey]);
 
   return (
@@ -67,7 +68,7 @@ const HeroCard: FC<HeroCardProps> = () => {
             {!publicKey && <p>Available Wallets</p>}
             <FaXmark className="hover:text-red-400 transition duration-200 cursor-pointer" onClick={() => setIsViewingWallet(false)} />
           </div>
-          <Wallets select={select} wallets={wallets} publicKey={publicKey} disconnect={disconnect} />
+          <Wallets select={select} wallets={userWallets} publicKey={publicKey} disconnect={disconnect} />
         </div>
       )}
       <div className="px-0 lg:px-10 text-white text-center bg-vulcan-900">
