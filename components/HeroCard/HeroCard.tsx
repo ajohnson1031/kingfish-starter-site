@@ -58,7 +58,7 @@ const HeroCard: FC<HeroCardProps> = () => {
   useEffect(() => {
     handleBtnText();
     setUserWallets(wallets);
-  }, [publicKey]);
+  }, [publicKey, wallets]);
 
   return (
     <div className="h-[70vh] md:h-screen mt-40 mb-20">
