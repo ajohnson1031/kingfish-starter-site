@@ -36,7 +36,7 @@ const ROADMAP = [
       },
       {
         description: "Launch Presale",
-        completed: false,
+        completed: true,
       },
     ],
   },
