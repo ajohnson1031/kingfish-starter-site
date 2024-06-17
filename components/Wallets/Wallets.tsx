@@ -9,7 +9,7 @@ const Wallets = ({ select, wallets, publicKey, disconnect }: WalletsProps) => {
     <div className="flex gap-4 flex-col w-72">
       {wallets.filter((wallet: any) => wallet.readyState === "Installed").length > 0 ? (
         wallets
-          .filter((wallet: any) => wallet.adapter.name === "Solflare")
+          .filter((wallet: any) => wallet.readyState === "Installed")
           .map((wallet: any) => {
             return (
               <button
@@ -29,11 +29,7 @@ const Wallets = ({ select, wallets, publicKey, disconnect }: WalletsProps) => {
         <div className="text-gray-300">
           <span className="text-red-300">No supported wallet found.</span>
           <br />
-          Please download the&nbsp;
-          <a href="https://solflare.com/" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
-            Solflare Wallet
-          </a>{" "}
-          extension for your browser.
+          Please download or connect a crypto wallet that supports Solana.
         </div>
       )}
     </div>
