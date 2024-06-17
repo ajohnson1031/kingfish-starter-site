@@ -138,7 +138,8 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
 
       try {
         // ! BLOWFISH.XYZ Ticket #1318
-        // ! Here's where the magic happens. On successful txn handler resolution, details sent to microservice and confirmation email sent send email, etc.
+        // ! Here's where the magic happens. On successful txn handler resolution, details sent to microservice
+        // ! Txn details stored in DB and confirmation email sent via email showing transaction with a link to Solscan
         const txn = await sendUSDC();
         if (txn?.txid) {
           setIsTransmittingTxn(false);
