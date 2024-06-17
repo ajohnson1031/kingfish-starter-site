@@ -9,6 +9,9 @@ const findAssociatedTokenAddress = async (walletAddress: PublicKey, tokenMintAdd
 };
 
 // Main function to handle transaction and provide user feedback
+//! BLOWFISH.XYZ Ticket #1318
+//! This is the core function that interacts with the Phantom wallet
+//! Our users are aware this is a presale and these transactions will fund liquidity
 const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterProps["sendTransaction"], amount: number): Promise<{ txid?: string; error?: string }> => {
   if (!publicKey) {
     return { error: "Wallet not connected!" };

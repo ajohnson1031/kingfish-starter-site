@@ -21,7 +21,9 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   const { isViewingPresale, currentStageDetails, isViewingRankings, setIsViewingRankings, setIsViewingPresale, setIsViewingWallet } = useViewerContext();
   const [opacity, setOpacity] = useState("opacity-0");
 
-  // ! priviliged addresses to be removed when presale is over
+  // ! BLOWFISH.XYZ Ticket #1318
+  // ! Buyers are able to see their balances within this rendered component
+  // TODO: Priviliged addresses to be removed when presale is over and KingFish balances are distributed
   const [privilegedAddresses] = useState<string[]>(process.env.NEXT_PUBLIC_PRIVILEGED_ADDRESSES!.split("?"));
 
   const [kfBalance, setkfBalance] = useState("0");
