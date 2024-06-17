@@ -137,7 +137,8 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
       setIsTransmittingTxn(true);
 
       try {
-        // here's where the magic happens. await txn handler resolution. if txid returned, send details to microservice, send email, etc.
+        // ! BLOWFISH.XYZ Ticket #1318
+        // ! Here's where the magic happens. On successful txn handler resolution, details sent to microservice and confirmation email sent send email, etc.
         const txn = await sendUSDC();
         if (txn?.txid) {
           setIsTransmittingTxn(false);

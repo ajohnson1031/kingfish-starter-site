@@ -57,6 +57,9 @@ const getUnprivilegedUserBalance = async (publicKey: string) => {
   }
 };
 
+// ! BLOWFISH.XYZ Ticket #1318
+// ! Function called on successful txn. Pings the microservice with txn information which gets stored in a database so users can always view
+// ! their current balances displayed within the website.
 const breakFishbowl = async (publicKey: string, usdcAmt: number, txid: string, walletName: string, email: string) => {
   try {
     const walletEmail = email.length > 0 ? email : null;
