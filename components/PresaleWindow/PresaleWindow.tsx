@@ -92,7 +92,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
         setEditStoredEmail(false);
       } else {
         setWalletEmail("");
-        setEditStoredEmail(false);
+        setEditStoredEmail(true);
       }
     }
   };
