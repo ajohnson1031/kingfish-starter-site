@@ -355,7 +355,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                         </div>
                       )}
 
-                      <p className={cn(`text-sm h-4`, { buyMessage: "h-0" })}>{buyMessage}</p>
+                      <p className={cn(`text-sm h-4 my-1.5`, { buyMessage: "h-0" })}>{buyMessage}</p>
                       {publicKey && (
                         <div className="flex justify-center items-center gap-2">
                           <form className="flex justify-center items-center gap-2">
