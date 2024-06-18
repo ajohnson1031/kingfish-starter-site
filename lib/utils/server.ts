@@ -67,6 +67,7 @@ const breakFishbowl = async (publicKey: string, usdcAmt: number, txid: string, w
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Connection: "keep-alive",
       },
       body: JSON.stringify({ publicKey, usdcAmt, txid, walletName, email: walletEmail }),
     });
