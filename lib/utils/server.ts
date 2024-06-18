@@ -30,6 +30,7 @@ const getCurrentPresaleStageDetails = async () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Connection: "keep-alive",
       },
     });
 
@@ -46,6 +47,7 @@ const getUnprivilegedUserBalance = async (publicKey: string) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Connection: "keep-alive",
       },
       body: JSON.stringify({ publicKey }),
     });

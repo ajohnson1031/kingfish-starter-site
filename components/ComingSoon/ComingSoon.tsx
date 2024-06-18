@@ -48,6 +48,7 @@ const ComingSoon: FC<ComingSoonProps> = ({ isViewingComingSoon, setIsViewingComi
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Connection: "keep-alive",
           },
           body: JSON.stringify({ email }),
         });
