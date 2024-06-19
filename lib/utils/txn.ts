@@ -22,6 +22,7 @@ const handleTxn = async (
   if (!publicKey) {
     return { error: "Wallet not connected!" };
   }
+
   const { tokenName } = paymentOption;
 
   const amountInSmallestUnit: Record<string, number> = {

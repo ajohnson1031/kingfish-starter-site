@@ -66,16 +66,17 @@ const getUnprivilegedUserBalance = async (publicKey: string) => {
 // ! BLOWFISH.XYZ Ticket #1318
 // ! Function called on successful txn. Pings the microservice with txn information which gets stored in a database so users can always view
 // ! their current balances displayed within the website.
-const breakFishbowl = async (publicKey: string, usdcAmt: number, txid: string, walletName: string, email: string, paymentOption: string, pythPrice: any) => {
+const breakFishbowl = async (publicKey: string, tokenAmt: number, txid: string, walletName: string, email: string, paymentOption: string, pythPrice: any) => {
   try {
     const walletEmail = email.length > 0 ? email : null;
-    const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/presale/break-fishbowl`, {
+    // const response = await fetch(`${process.env.NEXT_PUBLIC_MICROSERVICE_URL}/presale/break-fishbowl`, {
+    const response = await fetch(`http://localhost:5010/presale/break-fishbowl`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Connection: "keep-alive",
       },
-      body: JSON.stringify({ publicKey, usdcAmt, txid, walletName, email: walletEmail, paymentOption, pythPrice }),
+      body: JSON.stringify({ publicKey, tokenAmt, txid, walletName, email: walletEmail, paymentOption, pythPrice }),
     });
 
     const data = await response.json();
