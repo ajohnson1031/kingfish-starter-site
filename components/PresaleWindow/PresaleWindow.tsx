@@ -4,11 +4,11 @@ import cuteIcon from "@/assets/cute-fish-icon-w-stroke.png";
 import { Button, CustomTooltip, FishBowl, Img, MemberTierList } from "@/components";
 import { ImgVariant } from "@/components/Img";
 import { breakFishbowl, getPythPrice, getTokenBalances, getUnprivilegedUserBalance } from "@/lib/utils/server";
-import { toMbOrNone } from "@/lib/utils/static";
+import { getCurrentTier, toMbOrNone } from "@/lib/utils/static";
 import { handleTxn } from "@/lib/utils/txn";
 import { useWallet } from "@solana/wallet-adapter-react";
 import cn from "classnames";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { BiLogOut } from "react-icons/bi";
 import { FaInfo } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
@@ -197,6 +197,9 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
 
   const sendToken = useCallback(() => handleTxn(publicKey!, sendTransaction, Number(buyAmount), paymentOption), [publicKey, buyAmount, sendTransaction, paymentOption]);
 
+  const currentTier = useMemo(() => getCurrentTier(kfBalance), [kfBalance]);
+  console.log("this is the current tier", currentTier);
+
   useEffect(() => {
     if (isViewingPresale) {
       setOpacity("opacity-100");
@@ -317,9 +320,14 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                             </div>
                           ) : (
                             <div className={cn("flex flex-col gap-2 w-full text-center")}>
-                              <p className="text-2xl text-white font-semibold mb-3 py-2 px-4 bg-vulcan-500/80 rounded-full">
-                                You have <span className="text-orange-600">{kfBalance}</span> KingFish{tm}
-                              </p>
+                              <div className="flex bg-vulcan-500/80 rounded-full py-1 px-4 justify-center items-center gap-2">
+                                <p className="text-xl text-white font-semibold">
+                                  Current Balance: <span className="text-orange-600">{kfBalance}</span> tokens | You're a $KFSH
+                                </p>
+                                <div title={`"${currentTier.name}" - Click to see full tier list`} className="cursor-pointer" onClick={() => setIsViewingRankings(true)}>
+                                  <Img src={currentTier.imgSrc} alt={currentTier.name} width={60} height={32} />
+                                </div>
+                              </div>
                               <div className={cn("flex flex-col gap-2")}>
                                 <p className="text-lg text-white font-bold">Connected Wallet</p>
                                 <p className="text-lg text-orange-600 font-bold overflow-hidden text-ellipsis">{publicKey.toBase58()}</p>

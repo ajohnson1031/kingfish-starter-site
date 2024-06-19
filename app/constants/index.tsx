@@ -199,37 +199,44 @@ const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+")
 const MEMBER_TIERS = [
   {
     name: "Danio",
-    holdings: "1 - 99,999",
+    holdings: "0 - 99,999",
+    holdingsNums: [1, 99999],
     imgSrc: danio,
   },
   {
     name: "Guppy",
     holdings: "100,000 - 499,999",
+    holdingsNums: [100000, 499999],
     imgSrc: guppy,
   },
   {
     name: "Trout",
     holdings: "500,000 - 999,999",
+    holdingsNums: [500000, 999999],
     imgSrc: trout,
   },
   {
     name: "Manta",
     holdings: "1,000,000 - 1,499,999",
+    holdingsNums: [1000000, 1499999],
     imgSrc: manta,
   },
   {
     name: "Marlin",
     holdings: "1,500,000 - 1,999,999",
+    holdingsNums: [1500000, 1999999],
     imgSrc: marlin,
   },
   {
     name: "Shark",
     holdings: "2,000,000 - 4,999,999",
+    holdingsNums: [2000000, 4999999],
     imgSrc: shark,
   },
   {
     name: "Whale",
     holdings: "5,000,000 - 10,000,000",
+    holdingsNums: [5000000, 10000000],
     imgSrc: whale,
   },
 ];

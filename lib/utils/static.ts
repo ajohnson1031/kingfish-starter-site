@@ -1,3 +1,4 @@
+import { MEMBER_TIERS } from "@/app/constants";
 import { PublicKey } from "@solana/web3.js";
 
 const imgLoader = ({ src }: { src: string }) => {
@@ -39,4 +40,27 @@ const non = () => {
   return keyPair;
 };
 
-export { imgLoader, non, toMbOrNone };
+const getCurrentTier = (kfBalance: string) => {
+  let currentTier = MEMBER_TIERS[0];
+  let currentKfNum = Number(kfBalance.slice(0, kfBalance.length - 1));
+  const currentKfMultiplier = kfBalance.substring(kfBalance.length - 1);
+
+  switch (currentKfMultiplier) {
+    case "M":
+      currentKfNum *= 1000000;
+      break;
+    case "B":
+      currentKfNum *= 1000000000;
+      break;
+    default:
+      break;
+  }
+
+  MEMBER_TIERS.forEach((memberTier) => {
+    if (currentKfNum > memberTier.holdingsNums[1]) currentTier = memberTier;
+  });
+
+  return currentTier;
+};
+
+export { getCurrentTier, imgLoader, non, toMbOrNone };
