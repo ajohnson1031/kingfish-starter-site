@@ -234,6 +234,11 @@ const MEMBER_TIERS = [
   },
 ];
 
+const PAYMENT_OPTIONS: Record<string, string>[] = [
+  { tokenName: "SOL", marketAddress: "4cX6sppKpds2ub4rjknc2cPbqQBDwZPYP2RQ9giAs8s9" },
+  { tokenName: "USDC", marketAddress: "4cX6sppKpds2ub4rjknc2cPbqQBDwZPYP2RQ9giAs8s9" },
+];
+
 export {
   COMMUNITY_CARDS,
   CYAN_GRADIENT,
@@ -245,6 +250,7 @@ export {
   OPACITY_FUCHSIA_GRADIENT,
   OPACITY_SKY_GRADIENT,
   OPACITY_VIOLET_GRADIENT,
+  PAYMENT_OPTIONS,
   ROADMAP,
   TOKENOMICS_GRADIENT,
   VIOLET_GRADIENT,

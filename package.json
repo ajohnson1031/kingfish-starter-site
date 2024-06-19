@@ -12,10 +12,10 @@
     "@babel/core": "^7.24.5",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@jup-ag/api": "^6.0.23",
     "@leenguyen/react-flip-clock-countdown": "^1.6.0",
     "@mui/material": "^5.15.14",
     "@mui/x-charts": "^7.1.0",
+    "@pythnetwork/client": "^2.21.0",
     "@solana/spl-token": "^0.4.6",
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-react": "^0.15.35",
@@ -33,6 +33,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.0.1",
+    "react-select": "^5.8.0",
     "sharp": "^0.33.4"
   },
   "devDependencies": {

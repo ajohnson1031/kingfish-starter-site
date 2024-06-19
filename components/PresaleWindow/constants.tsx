@@ -19,7 +19,10 @@ const txnErrorResponses: Record<string, JSX.Element> = {
 
 const buyMessages: Record<string, JSX.Element> = {
   invalid: <span className="text-red-300">Valid spend amount is required.</span>,
-  deficit: <span className="text-red-300">Spend amount exceeds USDC balance.</span>,
+  usdcDeficit: <span className="text-red-300">Spend amount exceeds USDC balance.</span>,
+  solDeficit: <span className="text-red-300">Spend amount exceeds SOL balance.</span>,
+  usdcMinimum: <span className="text-red-300">Minimum USDC spend amount is '1'.</span>,
+  solMinimum: <span className="text-red-300">Minimum SOL spend amount is '0.01'.</span>,
   success: <span className="text-green-300">Reefs raided successfully! Kingfish found and txn sent!</span>,
   error: <span className="text-red-300">Sorry, there was an error. Please try again later.</span>,
   email: <span className="text-red-300">Please enter a valid email address.</span>,

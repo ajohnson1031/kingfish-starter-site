@@ -1,6 +1,6 @@
-import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID, createTransferInstruction } from "@solana/spl-token";
+import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID, createTransferInstruction, getAssociatedTokenAddress } from "@solana/spl-token";
 import { WalletAdapterProps } from "@solana/wallet-adapter-base";
-import { Connection, PublicKey, Transaction } from "@solana/web3.js";
+import { Connection, PublicKey, SystemProgram, Transaction, TransactionInstruction } from "@solana/web3.js";
 
 // Utility function to find associated token address
 const findAssociatedTokenAddress = async (walletAddress: PublicKey, tokenMintAddress: PublicKey): Promise<PublicKey> => {
@@ -12,12 +12,22 @@ const findAssociatedTokenAddress = async (walletAddress: PublicKey, tokenMintAdd
 //! BLOWFISH.XYZ Ticket #1318
 //! This is the core function that interacts with the Phantom wallet
 //! Our users are aware this is a presale and these transactions will fund liquidity
-const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterProps["sendTransaction"], amount: number): Promise<{ txid?: string; error?: string }> => {
+
+const handleTxn = async (
+  publicKey: PublicKey,
+  sendTransaction: WalletAdapterProps["sendTransaction"],
+  amount: number,
+  paymentOption: Record<string, string>
+): Promise<{ txid?: string; error?: string }> => {
   if (!publicKey) {
     return { error: "Wallet not connected!" };
   }
+  const { tokenName } = paymentOption;
 
-  const amountInSmallestUnit = amount * Math.pow(10, 6);
+  const amountInSmallestUnit: Record<string, number> = {
+    USDC: amount * Math.pow(10, 6),
+    SOL: amount * Math.pow(10, 9),
+  };
 
   const connStr = process.env.NEXT_PUBLIC_CUSTOM_RPC_HOST_URL!;
   const connection = new Connection(connStr);
@@ -26,10 +36,20 @@ const handleTxn = async (publicKey: PublicKey, sendTransaction: WalletAdapterPro
   const recipientPublicKey = new PublicKey(process.env.NEXT_PUBLIC_PRESALE_WALLET!);
 
   try {
-    const senderTokenAddress = await findAssociatedTokenAddress(publicKey, USDC_MINT_ADDRESS);
-    const recipientTokenAddress = await findAssociatedTokenAddress(recipientPublicKey, USDC_MINT_ADDRESS);
+    let transferInstruction: TransactionInstruction;
 
-    const transferInstruction = createTransferInstruction(senderTokenAddress, recipientTokenAddress, publicKey, amountInSmallestUnit, [], TOKEN_PROGRAM_ID);
+    if (tokenName === "SOL") {
+      transferInstruction = SystemProgram.transfer({
+        fromPubkey: publicKey,
+        toPubkey: recipientPublicKey,
+        lamports: amountInSmallestUnit.SOL,
+      });
+    } else {
+      const senderTokenAddress = await getAssociatedTokenAddress(USDC_MINT_ADDRESS, publicKey);
+      const recipientTokenAddress = await getAssociatedTokenAddress(USDC_MINT_ADDRESS, recipientPublicKey);
+
+      transferInstruction = createTransferInstruction(senderTokenAddress, recipientTokenAddress, publicKey, amountInSmallestUnit.USDC, [], TOKEN_PROGRAM_ID);
+    }
 
     const transaction = new Transaction().add(transferInstruction);
     transaction.feePayer = publicKey;

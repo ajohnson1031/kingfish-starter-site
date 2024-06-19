@@ -1,9 +1,9 @@
-import { EMAIL_REGEX, FUCHSIA_GRADIENT } from "@/app/constants";
+import { EMAIL_REGEX, FUCHSIA_GRADIENT, PAYMENT_OPTIONS } from "@/app/constants";
 import { useViewerContext } from "@/app/context/ViewerContext";
 import cuteIcon from "@/assets/cute-fish-icon-w-stroke.png";
 import { Button, CustomTooltip, FishBowl, Img, MemberTierList } from "@/components";
 import { ImgVariant } from "@/components/Img";
-import { breakFishbowl, getTokenBalances, getUnprivilegedUserBalance } from "@/lib/utils/server";
+import { breakFishbowl, getPythPrice, getTokenBalances, getUnprivilegedUserBalance } from "@/lib/utils/server";
 import { toMbOrNone } from "@/lib/utils/static";
 import { handleTxn } from "@/lib/utils/txn";
 import { useWallet } from "@solana/wallet-adapter-react";
@@ -12,6 +12,7 @@ import { FC, useCallback, useEffect, useState } from "react";
 import { BiLogOut } from "react-icons/bi";
 import { FaInfo } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
+import ReactSelect from "react-select";
 import { PresaleWindowProps } from "./PresaleWindow.types";
 import { buyMessages, txnErrorResponses } from "./constants";
 
@@ -28,13 +29,16 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
 
   const [kfBalance, setkfBalance] = useState("0");
   const [usdcBalance, setusdcBalance] = useState(0);
+  const [solanaBalance, setsolanaBalance] = useState(0);
 
   const [buyAmount, setBuyAmount] = useState<string>("");
   const [buyMessage, setBuyMessage] = useState<JSX.Element | null>(null);
   const [isTransmittingTxn, setIsTransmittingTxn] = useState<boolean>(false);
   const [confirmChecked, setConfirmChecked] = useState<boolean>(false);
   const [editStoredEmail, setEditStoredEmail] = useState<boolean>(false);
+  const [shouldHideStoredEmail, setShouldHideStoredEmail] = useState<boolean>(false);
   const [walletEmail, setWalletEmail] = useState<string>("");
+  const [paymentOption, setPaymentOption] = useState<any>(PAYMENT_OPTIONS[0]);
 
   const nextMsg = `Until ${currentStageDetails?.currentStage?.next_per_usdc ? `1 USDC = ${currentStageDetails?.currentStage.next_per_usdc} $KingFish` : "Presale Ends!"}`;
 
@@ -50,6 +54,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
           const convertedKfBal: string = toMbOrNone(data?.kfBalance);
           setkfBalance(convertedKfBal);
           setusdcBalance(data?.usdcBalance);
+          setsolanaBalance(data?.solBalance || 0);
         });
       } else {
         getUnprivilegedUserBalance(publicKeyString).then((data) => {
@@ -60,6 +65,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
 
         getTokenBalances(publicKey!).then((data) => {
           setusdcBalance(data?.usdcBalance);
+          setsolanaBalance(data?.solBalance || 0);
         });
       }
     }
@@ -67,11 +73,14 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
 
   const handleBuyAmtChange = (e: any) => {
     const newValue = e.target.value;
-    // Allow only digits (0-9)
-    if (/^\d*$/.test(newValue) && newValue !== "0") {
+
+    // Allow valid numbers, including leading zeroes and periods for floats, or an empty string
+    if (/^(0|[1-9]\d*)(\.\d*)?$/.test(newValue) || newValue === "") {
       setBuyAmount(newValue);
       setBuyMessage(null);
-    }
+    } else if (e.target.value === ".") {
+      setBuyAmount("0.");
+    } else setBuyMessage(buyMessages.invalid);
   };
 
   const toggleConfirmCheck = () => {
@@ -97,7 +106,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
     }
   };
 
-  const handleEmailStore = (e: any) => {
+  const handleEmailStore = async (e: any) => {
     e.preventDefault();
     if (!walletEmail.match(EMAIL_REGEX)) {
       setBuyMessage(buyMessages.email);
@@ -117,7 +126,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
       return;
     }
 
-    if (!/^[1-9]\d*$/.test(buyAmount)) {
+    if (!/^(?:[1-9]\d*(?:\.\d+)?|0\.\d*[1-9]\d*)$/.test(buyAmount)) {
       console.error("Invalid amount! Please enter a positive integer.");
       setBuyMessage(buyMessages.invalid);
       return;
@@ -126,10 +135,26 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
     // convert string values to numbers for comparison
     const spendNum = Number(buyAmount);
     const usdcNum = Number(usdcBalance);
+    const solNum = Number(solanaBalance);
 
     // if desired amount is greater than user usdc balance
-    if (spendNum > usdcNum) {
-      setBuyMessage(buyMessages.deficit);
+    if (paymentOption.tokenName === "USDC" && spendNum > usdcNum) {
+      setBuyMessage(buyMessages.usdcDeficit);
+      return;
+    }
+
+    if (paymentOption.tokenName === "USDC" && spendNum < 1) {
+      setBuyMessage(buyMessages.usdcMinimum);
+      return;
+    }
+
+    if (paymentOption.tokenName === "SOL" && spendNum > solNum) {
+      setBuyMessage(buyMessages.solDeficit);
+      return;
+    }
+
+    if (paymentOption.tokenName === "SOL" && spendNum < 0.01) {
+      setBuyMessage(buyMessages.solMinimum);
       return;
     }
 
@@ -140,10 +165,12 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
         // ! BLOWFISH.XYZ Ticket #1318
         // ! Here's where the magic happens. On successful txn handler resolution, details sent to microservice
         // ! Txn details stored in DB and confirmation email sent via email showing transaction with a link to Solscan
-        const txn = await sendUSDC();
+        const txn = await sendToken();
         if (txn?.txid) {
+          const pythPrice = await getPythPrice();
+
           setIsTransmittingTxn(false);
-          const res = await breakFishbowl(publicKey.toBase58(), spendNum, txn.txid, wallet.adapter.name, walletEmail);
+          const res = await breakFishbowl(publicKey.toBase58(), spendNum, txn.txid, wallet.adapter.name, walletEmail, paymentOption.tokenName, pythPrice);
 
           const { message } = res;
 
@@ -168,7 +195,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
     }
   };
 
-  const sendUSDC = useCallback(() => handleTxn(publicKey!, sendTransaction, Number(buyAmount)), [publicKey, buyAmount, sendTransaction]);
+  const sendToken = useCallback(() => handleTxn(publicKey!, sendTransaction, Number(buyAmount), paymentOption), [publicKey, buyAmount, sendTransaction, paymentOption]);
 
   useEffect(() => {
     if (isViewingPresale) {
@@ -241,7 +268,10 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                           color="white"
                           className="bg-blue-500 p-0.5 rounded-full overflow-hidden border-blue-500 border box-border w-fit"
                           size={12}
-                          onClick={() => setIsViewingRankings(true)}
+                          onClick={() => {
+                            setIsViewingRankings(true);
+                            setShouldHideStoredEmail(true);
+                          }}
                         />
                       </div>
                     ) : (
@@ -252,7 +282,10 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                           color="white"
                           className="bg-red-500 rounded-full overflow-hidden border-red-500 border box-border w-fit"
                           size={16}
-                          onClick={() => setIsViewingRankings(false)}
+                          onClick={() => {
+                            setIsViewingRankings(false);
+                            setShouldHideStoredEmail(false);
+                          }}
                         />
                       </div>
                     )}
@@ -305,13 +338,27 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                                 type="text"
                                 className="w-full rounded-sm text-right h-11 px-2 text-cyan-800 border-2 box-border outline-none"
                                 value={buyAmount}
-                                placeholder="Enter USDC spend amt. (e.g., 10, 20, 10000...)"
-                                min="1"
-                                step="1"
+                                placeholder={`Enter ${paymentOption.tokenName} spend amount...`}
+                                min="0.1"
+                                step="0.1"
                                 required
-                                pattern="^[1-9]\d*$" // This pattern ensures only positive integers are allowed
+                                pattern="^(?:[1-9]\d*(?:\.\d+)?|0\.\d*[1-9]\d*)$" // Correct pattern
                                 onChange={handleBuyAmtChange}
                               />
+
+                              <ReactSelect
+                                onChange={(val) => setPaymentOption(val)}
+                                className="py-0 !outline-none !border-none min-w-28"
+                                menuPlacement="top"
+                                defaultValue={paymentOption}
+                                options={PAYMENT_OPTIONS}
+                                formatOptionLabel={(option) => (
+                                  <div className="flex h-[38px] font-semibold !shadow-none">
+                                    <p className="flex items-center">{option.tokenName}</p>
+                                  </div>
+                                )}
+                              />
+
                               <Button
                                 className={`!text-sm w-fit !px-3 ml-auto py-2 h-11 min-w-[150px] flex items-center justify-center rounded-sm text-white bg-green-500 hover:bg-green-400 active:bg-green-600`}
                                 label="PLACE BUY ORDER"
@@ -332,8 +379,8 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                         )}
                       </div>
 
-                      {editStoredEmail && (
-                        <div className={cn("flex gap-3 items-center justify-center mt-6", { hidden: isViewingRankings })}>
+                      {editStoredEmail && !shouldHideStoredEmail && (
+                        <div className={cn("flex gap-3 items-center justify-center mt-6")}>
                           <div className="w-full">
                             <form onSubmit={handleEmailStore} className="flex items-center h-fit w-full gap-3">
                               <input
@@ -343,7 +390,6 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                                 value={walletEmail}
                                 placeholder="Enter preferred email..."
                                 min="1"
-                                step="1"
                                 onChange={(e) => setWalletEmail(e.target.value)}
                               />
                               <Button
@@ -369,6 +415,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                               className="text-blue-400 hover:text-blue-300 text-sm underline cursor-pointer"
                               onClick={() => {
                                 setEditStoredEmail(true);
+                                setShouldHideStoredEmail(false);
                               }}
                             >
                               [Edit Stored Email]
