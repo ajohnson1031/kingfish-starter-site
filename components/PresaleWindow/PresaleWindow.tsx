@@ -201,7 +201,6 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   const sendToken = useCallback(() => handleTxn(publicKey!, sendTransaction, Number(buyAmount), paymentOption), [publicKey, buyAmount, sendTransaction, paymentOption]);
 
   const currentTier = useMemo(() => getCurrentTier(kfBalance), [kfBalance]);
-  console.log("this is the current tier", currentTier);
 
   useEffect(() => {
     if (isViewingPresale) {
@@ -240,15 +239,17 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
       <div className="flex flex-col w-full md:w-1/2 h-full rounded-3xl mx-auto">
         <div className="flex flex-col w-full h-full">
           <div
-            className={`border-[3px] overflow-hidden border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2 p-0 sm:p-10 -mt-2 h-[87.5%] md:h-auto ${
+            className={`border-[3px] overflow-hidden border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2 p-3 md:p-10 -mt-2 h-[87.5%] md:h-auto ${
               isTransmittingTxn ? "bg-vulcan-900/80 !p-0" : "bg-vulcan-500/80"
             }`}
           >
             <FaXmark
               className={cn(
-                "w-11 h-11 text-white p-2 rounded-full box-border bg-red-400 hover:bg-red-500 ml-[76%] sm:ml-auto cursor-pointer relative z-10 -top-14 md:-top-5 left-6 block",
+                "w-11 h-11 text-white p-2 rounded-full box-border bg-red-400 hover:bg-red-500 ml-[76%] sm:ml-auto cursor-pointer relative z-10 md:-top-5 left-6 block",
                 {
                   hidden: isTransmittingTxn || isViewingRankings,
+                  "-top-[88px]": !publicKey,
+                  "-top-14": publicKey,
                 }
               )}
               onClick={() => {
@@ -349,7 +350,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                                 type="text"
                                 className="w-full rounded-sm min-w-10 text-right h-11 px-2 text-cyan-800 border-2 box-border outline-none"
                                 value={buyAmount}
-                                placeholder={isMobile ? `${paymentOption.tokenName} amt.` : `Enter ${paymentOption.tokenName} spend amount...`}
+                                placeholder={isMobile ? "Amt." : `Enter ${paymentOption.tokenName} spend amount...`}
                                 min="0.1"
                                 step="0.1"
                                 required

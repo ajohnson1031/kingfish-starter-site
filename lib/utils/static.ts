@@ -6,7 +6,7 @@ const imgLoader = ({ src }: { src: string }) => {
 };
 
 const toMbOrNone = (amt: number) => {
-  let strAmt = amt?.toString() || "0";
+  let strAmt = Math.ceil(amt)?.toString() || "0";
 
   if (strAmt.length > 6 && strAmt.length <= 9) {
     strAmt = `${(amt / 1000000).toFixed(2)}M`;
