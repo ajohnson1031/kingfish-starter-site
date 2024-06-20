@@ -3,7 +3,15 @@ import { ComingSoon, Community, Ecosystem, Footer, HeroCard, Navbar, Roadmap, So
 import PresaleWindow from "@/components/PresaleWindow";
 import { getCurrentPresaleStageDetails } from "@/lib/utils/server";
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
-import { CoinbaseWalletAdapter, LedgerWalletAdapter, TorusWalletAdapter, TrezorWalletAdapter, TrustWalletAdapter } from "@solana/wallet-adapter-wallets";
+import {
+  CoinbaseWalletAdapter,
+  LedgerWalletAdapter,
+  PhantomWalletAdapter,
+  SolflareWalletAdapter,
+  TorusWalletAdapter,
+  TrezorWalletAdapter,
+  TrustWalletAdapter,
+} from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
 import Head from "next/head";
 import { useEffect, useMemo } from "react";
@@ -11,7 +19,18 @@ import { COMMUNITY_CARDS, ECO_CARDS, ROADMAP } from "./constants";
 import { useViewerContext } from "./context/ViewerContext";
 
 export default function Home() {
-  const wallets = useMemo(() => [new CoinbaseWalletAdapter(), new LedgerWalletAdapter(), new TorusWalletAdapter(), new TrezorWalletAdapter(), new TrustWalletAdapter()], []);
+  const wallets = useMemo(
+    () => [
+      new PhantomWalletAdapter(),
+      new SolflareWalletAdapter(),
+      new CoinbaseWalletAdapter(),
+      new LedgerWalletAdapter(),
+      new TorusWalletAdapter(),
+      new TrezorWalletAdapter(),
+      new TrustWalletAdapter(),
+    ],
+    []
+  );
 
   const endpoint = useMemo(() => clusterApiUrl("mainnet-beta"), []);
   const { isViewingPresale, isViewingComingSoon, setIsViewingComingSoon, setCurrentStageDetails } = useViewerContext();
