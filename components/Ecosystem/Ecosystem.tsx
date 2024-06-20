@@ -1,11 +1,12 @@
 import { EcoCard } from "@/components";
 import { FC } from "react";
 import { EcosystemProps } from ".";
+import SlimMemberTierList from "../SlimMemberTierList";
 
 const Ecosystem: FC<EcosystemProps> = ({ ecocards }) => {
   return (
     <div id="ecosystem">
-      <div className="md:w-3/4 flex justify-center py-6 md:py-12 relative mx-auto text-white mt-10">
+      <div className="md:w-3/4 flex justify-center pt-6 md:pt-12 relative mx-auto text-white mt-10">
         <div className="flex justify-end">
           <div className="py-6 px-4 md:px-0 md:pr-6">
             <h2 className="text-4xl font-bold">Ecosystem</h2>
@@ -29,7 +30,12 @@ const Ecosystem: FC<EcosystemProps> = ({ ecocards }) => {
         </div>
         <div className="hidden md:block bg-smallfish bg-contain bg-no-repeat w-6/12" />
       </div>
-      <div className="md:w-3/4 flex flex-col md:flex-row justify-center py-6 md:py-12 relative mx-auto text-white gap-6 -mt-10 md:-mt-20">
+
+      <div className="md:w-3/4 mx-auto">
+        <SlimMemberTierList />
+      </div>
+
+      <div className="md:w-3/4 flex flex-col md:flex-row justify-center py-6 md:py-12 relative mx-auto text-white gap-6 mt-3 md:mt-0">
         {ecocards.map((card, i) => (
           <EcoCard key={`${card.title}_${i}`} title={card.title} message={card.message} image={card.image || null} className="w-full md:w-1/3" />
         ))}

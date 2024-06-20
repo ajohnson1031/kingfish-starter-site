@@ -264,7 +264,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                 <div className="w-fit mx-auto">
                   <CustomTooltip title={!isViewingRankings ? "Click to View Tier List" : "Click to View Holder Stats"}>
                     {!isViewingRankings ? (
-                      <div className="border-2 border-blue-500 rounded-full cursor-pointer w-fit relative z-10 ml-auto top-[76px]">
+                      <div className="border-2 border-blue-500 bg-blue-500 rounded-full cursor-pointer w-fit relative z-10 ml-auto top-[76px]">
                         <Img
                           src={FaInfo}
                           type={ImgVariant.ICON}
@@ -278,7 +278,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                         />
                       </div>
                     ) : (
-                      <div className="border-2 border-red-500 rounded-full cursor-pointer w-fit relative z-10 ml-auto top-[116px]">
+                      <div className="border-2 border-red-500 bg-red-500 rounded-full cursor-pointer w-fit relative z-10 ml-auto top-[116px]">
                         <Img
                           src={FaXmark}
                           type={ImgVariant.ICON}
