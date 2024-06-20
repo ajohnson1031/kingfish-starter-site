@@ -239,17 +239,15 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
       <div className="flex flex-col w-full md:w-1/2 h-full rounded-3xl mx-auto">
         <div className="flex flex-col w-full h-full">
           <div
-            className={`border-[3px] overflow-hidden border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2 p-3 md:p-10 -mt-2 h-[87.5%] md:h-auto ${
+            className={`border-[3px] overflow-hidden border-gray-300 rounded-3xl flex flex-col text-center gap-2 p-3 md:p-10 -mt-2 h-full md:h-auto ${
               isTransmittingTxn ? "bg-vulcan-900/80 !p-0" : "bg-vulcan-500/80"
             }`}
           >
             <FaXmark
               className={cn(
-                "w-11 h-11 text-white p-2 rounded-full box-border bg-red-400 hover:bg-red-500 ml-[76%] sm:ml-auto cursor-pointer relative z-10 md:-top-5 left-6 block",
+                "w-11 h-11 text-white p-2 rounded-full box-border bg-red-400 hover:bg-red-500 ml-[76%] sm:ml-auto cursor-pointer relative z-10 top-1.5 left-7 md:-top-5 md:left-6 block",
                 {
                   hidden: isTransmittingTxn || isViewingRankings,
-                  "-top-[88px]": !publicKey,
-                  "-top-14": publicKey,
                 }
               )}
               onClick={() => {
@@ -264,7 +262,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
             )}
 
             {!isTransmittingTxn && (
-              <>
+              <div className="flex flex-col justify-center my-auto">
                 <div className="w-fit mx-auto">
                   <CustomTooltip title={!isViewingRankings ? "Click to View Tier List" : "Click to View Holder Stats"}>
                     {!isViewingRankings ? (
@@ -296,7 +294,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                         />
                       </div>
                     )}
-                  </CustomTooltip>{" "}
+                  </CustomTooltip>
                   <Img src={cuteIcon} alt="cute fish icon" size={120} className={cn("w-fit mx-auto -mt-10", { "mt-0": isViewingRankings })} />
                 </div>
 
@@ -438,7 +436,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                     </div>
                   </div>
                 </div>
-              </>
+              </div>
             )}
 
             {!isTransmittingTxn && isViewingRankings && <div></div>}

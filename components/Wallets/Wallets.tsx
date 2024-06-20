@@ -1,11 +1,30 @@
 import { useViewerContext } from "@/app/context/ViewerContext";
 import Img from "@/components/Img";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { WalletsProps } from "./Wallets.types";
 
 const Wallets = ({ select, wallets, publicKey, disconnect }: WalletsProps) => {
   const { setIsViewingWallet } = useViewerContext();
-
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const availableWallets = wallets.filter((wallet: any) => wallet.readyState === "Installed" || wallet.readyState === "Loadable" || wallet.readyState === "NotDetected");
+
+  const handleWalletSelect = (walletName: string) => {
+    const wallet = wallets.find((w: any) => w.adapter.name === walletName);
+    if (wallet) {
+      // Force reconnection on mobile to bring up the wallet app
+      if (isMobile) {
+        disconnect().then(() => {
+          wallet.adapter.connect().catch(() => {});
+        });
+        select(walletName);
+      } else {
+        select(walletName);
+      }
+      setIsViewingWallet(false);
+    }
+  };
 
   return !publicKey ? (
     <div className="flex gap-4 flex-col w-72">
@@ -15,10 +34,7 @@ const Wallets = ({ select, wallets, publicKey, disconnect }: WalletsProps) => {
             <button
               className="w-full text-base flex gap-2 items-center justify-center bg-vulcan-300/60 py-2 rounded-sm hover:bg-vulcan-200/60 text-white"
               key={wallet.adapter.name}
-              onClick={() => {
-                select(wallet.adapter.name);
-                setIsViewingWallet(false);
-              }}
+              onClick={() => handleWalletSelect(wallet.adapter.name)}
             >
               <Img src={wallet.adapter.icon} alt={wallet.adapter.name} />
               {wallet.adapter.name}
