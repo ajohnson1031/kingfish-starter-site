@@ -220,7 +220,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
   }, [publicKey]);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => setBuyMessage(null), 4000);
+    const timeoutId = setTimeout(() => setBuyMessage(null), 10000);
 
     return () => {
       clearTimeout(timeoutId);
