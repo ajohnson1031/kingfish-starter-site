@@ -11,8 +11,8 @@ const SlimMemberTierList: FC<MemberTierListProps> = () => {
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         {memberTiers.map((memberTier, i) => (
-          <div className="bg-vulcan-300 py-1 rounded-[4px] flex justify-center">
-            <MemberTierListItem key={`${memberTier.name}_${i}`} memberTier={memberTier} />
+          <div key={`${memberTier.name}_${i}`} className="bg-vulcan-300 py-1 rounded-[4px] flex justify-center">
+            <MemberTierListItem memberTier={memberTier} />
           </div>
         ))}
       </div>

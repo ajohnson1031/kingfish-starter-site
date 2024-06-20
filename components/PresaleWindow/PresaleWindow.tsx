@@ -6,6 +6,8 @@ import { ImgVariant } from "@/components/Img";
 import { breakFishbowl, getPythPrice, getTokenBalances, getUnprivilegedUserBalance } from "@/lib/utils/server";
 import { getCurrentTier, toMbOrNone } from "@/lib/utils/static";
 import { handleTxn } from "@/lib/utils/txn";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useWallet } from "@solana/wallet-adapter-react";
 import cn from "classnames";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
@@ -18,7 +20,8 @@ import { buyMessages, txnErrorResponses } from "./constants";
 
 const PresaleWindow: FC<PresaleWindowProps> = () => {
   const { publicKey, disconnect, wallet, sendTransaction } = useWallet();
-
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const { isViewingPresale, currentStageDetails, isViewingRankings, setIsViewingRankings, setIsViewingPresale, setIsViewingWallet } = useViewerContext();
   const [opacity, setOpacity] = useState("opacity-0");
 
@@ -237,13 +240,13 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
       <div className="flex flex-col w-full md:w-1/2 h-full rounded-3xl mx-auto">
         <div className="flex flex-col w-full h-full">
           <div
-            className={`border-[3px] overflow-hidden border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2 p-0 sm:p-10 -mt-2 h-[80%] md:h-auto ${
+            className={`border-[3px] overflow-hidden border-gray-300 rounded-3xl flex flex-col justify-center text-center gap-2 p-0 sm:p-10 -mt-2 h-[87.5%] md:h-auto ${
               isTransmittingTxn ? "bg-vulcan-900/80 !p-0" : "bg-vulcan-500/80"
             }`}
           >
             <FaXmark
               className={cn(
-                "w-11 h-11 text-white p-2 rounded-full box-border bg-red-400 hover:bg-red-500 ml-[76%] sm:ml-auto cursor-pointer relative z-10 -top-16 md:-top-5 left-6 block",
+                "w-11 h-11 text-white p-2 rounded-full box-border bg-red-400 hover:bg-red-500 ml-[76%] sm:ml-auto cursor-pointer relative z-10 -top-14 md:-top-5 left-6 block",
                 {
                   hidden: isTransmittingTxn || isViewingRankings,
                 }
@@ -344,9 +347,9 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                               <input
                                 id="presale-amount-input"
                                 type="text"
-                                className="w-full rounded-sm text-right h-11 px-2 text-cyan-800 border-2 box-border outline-none"
+                                className="w-full rounded-sm min-w-10 text-right h-11 px-2 text-cyan-800 border-2 box-border outline-none"
                                 value={buyAmount}
-                                placeholder={`Enter ${paymentOption.tokenName} spend amount...`}
+                                placeholder={isMobile ? `${paymentOption.tokenName} amt.` : `Enter ${paymentOption.tokenName} spend amount...`}
                                 min="0.1"
                                 step="0.1"
                                 required
@@ -368,8 +371,8 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                               />
 
                               <Button
-                                className={`!text-sm w-fit !px-3 ml-auto py-2 h-11 min-w-[150px] flex items-center justify-center rounded-sm text-white bg-green-500 hover:bg-green-400 active:bg-green-600`}
-                                label="PLACE BUY ORDER"
+                                className={`!text-sm w-fit !px-3 ml-auto py-2 h-11 sm:min-w-[150px] flex items-center justify-center rounded-sm text-white bg-green-500 hover:bg-green-400 active:bg-green-600`}
+                                label={isMobile ? "BUY" : "PLACE BUY ORDER"}
                               />
                             </form>
                           </div>
