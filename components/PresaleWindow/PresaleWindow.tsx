@@ -1,7 +1,7 @@
 import { EMAIL_REGEX, FUCHSIA_GRADIENT, PAYMENT_OPTIONS } from "@/app/constants";
 import { useViewerContext } from "@/app/context/ViewerContext";
 import cuteIcon from "@/assets/cute-fish-icon-w-stroke.png";
-import { Button, CustomTooltip, FishBowl, Img, MemberTierList } from "@/components";
+import { Button, CustomTooltip, FishBowl, Img, MemberTierList, Tm } from "@/components";
 import { ImgVariant } from "@/components/Img";
 import { breakFishbowl, getPythPrice, getTokenBalances, getUnprivilegedUserBalance } from "@/lib/utils/server";
 import { getCurrentTier, toMbOrNone } from "@/lib/utils/static";
@@ -45,14 +45,12 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
 
   const nextMsg = `Until ${currentStageDetails?.currentStage?.next_per_usdc ? `1 USDC = ${currentStageDetails?.currentStage.next_per_usdc} $KingFish` : "Presale Ends!"}`;
 
-  const tm = <sup className="text-xs relative -top-2.5">™</sup>;
-
   const handleKFBalances = () => {
     if (publicKey) {
       // Get balance of privileged accounts
-      const publicKeyString = publicKey.toBase58();
+      const publicKeyStr = publicKey.toBase58();
 
-      if (privilegedAddresses.indexOf(publicKeyString) >= 0) {
+      if (privilegedAddresses.indexOf(publicKeyStr) >= 0) {
         getTokenBalances(publicKey!).then((data) => {
           const convertedKfBal: string = toMbOrNone(data?.kfBalance);
           setkfBalance(convertedKfBal);
@@ -60,7 +58,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
           setsolanaBalance(data?.solBalance || 0);
         });
       } else {
-        getUnprivilegedUserBalance(publicKeyString).then((data) => {
+        getUnprivilegedUserBalance(publicKeyStr).then((data) => {
           const { totalKfBought } = data;
           const convertedBal: string = toMbOrNone(totalKfBought);
           setkfBalance(convertedBal);
@@ -303,7 +301,8 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                     <p className={"text-2xl md:text-3xl font-black text-white"}>{currentStageDetails?.currentStage?.title || "Stage One"} has started!</p>
                   </div>
                   <p className={"text-2xl text-gray-300 font-semibold transition-opacity duration-100 $"}>
-                    1 USDC = {currentStageDetails?.currentStage?.per_usdc} KingFish<sup className="text-xs relative -top-2.5">™</sup>
+                    1 USDC = {currentStageDetails?.currentStage?.per_usdc} KingFish
+                    <Tm color="text-gray-300" />
                   </p>
                 </span>
                 <div className={"rounded-3xl p-2 w-full mx-auto"}>
@@ -316,7 +315,8 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                             <div className={cn("flex flex-col gap-2 w-full", { hidden: isViewingRankings })}>
                               <p className="text-2xl text-orange-600 font-semibold">{toMbOrNone(currentStageDetails?.remainBal || 0)}</p>
                               <p className="text-2xl text-orange-600 font-semibold">
-                                KingFish<sup className="text-xs relative -top-2.5">™</sup> remaining
+                                KingFish
+                                <Tm /> remaining
                               </p>
                               <p className="font-light text-gray-300">{nextMsg}</p>
                             </div>
@@ -417,7 +417,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                           <form className="flex justify-center items-center gap-2">
                             <input className="w-4 h-4" name="confirmCheckBox" type="checkbox" checked={confirmChecked} onChange={toggleConfirmCheck} />
                             <label className="text-white text-sm" htmlFor="confirmCheckBox">
-                              Send confirmation email on trade?
+                              Send confirmation?
                             </label>
                           </form>
                           {walletEmail.length > 0 && (

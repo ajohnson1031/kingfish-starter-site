@@ -1,5 +1,5 @@
 "use client";
-import { ComingSoon, Community, Ecosystem, Footer, HeroCard, Navbar, Roadmap, Socials, Tokenomics } from "@/components";
+import { ComingSoon, Community, Ecosystem, Footer, HeroCard, Navbar, Roadmap, Tokenomics } from "@/components";
 import PresaleWindow from "@/components/PresaleWindow";
 import { getCurrentPresaleStageDetails } from "@/lib/utils/server";
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
@@ -64,7 +64,6 @@ export default function Home() {
         <main className="flex flex-col items-center px-5 lg:px-10 bg-vulcan-900 bg-no-repeat">
           <Navbar />
           <HeroCard />
-          <Socials />
           <Ecosystem ecocards={ECO_CARDS} />
           <Tokenomics />
           <Roadmap roadmapItems={ROADMAP} />

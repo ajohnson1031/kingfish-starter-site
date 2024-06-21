@@ -14,7 +14,9 @@ import MemberTierListItem from "./MemberTierListItem";
 import Navbar from "./Navbar";
 import Roadmap from "./Roadmap";
 import RoadmapCard from "./RoadmapCard";
+import SlimMemberTierList from "./SlimMemberTierList";
 import Socials from "./Socials";
+import Tm from "./Tm";
 import Tokenomics from "./Tokenomics";
 import TokenomicsCard from "./TokenomicsCard";
 import Wallets from "./Wallets";
@@ -36,7 +38,9 @@ export {
   Navbar,
   Roadmap,
   RoadmapCard,
+  SlimMemberTierList,
   Socials,
+  Tm,
   Tokenomics,
   TokenomicsCard,
   Wallets,

@@ -111,7 +111,7 @@ const Footer: FC<FooterProps> = () => {
   }, [message]);
 
   return (
-    <div className="h-[21rem] md:h-44 w-full bg-vulcan-500 p-5 md:px-10 relative bottom-0 left-0 z-50 mt-4 md:mt-10 text-white">
+    <div className="h-[21rem] md:h-44 w-full bg-vulcan-500 p-5 md:px-10 relative bottom-0 left-0 z-50 mb-8 md:mb-0 mt-4 md:mt-10 text-white">
       <div className="w-full md:w-3/4 flex flex-col md:flex-row mx-auto justify-center items-center gap-8">
         <div className="branding flex flex-col gap-3 h-11/12 w-fit justify-between items-center">
           <Img src={branding} width={200} />

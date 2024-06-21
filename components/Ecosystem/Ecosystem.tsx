@@ -1,18 +1,20 @@
-import { EcoCard } from "@/components";
+import { EcoCard, SlimMemberTierList, Tm } from "@/components";
+import { useWallet } from "@solana/wallet-adapter-react";
+import cn from "classnames";
 import { FC } from "react";
 import { EcosystemProps } from ".";
-import SlimMemberTierList from "../SlimMemberTierList";
 
 const Ecosystem: FC<EcosystemProps> = ({ ecocards }) => {
+  const { publicKey } = useWallet();
   return (
     <div id="ecosystem">
-      <div className="md:w-3/4 flex justify-center pt-6 md:pt-12 relative mx-auto text-white mt-10">
+      <div className={cn("md:w-3/4 flex justify-center pt-6 md:pt-12 relative mx-auto text-white -mt-5 md:mt-10", { "mt-64 md:mt-60": publicKey })}>
         <div className="flex justify-end">
           <div className="py-6 px-4 md:px-0 md:pr-6">
             <h2 className="text-4xl font-bold">Ecosystem</h2>
             <p className="text-lg">
               Life as a King<span className="text-orange-500">Fish</span>
-              <sup className="text-[6px] text-orange-500 relative -top-2.5">TM</sup>
+              <Tm top="-top-1.5" color="text-orange-500" />
             </p>
             <p className="font-extralight py-4">
               From humble goldfish to formidable shark, and finally, a majestic whale, "KINGFISH" dominates the waters of the Solana Ocean, renowned for its insatiable appetite for

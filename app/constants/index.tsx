@@ -9,6 +9,14 @@ import shark from "@/assets/shark.png";
 import trout from "@/assets/trout.png";
 import whale from "@/assets/whale.png";
 
+import danioLg from "@/assets/danio-lg.png";
+import guppyLg from "@/assets/guppy-lg.png";
+import mantaLg from "@/assets/manta-lg.png";
+import marlinLg from "@/assets/marlin-lg.png";
+import sharkLg from "@/assets/shark-lg.png";
+import troutLg from "@/assets/trout-lg.png";
+import whaleLg from "@/assets/whale-lg.png";
+
 const FUCHSIA_GRADIENT: string = "bg-gradient-to-r from-fuchsia-500 to-orange-400 hover:from-fuchsia-600 hover:to-orange-500";
 const OPACITY_FUCHSIA_GRADIENT: string = "bg-gradient-to-r from-fuchsia-500/50 to-orange-400/50";
 const VIOLET_GRADIENT: string = "bg-gradient-to-r from-violet-400 to-cyan-500 hover:from-violet-500 hover:to-cyan-600";
@@ -202,42 +210,49 @@ const MEMBER_TIERS = [
     holdings: "0 - 99,999",
     holdingsNums: [1, 99999],
     imgSrc: danio,
+    imgSrcLg: { src: danioLg, w: 100 },
   },
   {
     name: "Guppy",
     holdings: "100,000 - 499,999",
     holdingsNums: [100000, 499999],
     imgSrc: guppy,
+    imgSrcLg: { src: guppyLg, w: 100 },
   },
   {
     name: "Trout",
     holdings: "500,000 - 999,999",
     holdingsNums: [500000, 999999],
     imgSrc: trout,
+    imgSrcLg: { src: troutLg, w: 125 },
   },
   {
     name: "Manta",
     holdings: "1,000,000 - 1,499,999",
     holdingsNums: [1000000, 1499999],
     imgSrc: manta,
+    imgSrcLg: { src: mantaLg, w: 125 },
   },
   {
     name: "Marlin",
     holdings: "1,500,000 - 1,999,999",
     holdingsNums: [1500000, 1999999],
     imgSrc: marlin,
+    imgSrcLg: { src: marlinLg, w: 150 },
   },
   {
     name: "Shark",
     holdings: "2,000,000 - 4,999,999",
     holdingsNums: [2000000, 4999999],
     imgSrc: shark,
+    imgSrcLg: { src: sharkLg, w: 175 },
   },
   {
     name: "Whale",
     holdings: "5,000,000 - 10,000,000",
     holdingsNums: [5000000, 10000000],
     imgSrc: whale,
+    imgSrcLg: { src: whaleLg, w: 200 },
   },
 ];
 
