@@ -16,7 +16,7 @@ const Navbar: FC<NavbarProps> = () => {
   const navClass = "hover:text-orange-500";
   const navItems = [
     { val: "Home", offset: 0 },
-    { val: "Ecosystem", offset: 150 },
+    { val: "Ecosystem", offset: !!publicKey ? 165 : -40 },
     { val: "Tokenomics", offset: -150 },
     { val: "Roadmap", offset: -150 },
     { val: "Community", offset: -80 },
