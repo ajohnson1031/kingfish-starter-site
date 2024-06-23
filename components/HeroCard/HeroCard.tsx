@@ -85,7 +85,7 @@ const HeroCard: FC<HeroCardProps> = () => {
         <p className="text-sm md:text-base mb-6">
           Inspired by the Solana Ecosystem & every fish in the world's oceans. <br className="hidden lg:block" /> A community-driven, uniquely rewarding system.
         </p>
-        <div className="flex justify-center gap-3 md:gap-5">
+        <div className="flex justify-center gap-3 md:gap-5 relative z-10">
           <Button className={FUCHSIA_GRADIENT} label={btnText} onClick={() => setIsViewingPresale(true)} />
           <Button className={VIOLET_GRADIENT} label="Whitepaper" onClick={() => handleClick("./KINGFISH_Whitepaper.pdf")} />
         </div>
