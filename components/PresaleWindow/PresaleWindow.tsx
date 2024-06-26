@@ -293,7 +293,7 @@ const PresaleWindow: FC<PresaleWindowProps> = () => {
                       </div>
                     )}
                   </CustomTooltip>
-                  <Img src={cuteIcon} alt="cute fish icon" size={120} className={cn("w-fit mx-auto -mt-10", { "mt-0": isViewingRankings })} />
+                  <Img src={cuteIcon} alt="cute fish icon" size={120} className={cn("w-fit mx-auto -mt-10 mb-4", { "mt-0 mb-0": isViewingRankings })} />
                 </div>
 
                 <span className={`${isViewingRankings ? "hidden" : ""}`}>

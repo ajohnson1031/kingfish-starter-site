@@ -90,7 +90,6 @@ const HeroCard: FC<HeroCardProps> = () => {
           <Button className={VIOLET_GRADIENT} label="Whitepaper" onClick={() => handleClick("./KINGFISH_Whitepaper.pdf")} />
         </div>
       </div>
-      {/* bg-herocard bg-85% md:bg-100% bg-[center_top_-2rem] bg-no-repeat h-[58.5%] md:h-[70%] lg:h-[75%] w-full  */}
       <div className="flex flex-col items-center">
         <div>
           <Img src={herocard} alt={"KingFish on Throne"} width={"650"} height={"650"} className="!h-[58.5%] md:!h-[70%] lg:!h-[75%] w-full -mt-8" />
